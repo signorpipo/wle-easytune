@@ -142,7 +142,12 @@
                 {
                     "type": "light",
                     "light": {
-                        "attenuation": 0.10000000149011612
+                        "attenuation": 0.10000000149011612,
+                        "color": [
+                            0.953852653503418,
+                            0.21568626165390016,
+                            1.0
+                        ]
                     }
                 }
             ],
@@ -167,14 +172,6 @@
         },
         "23": {
             "name": "Light 2",
-            "components": [
-                {
-                    "type": "light",
-                    "light": {
-                        "attenuation": 0.10000000149011612
-                    }
-                }
-            ],
             "transformation": [
                 1.0,
                 0.0,
@@ -192,6 +189,49 @@
                 3.0,
                 -1.0,
                 1.0
+            ],
+            "components": [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                    "type": "light",
+                    "light": {
+                        "attenuation": 0.10000000149011612,
+                        "color": [
+                            1.0,
+                            0.7083233594894409,
+                            0.1450980305671692
+                        ]
+                    }
+                }
             ]
         },
         "24": {
@@ -352,7 +392,7 @@
                     "type": "console-vr",
                     "console-vr": {
                         "_myHandedness": "right",
-                        "_mShowOnStart": true,
+                        "_mShowOnStart": false,
                         "_myPlaneMesh": "7",
                         "_myTextMaterial": "DefaultFontMaterial",
                         "_myPlaneMaterial": "64"
@@ -642,12 +682,40 @@
             "link": {
                 "name": "Lambert_Body",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
+            },
+            "Phong": {
+                "diffuseColor": [
+                    0.09301037341356278,
+                    0.31479430198669436,
+                    0.8784313797950745,
+                    1.0
+                ],
+                "ambientColor": [
+                    0.03349480405449867,
+                    0.14238716661930085,
+                    0.38823527097702029,
+                    1.0
+                ]
             }
         },
         "33": {
             "link": {
                 "name": "Lambert_Button",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
+            },
+            "Phong": {
+                "diffuseColor": [
+                    0.7411764860153198,
+                    0.09301037341356278,
+                    0.2760219871997833,
+                    1.0
+                ],
+                "ambientColor": [
+                    0.35686272382736208,
+                    0.036386001855134967,
+                    0.12743055820465089,
+                    1.0
+                ]
             }
         },
         "64": {
@@ -739,7 +807,13 @@
             ]
         },
         "rendering": {
-            "font": "assets/fonts/courier_new.ttf"
+            "font": "assets/fonts/courier_new.ttf",
+            "clearColor": [
+                0.3476508855819702,
+                0.8969070911407471,
+                0.9960784316062927,
+                1.0
+            ]
         }
     },
     "animations": {},
