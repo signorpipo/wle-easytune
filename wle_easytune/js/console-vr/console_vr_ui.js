@@ -158,7 +158,7 @@ PP.ConsoleVR_UI = class ConsoleVR_UI {
             textComp.material.color = consoleVRSetup.myMessagesTextColors[PP.ConsoleVR.MessageType[key]];
             textComp.material.outlineColor = consoleVRSetup.myMessagesTextOutlineColors[PP.ConsoleVR.MessageType[key]];
             textComp.material.outlineRange = consoleVRSetup.myMessagesTextOutlineRange;
-            textComp.material.text = consoleVRSetup.myMessagesTextStartString;
+            textComp.text = consoleVRSetup.myMessagesTextStartString;
 
             this._myMessagesTextComponents[PP.ConsoleVR.MessageType[key]] = textComp;
         }

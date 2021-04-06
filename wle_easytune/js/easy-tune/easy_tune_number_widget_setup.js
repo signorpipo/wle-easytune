@@ -12,20 +12,20 @@ PP.EasyTuneNumberWidgetSetup = class EasyTuneNumberWidgetSetup {
 
     _initializeBuildSetup() {
         //General
-        this.myObjectTransforms = [];
-        this.myObjectTransforms[PP.EasyTune.Handedness.NONE] = {};
-        this.myObjectTransforms[PP.EasyTune.Handedness.NONE].myPosition = [0, 0, 0];
-        this.myObjectTransforms[PP.EasyTune.Handedness.NONE].myRotation = [0, 0, 0, 1];
+        this.myMainObjectTransforms = [];
+        this.myMainObjectTransforms[PP.EasyTune.Handedness.NONE] = {};
+        this.myMainObjectTransforms[PP.EasyTune.Handedness.NONE].myPosition = [0, 0, 0];
+        this.myMainObjectTransforms[PP.EasyTune.Handedness.NONE].myRotation = [0, 0, 0, 1];
 
-        this.myObjectTransforms[PP.EasyTune.Handedness.LEFT] = {};
-        this.myObjectTransforms[PP.EasyTune.Handedness.LEFT].myPosition = [-0.165, -0.025, -0.155];
-        this.myObjectTransforms[PP.EasyTune.Handedness.LEFT].myRotation = [-0.645, 0.425, 0.25, 0.584];
-        this.myObjectRotation = glMatrix.quat.normalize(this.myObjectTransforms[PP.EasyTune.Handedness.LEFT].myRotation, this.myObjectTransforms[PP.EasyTune.Handedness.LEFT].myRotation);
+        this.myMainObjectTransforms[PP.EasyTune.Handedness.LEFT] = {};
+        this.myMainObjectTransforms[PP.EasyTune.Handedness.LEFT].myPosition = [-0.165, -0.025, -0.155];
+        this.myMainObjectTransforms[PP.EasyTune.Handedness.LEFT].myRotation = [-0.645, 0.425, 0.25, 0.584];
+        glMatrix.quat.normalize(this.myMainObjectTransforms[PP.EasyTune.Handedness.LEFT].myRotation, this.myMainObjectTransforms[PP.EasyTune.Handedness.LEFT].myRotation);
 
-        this.myObjectTransforms[PP.EasyTune.Handedness.RIGHT] = {};
-        this.myObjectTransforms[PP.EasyTune.Handedness.RIGHT].myPosition = [0.231, 0.005, -0.061];
-        this.myObjectTransforms[PP.EasyTune.Handedness.RIGHT].myRotation = [-0.645, -0.425, -0.25, 0.584];
-        this.myObjectRotation = glMatrix.quat.normalize(this.myObjectTransforms[PP.EasyTune.Handedness.RIGHT].myRotation, this.myObjectTransforms[PP.EasyTune.Handedness.RIGHT].myRotation);
+        this.myMainObjectTransforms[PP.EasyTune.Handedness.RIGHT] = {};
+        this.myMainObjectTransforms[PP.EasyTune.Handedness.RIGHT].myPosition = [0.231, 0.005, -0.061];
+        this.myMainObjectTransforms[PP.EasyTune.Handedness.RIGHT].myRotation = [-0.645, -0.425, -0.25, 0.584];
+        glMatrix.quat.normalize(this.myMainObjectTransforms[PP.EasyTune.Handedness.RIGHT].myRotation, this.myMainObjectTransforms[PP.EasyTune.Handedness.RIGHT].myRotation);
 
         this.myCursorTargetCollisionCollider = 2; // box
         this.myCursorTargetCollisionGroup = 7;
@@ -86,7 +86,7 @@ PP.EasyTuneNumberWidgetSetup = class EasyTuneNumberWidgetSetup {
         this.myStepButtonBackgroundScale = [0.04, 0.02, 1];
 
         this.myStepButtonTextScale = [0.18, 0.18, 0.18];
-        this.myStepButtonTextPosition = [0, 0, 0.07];
+        this.myStepButtonTextPosition = [0, 0, 0.007];
 
         this.myStepButtonCursorTargetPosition = [0, 0, 0];
         this.myStepButtonCursorTargetPosition[2] = this.myColliderZPosition - this.myStepPanelPosition[2] - this.myStepButtonsPanelPosition[2];
@@ -96,7 +96,7 @@ PP.EasyTuneNumberWidgetSetup = class EasyTuneNumberWidgetSetup {
         this.myStepButtonsSetupList = [];
         {
             let numberOfButtons = 4;
-            let buttonsHorizontalSpace = this.myStepBackgroundScale[0];
+            let buttonsHorizontalSpace = this.myStepBackgroundScale[0] * 2;
             //3 at start, 2 between buttons, 3 at end
             let numberOfSpacesBetweenButtons = 3 + 6 + 3;
 

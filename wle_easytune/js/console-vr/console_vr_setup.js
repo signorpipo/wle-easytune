@@ -20,12 +20,12 @@ PP.ConsoleVRSetup = class ConsoleVRSetup {
         this.myConsoleVRObjectTransforms[PP.ConsoleVR.Handedness.LEFT] = {};
         this.myConsoleVRObjectTransforms[PP.ConsoleVR.Handedness.LEFT].myPosition = [-0.145, -0.035, -0.2];
         this.myConsoleVRObjectTransforms[PP.ConsoleVR.Handedness.LEFT].myRotation = [-0.645, 0.425, 0.25, 0.584];
-        this.myConsoleVRObjectRotation = glMatrix.quat.normalize(this.myConsoleVRObjectTransforms[PP.ConsoleVR.Handedness.LEFT].myRotation, this.myConsoleVRObjectTransforms[PP.ConsoleVR.Handedness.LEFT].myRotation);
+        glMatrix.quat.normalize(this.myConsoleVRObjectTransforms[PP.ConsoleVR.Handedness.LEFT].myRotation, this.myConsoleVRObjectTransforms[PP.ConsoleVR.Handedness.LEFT].myRotation);
 
         this.myConsoleVRObjectTransforms[PP.ConsoleVR.Handedness.RIGHT] = {};
         this.myConsoleVRObjectTransforms[PP.ConsoleVR.Handedness.RIGHT].myPosition = [0.231, 0.005, -0.061];
         this.myConsoleVRObjectTransforms[PP.ConsoleVR.Handedness.RIGHT].myRotation = [-0.645, -0.425, -0.25, 0.584];
-        this.myConsoleVRObjectRotation = glMatrix.quat.normalize(this.myConsoleVRObjectTransforms[PP.ConsoleVR.Handedness.RIGHT].myRotation, this.myConsoleVRObjectTransforms[PP.ConsoleVR.Handedness.RIGHT].myRotation);
+        glMatrix.quat.normalize(this.myConsoleVRObjectTransforms[PP.ConsoleVR.Handedness.RIGHT].myRotation, this.myConsoleVRObjectTransforms[PP.ConsoleVR.Handedness.RIGHT].myRotation);
 
         this.myCursorTargetCollisionCollider = 2; // box
         this.myCursorTargetCollisionGroup = 7; //keep this in sync with ConsoleVRSetup
