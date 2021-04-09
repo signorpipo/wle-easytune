@@ -2,6 +2,8 @@
 PP.EasyTuneNumberWidgetUI = class EasyTuneNumberWidgetUI {
 
     build(easyTuneComponent, setup) {
+        this._myPlaneMesh = PP.MeshUtils.createPlaneMesh();
+
         this._createSkeleton(easyTuneComponent);
         this._setTransforms(easyTuneComponent, setup);
         this._addComponents(easyTuneComponent, setup);
@@ -116,7 +118,7 @@ PP.EasyTuneNumberWidgetUI = class EasyTuneNumberWidgetUI {
 
     _addDisplayComponents(easyTuneComponent, setup) {
         this.myDisplayBackgroundComponent = this.myDisplayBackground.addComponent('mesh');
-        this.myDisplayBackgroundComponent.mesh = easyTuneComponent._myPlaneMesh;
+        this.myDisplayBackgroundComponent.mesh = this._myPlaneMesh;
         this.myDisplayBackgroundComponent.material = easyTuneComponent._myPlaneMaterial.clone();
         this.myDisplayBackgroundComponent.material.color = setup.myBackgroundColor;
 
@@ -150,7 +152,7 @@ PP.EasyTuneNumberWidgetUI = class EasyTuneNumberWidgetUI {
 
     _addStepComponents(easyTuneComponent, setup) {
         this.myStepBackgroundComponent = this.myStepBackground.addComponent('mesh');
-        this.myStepBackgroundComponent.mesh = easyTuneComponent._myPlaneMesh;
+        this.myStepBackgroundComponent.mesh = this._myPlaneMesh;
         this.myStepBackgroundComponent.material = easyTuneComponent._myPlaneMaterial.clone();
         this.myStepBackgroundComponent.material.color = setup.myStepBackgroundColor;
 
@@ -171,7 +173,7 @@ PP.EasyTuneNumberWidgetUI = class EasyTuneNumberWidgetUI {
             let stepButtonComponents = {};
 
             stepButtonComponents.myBackground = stepButton.myBackground.addComponent('mesh');
-            stepButtonComponents.myBackground.mesh = easyTuneComponent._myPlaneMesh;
+            stepButtonComponents.myBackground.mesh = this._myPlaneMesh;
             stepButtonComponents.myBackground.material = easyTuneComponent._myPlaneMaterial.clone();
             stepButtonComponents.myBackground.material.color = setup.myBackgroundColor;
 
