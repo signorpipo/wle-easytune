@@ -1,24 +1,147 @@
 
 PP.EasyTuneNumberWidget = class EasyTuneNumberWidget {
 
-    constructor(type, leftGamepad, rightGamepad) {
-        this._myType = type;
+    constructor(gamepad, blockModifyButtonType) {
+        this._myGamepad = gamepad;
+        this._myBlockModifyButtonType = blockModifyButtonType;
 
-        this._myLeftGamepad = leftGamepad;
-        this._myRightGamepad = rightGamepad;
-
-        this._myUI = new PP.EasyTuneNumberWidgetUI();
         this._mySetup = new PP.EasyTuneNumberWidgetSetup();
+        this._myUI = new PP.EasyTuneNumberWidgetUI();
+
+        this._myVariable = null;
+
+        this._myIsVisible = true;
+
+        this._myScrollVariableCallbacks = new Map();
+
+        this._myAppendToVariableName = "";
+    }
+
+    setEasyTuneVariable(variable, appendToVariableName) {
+        this._myVariable = variable;
+
+        if ((typeof appendToVariableName) !== 'undefined') {
+            this._myAppendToVariableName = appendToVariableName;
+        }
+
+        this._refreshUI();
+    }
+
+    _refreshUI() {
+        if (this._myVariable) {
+            this._myUI.myVariableLabelTextComponent.text = this._myVariable.myName.concat(this._myAppendToVariableName);
+            this._myUI.myValueTextComponent.text = this._myVariable.myValue.toFixed(this._myVariable.myDecimalPlaces);
+            this._myUI.myStepLabelTextComponent.text = this._mySetup.myStepLabelStartString.concat(this._myVariable.myStepPerSecond);
+        }
+    }
+
+    setVisible(isVisible) {
+        if (isVisible) {
+            this._refreshUI();
+            this._myUI.myMainPanel.resetTransform();
+
+            this._myIsVisible = true;
+        } else {
+            this._myUI.myMainPanel.scale([0, 0, 0]);
+            this._myUI.myMainPanel.setTranslationWorld([0, -3000, 0]);
+
+            this._myIsVisible = false;
+        }
+    }
+
+    registerScrollVariableEvent(id, callback) {
+        this._myScrollVariableCallbacks.set(id, callback);
+    }
+
+    unregisterScrollVariableEvent(id) {
+        this._myScrollVariableCallbacks.delete(id);
     }
 
     start(easyTuneComponent) {
         this._myUI.build(easyTuneComponent, this._mySetup);
+
+        this._addListeners();
     }
 
-    update(dt) { }
-};
+    update(dt) {
+        if (this._isActive()) {
+            this._updateValue(dt);
+        }
+    }
 
-PP.EasyTuneNumberWidget.Type = {
-    INT: 0,
-    FLOAT: 1
+    _updateValue(dt) {
+        if (!this._myGamepad.getButtonInfo(this._myBlockModifyButtonType).myIsPressed) {
+            let y = this._myGamepad.getAxesInfo().myAxes[1];
+
+            if (Math.abs(y) > this._mySetup.myModifyThumbstickMinThreshold) {
+                let normalizedModifyAmount = (Math.abs(y) - this._mySetup.myModifyThumbstickMinThreshold) / (1 - this._mySetup.myModifyThumbstickMinThreshold);
+                let amountToAdd = Math.sign(y) * normalizedModifyAmount * this._myVariable.myStepPerSecond * dt;
+
+                this._myVariable.myRealValue += amountToAdd;
+
+                let decimalPlacesMultiplier = Math.pow(10, this._myVariable.myDecimalPlaces);
+                this._myVariable.myValue = Math.round(this._myVariable.myRealValue * decimalPlacesMultiplier + Number.EPSILON) / decimalPlacesMultiplier;
+                this._myUI.myValueTextComponent.text = this._myVariable.myValue.toFixed(this._myVariable.myDecimalPlaces);
+            } else {
+                this._myVariable.myRealValue = this._myVariable.myValue;
+            }
+        }
+    }
+
+    _isActive() {
+        return this._myIsVisible && this._myVariable;
+    }
+
+    _addListeners() {
+        let ui = this._myUI;
+        let setup = this._mySetup;
+
+        ui.myVariableLabelPreviousCursorTargetComponent.addClickFunction(this._scrollVariable.bind(this, -1));
+        ui.myVariableLabelNextCursorTargetComponent.addClickFunction(this._scrollVariable.bind(this, 1));
+
+        ui.myResetValueCursorTargetComponent.addClickFunction(this._resetValue.bind(this));
+
+        ui.myResetStepCursorTargetComponent.addClickFunction(this._resetStep.bind(this));
+
+        for (let i = 0; i < ui.myStepButtonsComponents.length; ++i) {
+            let cursorTarget = ui.myStepButtonsComponents[i].myCursorTarget;
+            let backgroundMaterial = ui.myStepButtonsComponents[i].myBackground.material;
+
+            cursorTarget.addClickFunction(this._multiplyStep.bind(this, setup.myStepButtonsSetupList[i].myStepMultiplier));
+            cursorTarget.addHoverFunction(this._genericHover.bind(this, backgroundMaterial));
+            cursorTarget.addUnHoverFunction(this._genericUnHover.bind(this, backgroundMaterial));
+        }
+    }
+
+    _scrollVariable(amount) {
+        for (let value of this._myScrollVariableCallbacks.values()) {
+            value(amount);
+        }
+    }
+
+    _resetValue() {
+        this._myVariable.myValue = this._myVariable.myInitialValue;
+        this._myUI.myValueTextComponent.text = this._myVariable.myValue.toFixed(this._myVariable.myDecimalPlaces);
+    }
+
+    _resetStep() {
+        this._changeStep(this._myVariable.myInitialStepPerSecond);
+    }
+
+    _multiplyStep(stepMultiplier) {
+        this._changeStep(this._myVariable.myStepPerSecond * stepMultiplier);
+    }
+
+    _changeStep(step) {
+        this._myVariable.myStepPerSecond = step;
+        this._myUI.myStepLabelTextComponent.text = this._mySetup.myStepLabelStartString.concat(this._myVariable.myStepPerSecond);
+    }
+
+    _genericHover(material) {
+        material.color = this._mySetup.myButtonHoverColor;
+    }
+
+    _genericUnHover(material) {
+        material.color = this._mySetup.myBackgroundColor;
+    }
 };

@@ -41,6 +41,7 @@ PP.EasyTuneNumberWidgetSetup = class EasyTuneNumberWidgetSetup {
         this.myTextColor = this.myDefaultTextColor;
         this.myTextOutlineColor = this.myDefaultTextColor;
 
+
         //Display
         this.myDisplayPanelPosition = [0, 0.1, 0];
 
@@ -75,6 +76,7 @@ PP.EasyTuneNumberWidgetSetup = class EasyTuneNumberWidgetSetup {
 
         this.myStepLabelPanelPosition = [0, 0.036, 0.01];
         this.myStepLabelTextScale = [0.19, 0.19, 0.19];
+        this.myStepLabelStartString = "Step: ";
 
         this.myResetStepCursorTargetPosition = [0, 0, 0];
         this.myResetStepCursorTargetPosition[2] = this.myColliderZPosition - this.myStepLabelPanelPosition[2] - this.myStepPanelPosition[2];
@@ -85,12 +87,16 @@ PP.EasyTuneNumberWidgetSetup = class EasyTuneNumberWidgetSetup {
 
         this.myStepButtonBackgroundScale = [0.04, 0.02, 1];
 
+        this.myStepButtonStartString = "x";
+
         this.myStepButtonTextScale = [0.18, 0.18, 0.18];
         this.myStepButtonTextPosition = [0, 0, 0.007];
 
         this.myStepButtonCursorTargetPosition = [0, 0, 0];
         this.myStepButtonCursorTargetPosition[2] = this.myColliderZPosition - this.myStepPanelPosition[2] - this.myStepButtonsPanelPosition[2];
         this.myStepButtonCollisionExtents = this.myStepButtonBackgroundScale;
+        this.myStepButtonCollisionExtents[2] = this.myCursorTargetCollisionThickness;
+
         this.myStepButtonCollisionExtents[2] = this.myCursorTargetCollisionThickness;
 
         this.myStepButtonsSetupList = [];
@@ -110,24 +116,27 @@ PP.EasyTuneNumberWidgetSetup = class EasyTuneNumberWidgetSetup {
                 currentPosition += halfButtonWidth + spaceWidth * 2 + halfButtonWidth;
             }
 
-            this.myStepButtonsSetupList[0].myText = "x0.01";
-            this.myStepButtonsSetupList[1].myText = "x0.1";
-            this.myStepButtonsSetupList[2].myText = "x10";
-            this.myStepButtonsSetupList[3].myText = "x100";
+            this.myStepButtonsSetupList[0].myStepMultiplier = 0.01;
+            this.myStepButtonsSetupList[1].myStepMultiplier = 0.1;
+            this.myStepButtonsSetupList[2].myStepMultiplier = 10;
+            this.myStepButtonsSetupList[3].myStepMultiplier = 100;
         }
 
         //Pointer
         {
             let spaceBetweenPanels = Math.abs((this.myDisplayPanelPosition[1] - this.myDisplayBackgroundScale[1]) - (this.myStepPanelPosition[1] + this.myStepBackgroundScale[1]));
             let pointerCollisionHalfHeight = this.myDisplayBackgroundScale[1] + this.myStepBackgroundScale[1] + spaceBetweenPanels / 2;
-            this.myPointerCollisionExtents = [this.myDisplayPanelPosition[0], pointerCollisionHalfHeight, this.myCursorTargetCollisionThickness];
+            this.myPointerCollisionExtents = [this.myDisplayBackgroundScale[0], pointerCollisionHalfHeight, this.myCursorTargetCollisionThickness];
         }
 
         this.myPointerCursorTargetPosition = [0, 0, 0];
-        this.myPointerCursorTargetPosition[1] = (this.myDisplayBackgroundScale[1] + this.myDisplayBackgroundScale[1]) - this.myPointerCollisionExtents[1];
+        this.myPointerCursorTargetPosition[1] = (this.myDisplayPanelPosition[1] + this.myDisplayBackgroundScale[1]) - this.myPointerCollisionExtents[1];
         this.myPointerCursorTargetPosition[2] = this.myColliderZPosition - 0.0001; // a little behind the button target to avoid hiding it
     }
 
     _initializeRuntimeSetup() {
+        this.myButtonHoverColor = [150 / 255, 150 / 255, 150 / 255, 1];
+
+        this.myModifyThumbstickMinThreshold = 0.2;
     }
 };

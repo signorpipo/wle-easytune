@@ -1,6 +1,6 @@
 WL.registerComponent('console-vr', {
     _myHandedness: { type: WL.Type.Enum, values: ['none', 'left', 'right'], default: 'none' },
-    _mShowOnStart: { type: WL.Type.Bool, default: false },
+    _myShowOnStart: { type: WL.Type.Bool, default: false },
     _myPulseOnNewMessage: { type: WL.Type.Enum, values: ['none', 'always', 'when hidden'], default: 'when hidden' },
     _myPlaneMesh: { type: WL.Type.Mesh, default: null },
     _myPlaneMaterial: { type: WL.Type.Material, default: null },

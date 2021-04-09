@@ -26,9 +26,8 @@ WL.registerComponent('tool-cursor', {
         this._myCursorMeshComponent.material = this._myCursorMaterial.clone();
         this._myCursorMeshComponent.material.color = this._myCursorColor;
 
-        this._myCursorComponent = this._myToolCursorObject.addComponent("cursor", { "collisionGroup": this._myCursorTargetCollisionGroup });
+        this._myCursorComponent = this._myToolCursorObject.addComponent("cursor", { "collisionGroup": this._myCursorTargetCollisionGroup, "handedness": this._myHandedness + 1 });
         this._myCursorComponent.cursorObject = this._myCursorMeshObject;
-        this._myCursorComponent.handedness = this._myHandedness + 1;
         this._myCursorComponent.rayCastMode = 0; //collision
     }
 });

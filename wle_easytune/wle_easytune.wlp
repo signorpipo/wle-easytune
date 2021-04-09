@@ -321,10 +321,23 @@
                     }
                 },
                 {
-                    "type": "tool-cursor",
-                    "tool-cursor": {
-                        "_myCursorMesh": "9",
-                        "_myCursorMaterial": "64"
+                    "type": "console-vr",
+                    "console-vr": {
+                        "_myHandedness": "left",
+                        "_mShowOnStart": false,
+                        "_myPlaneMesh": "7",
+                        "_myTextMaterial": "DefaultFontMaterial",
+                        "_myPlaneMaterial": "64"
+                    }
+                },
+                {
+                    "type": "easy-tune",
+                    "easy-tune": {
+                        "_myPlaneMesh": "7",
+                        "_myPlaneMaterial": "64",
+                        "_myTextMaterial": "DefaultFontMaterial",
+                        "_myShowOnStart": true,
+                        "_myHandedness": "left"
                     }
                 }
             ]
@@ -397,19 +410,17 @@
                     }
                 },
                 {
-                    "type": "console-vr",
-                    "console-vr": {
-                        "_myHandedness": "right",
-                        "_mShowOnStart": false,
-                        "_myPlaneMesh": "7",
-                        "_myTextMaterial": "DefaultFontMaterial",
-                        "_myPlaneMaterial": "64"
-                    }
-                },
-                {
                     "type": "input",
                     "input": {
                         "type": "hand right"
+                    }
+                },
+                {
+                    "type": "tool-cursor",
+                    "tool-cursor": {
+                        "_myCursorMesh": "9",
+                        "_myCursorMaterial": "64",
+                        "_myHandedness": "right"
                     }
                 }
             ]
@@ -472,20 +483,20 @@
             "name": "Test Easy Tune",
             "parent": "135",
             "transformation": [
-                0.5144816637039185,
-                -0.2557317316532135,
-                -0.818483293056488,
+                0.0005144804599694908,
+                -0.00025573113816790283,
+                -0.0008184813195839524,
                 0.0,
-                -0.8397881984710693,
-                0.04275863990187645,
-                -0.5412333607673645,
+                -0.0008397857309319079,
+                0.0000427584964199923,
+                -0.0005412317113950849,
                 0.0,
-                0.17340709269046784,
-                0.9658027291297912,
-                -0.1927611380815506,
+                0.0001734068209771067,
+                0.000965801940765232,
+                -0.00019276092643849552,
                 0.0,
-                -7.450580596923828e-9,
-                0.0,
+                -0.000030517578125,
+                3000.0,
                 0.0,
                 1.0
             ]
@@ -2253,7 +2264,7 @@
                 1.0000004768371585,
                 0.0,
                 -0.03999999910593033,
-                8.881784197001259e-16,
+                8.88178419700126e-16,
                 2.570450305938721e-7,
                 1.0
             ]
@@ -2304,8 +2315,10 @@
                         "_myPlaneMaterial": "64",
                         "_myTextMaterial": "DefaultFontMaterial",
                         "_mShowOnStart": true,
-                        "_myPlaneMesh": "7"
-                    }
+                        "_myPlaneMesh": "7",
+                        "_myShowOnStart": true
+                    },
+                    "active": false
                 }
             ]
         },
@@ -2624,29 +2637,6 @@
                     1.0
                 ]
             }
-        },
-        "126": {
-            "name": "Flat Back",
-            "shader": "Flat",
-            "Flat": {
-                "color": [
-                    0.27450981736183169,
-                    0.27450981736183169,
-                    0.27450981736183169,
-                    1.0
-                ]
-            }
-        },
-        "127": {
-            "name": "Flat Buttons",
-            "Flat": {
-                "color": [
-                    0.21960784494876865,
-                    0.21960784494876865,
-                    0.21960784494876865,
-                    1.0
-                ]
-            }
         }
     },
     "shaders": {
@@ -2742,6 +2732,9 @@
                 0.9960784316062928,
                 1.0
             ]
+        },
+        "runtime": {
+            "visualizeColliders": false
         }
     },
     "animations": {},

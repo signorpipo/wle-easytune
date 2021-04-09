@@ -49,7 +49,7 @@ PP.ConsoleVRSetup = class ConsoleVRSetup {
             let yPaddingPercentage = xPaddingPercentage * this.myMessagesBackgroundScale[0] / this.myMessagesBackgroundScale[1] * 0.8; //a bit less padding
             let xPosition = -this.myMessagesBackgroundScale[0] + this.myMessagesBackgroundScale[0] * xPaddingPercentage;
             let yPosition = this.myMessagesBackgroundScale[1] - this.myMessagesBackgroundScale[1] * yPaddingPercentage;
-            this.myMessagesTextsPanelPosition = [xPosition, yPosition, 0.01];
+            this.myMessagesTextsPanelPosition = [xPosition, yPosition, 0.007];
         }
         this.myMessagesTextsPanelScale = [0.1, 0.1, 0.1];
 

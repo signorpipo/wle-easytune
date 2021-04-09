@@ -75,11 +75,11 @@ PP.EasyTuneNumberWidgetUI = class EasyTuneNumberWidgetUI {
         this.myVariableLabelPanel.setTranslationLocal(setup.myVariableLabelPanelPosition);
         this.myVariableLabelText.scale(setup.myVariableLabelTextScale);
         this.myVariableLabelPreviousCursorTarget.setTranslationLocal(setup.myPreviousCursorTargetPosition);
-        this.myVariableLabelNextCursorTarget.setTranslationLocal(setup.myPreviousCursorTargetPosition);
+        this.myVariableLabelNextCursorTarget.setTranslationLocal(setup.myNextCursorTargetPosition);
 
         this.myValuePanel.setTranslationLocal(setup.myValuePanelPosition);
         this.myValueText.scale(setup.myValueTextScale);
-        this.myResetValueCursorTarget.scale(setup.myResetValueCursorTargetPosition);
+        this.myResetValueCursorTarget.setTranslationLocal(setup.myResetValueCursorTargetPosition);
     }
 
     _setStepTransforms(easyTuneComponent, setup) {
@@ -105,7 +105,6 @@ PP.EasyTuneNumberWidgetUI = class EasyTuneNumberWidgetUI {
 
     _setPointerTransform(easyTuneComponent, setup) {
         this.myPointerCursorTarget.setTranslationLocal(setup.myPointerCursorTargetPosition);
-
     }
 
     //Components
@@ -143,10 +142,10 @@ PP.EasyTuneNumberWidgetUI = class EasyTuneNumberWidgetUI {
         this.myValueTextComponent.text = " ";
 
         this.myResetValueCursorTargetComponent = this.myResetValueCursorTarget.addComponent('cursor-target');
-        this.myResetValueCursorTargetComponent = this.myResetValueCursorTarget.addComponent('collision');
-        this.myResetValueCursorTargetComponent.collider = setup.myCursorTargetCollisionCollider;
-        this.myResetValueCursorTargetComponent.group = 1 << setup.myCursorTargetCollisionGroup;
-        this.myResetValueCursorTargetComponent.extents = setup.myResetValueCollisionExtents;
+        this.myResetValueCollisionComponent = this.myResetValueCursorTarget.addComponent('collision');
+        this.myResetValueCollisionComponent.collider = setup.myCursorTargetCollisionCollider;
+        this.myResetValueCollisionComponent.group = 1 << setup.myCursorTargetCollisionGroup;
+        this.myResetValueCollisionComponent.extents = setup.myResetValueCollisionExtents;
     }
 
     _addStepComponents(easyTuneComponent, setup) {
@@ -178,7 +177,8 @@ PP.EasyTuneNumberWidgetUI = class EasyTuneNumberWidgetUI {
 
             stepButtonComponents.myText = stepButton.myText.addComponent('text');
             this._setupTextComponent(stepButtonComponents.myText, easyTuneComponent, setup);
-            stepButtonComponents.myText.text = setup.myStepButtonsSetupList[i].myText;
+            stepButtonComponents.myText.text = " ";
+            stepButtonComponents.myText.text = setup.myStepButtonStartString.concat(setup.myStepButtonsSetupList[i].myStepMultiplier);
 
             stepButtonComponents.myCursorTarget = stepButton.myCursorTarget.addComponent('cursor-target');
             stepButtonComponents.myCollision = stepButton.myCursorTarget.addComponent('collision');

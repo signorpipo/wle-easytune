@@ -46,7 +46,7 @@ PP.ConsoleVR = class ConsoleVR {
 
         this._addButtonsListeners();
 
-        if (!consoleVRComponent._mShowOnStart) {
+        if (!consoleVRComponent._myShowOnStart) {
             this._toggleConsoleVisibility();
         }
 
