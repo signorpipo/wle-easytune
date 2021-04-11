@@ -43,30 +43,51 @@ PP.EasyTuneNumberWidgetSetup = class EasyTuneNumberWidgetSetup {
 
 
         //Display
-        this.myDisplayPanelPosition = [0, 0.1, 0];
+        {
+            this.myDisplayPanelPosition = [0, 0.1025, 0];
+            this.myDisplayBackgroundScale = [0.200, 0.0575, 1];
+            this.myDisplayBackgroundColor = [70 / 255, 70 / 255, 70 / 255, 1];
 
-        this.myDisplayBackgroundScale = [0.200, 0.055, 1];
+            let panelZ = 0.01;
 
-        this.myVariableLabelPanelPosition = [0, 0.03, 0.01];
-        this.myVariableLabelTextScale = [0.19, 0.19, 0.19];
+            this.myVariableLabelPanelPosition = [0, 0.025, panelZ];
+            this.myVariableLabelTextScale = [0.19, 0.19, 0.19];
 
-        this.myPreviousCursorTargetPosition = [-0.04, 0, 0];
-        this.myPreviousCursorTargetPosition[2] = this.myColliderZPosition - this.myVariableLabelPanelPosition[2] - this.myDisplayPanelPosition[2];
-        this.myPreviousCollisionExtents = [0.03, 0.015, 1];
-        this.myPreviousCollisionExtents[2] = this.myCursorTargetCollisionThickness;
+            this.myValuePanelPosition = [0, -0.025, panelZ];
+            this.myValueTextScale = [0.4, 0.4, 0.4];
 
-        this.myNextCursorTargetPosition = [0.04, 0, 0];
-        this.myNextCursorTargetPosition[2] = this.myColliderZPosition - this.myVariableLabelPanelPosition[2];
-        this.myNextCollisionExtents = [0.03, 0.015, 1];
-        this.myNextCollisionExtents[2] = this.myCursorTargetCollisionThickness;
+            this.myResetValueCursorTargetPosition = [0, 0, 0];
+            this.myResetValueCursorTargetPosition[2] = this.myColliderZPosition - panelZ;
+            this.myResetValueCollisionExtents = [0.065, 0.015, 1];
+            this.myResetValueCollisionExtents[2] = this.myCursorTargetCollisionThickness;
 
-        this.myValuePanelPosition = [0, -0.02, 0.01];
-        this.myValueTextScale = [0.4, 0.4, 0.4];
+            this.myDisplayButtonBackgroundScale = [0.015, 0.015, 1];
+            this.myDisplayButtonTextScale = [0.18, 0.18, 0.18];
+            this.myDisplayButtonTextPosition = [0, 0, 0.007];
 
-        this.myResetValueCursorTargetPosition = [0, 0, 0];
-        this.myResetValueCursorTargetPosition[2] = this.myColliderZPosition - this.myValuePanelPosition[2];
-        this.myResetValueCollisionExtents = [0.065, 0.015, 1];
-        this.myResetValueCollisionExtents[2] = this.myCursorTargetCollisionThickness;
+            let distanceFromBorder = 0.01;
+
+            this.myNextButtonPosition = [0, 0, 0];
+            this.myNextButtonPosition[0] = this.myDisplayBackgroundScale[0] - this.myDisplayButtonBackgroundScale[0] - distanceFromBorder;
+            this.myNextButtonText = ">";
+
+            this.myPreviousButtonPosition = [0, 0, 0];
+            this.myPreviousButtonPosition[0] = -this.myDisplayBackgroundScale[0] + this.myDisplayButtonBackgroundScale[0] + distanceFromBorder;
+            this.myPreviousButtonText = "<";
+
+            this.myIncreaseButtonPosition = [0, 0, 0];
+            this.myIncreaseButtonPosition[0] = this.myDisplayBackgroundScale[0] - this.myDisplayButtonBackgroundScale[0] - distanceFromBorder;
+            this.myIncreaseButtonText = "+";
+
+            this.myDecreaseButtonPosition = [0, 0, 0];
+            this.myDecreaseButtonPosition[0] = -this.myDisplayBackgroundScale[0] + this.myDisplayButtonBackgroundScale[0] + distanceFromBorder;
+            this.myDecreaseButtonText = "-";
+
+            this.myDisplayButtonCursorTargetPosition = [0, 0, 0];
+            this.myDisplayButtonCursorTargetPosition[2] = this.myColliderZPosition - panelZ;
+            this.myDisplayButtonCollisionExtents = this.myDisplayButtonBackgroundScale;
+            this.myDisplayButtonCollisionExtents[2] = this.myCursorTargetCollisionThickness;
+        }
 
         //Step
         this.myStepPanelPosition = [0, -0.035, 0.01];
@@ -138,5 +159,7 @@ PP.EasyTuneNumberWidgetSetup = class EasyTuneNumberWidgetSetup {
         this.myButtonHoverColor = [150 / 255, 150 / 255, 150 / 255, 1];
 
         this.myModifyThumbstickMinThreshold = 0.2;
+
+        this.myScrollVariableDelay = 0.75;
     }
 };
