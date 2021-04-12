@@ -4,9 +4,8 @@ PP.EasyTune = class EasyTune {
     constructor() {
         this._myWidgets = [];
 
-        this._myGamepad = null;
-
         this._myEasyTuneVariables = null;
+        this._myEasyTuneLastSize = 0;
         this._myVariableNames = null;
 
         this._myCurrentWidget = null;
@@ -15,13 +14,20 @@ PP.EasyTune = class EasyTune {
         this._myScrollVariableTimer = 0;
 
         this._myIsVisible = true;
+        this._myVisibilityButtonVisible = false;
 
-        this._myGamepad = PP.RightGamepad; //@EDIT get a gamepad here based on how you store it in your game
+        this._myRightGamepad = PP.RightGamepad; //@EDIT get right gamepad here based on how you store it in your game
+        this._myLeftGamepad = PP.LeftGamepad; //@EDIT get left gamepad here based on how you store it in your game
 
         this._mySetup = new PP.EasyTuneWidgetSetup();
         this._myUI = new PP.EasyTuneWidgetUI();
 
-        this._myVisibilityButtonVisible = false;
+        this._myGamepad = null;
+        if (this._mySetup.myGamepadHandedness == PP.EasyTune.Handedness.RIGHT) {
+            this._myGamepad = this._myRightGamepad;
+        } else if (this._mySetup.myGamepadHandedness == PP.EasyTune.Handedness.LEFT) {
+            this._myGamepad = this._myLeftGamepad;
+        }
     }
 
     start(easyTuneComponent, easyTuneVariables, startVariableName) {
@@ -32,11 +38,12 @@ PP.EasyTune = class EasyTune {
         }
 
         this._myEasyTuneVariables = easyTuneVariables;
+        this._myEasyTuneLastSize = this._myEasyTuneVariables.size;
         this._myVariableNames = Array.from(this._myEasyTuneVariables.keys());
 
         if (this._myEasyTuneVariables.has(startVariableName)) {
             this._myCurrentVariable = this._myEasyTuneVariables.get(startVariableName);
-        } else {
+        } else if (this._myEasyTuneVariables.size > 0) {
             this._myCurrentVariable = this._myEasyTuneVariables.get(this._myVariableNames[0]);
         }
 
@@ -48,20 +55,24 @@ PP.EasyTune = class EasyTune {
     }
 
     update(dt) {
-        if (this._myIsVisible) {
+        if (this._myEasyTuneVariables.size != this._myEasyTuneLastSize) {
+            this._refreshEasyTuneVariables();
+        }
+
+        if (this._myIsVisible && this._myEasyTuneVariables.size > 0) {
             this._myCurrentWidget.update(dt);
-            this._updateScrollVariable(dt);
+            this._updateGamepadScrollVariable(dt);
         }
 
         if (this._myVisibilityButtonVisible) {
             this._myUI.update(dt);
         }
 
-        this._updateWidgetVisibility();
+        this._updateGamepadWidgetVisibility();
     }
 
     _initializeWidgets(easyTuneComponent) {
-        this._myWidgets[PP.EasyTuneVariable.Type.NUMBER] = new PP.EasyTuneNumberWidget(this._myGamepad, this._mySetup.myScrollVariableButtonType);
+        this._myWidgets[PP.EasyTuneVariableType.NUMBER] = new PP.EasyTuneNumberWidget(this._myGamepad, this._mySetup.myScrollVariableButtonType);
 
         for (let item of this._myWidgets) {
             item.start(easyTuneComponent);
@@ -73,22 +84,49 @@ PP.EasyTune = class EasyTune {
     }
 
     _selectCurrentWidget() {
+        if (this._myEasyTuneVariables.size <= 0) {
+            return;
+        }
+
         if (this._myCurrentWidget) {
             this._myCurrentWidget.setVisible(false);
         }
 
         this._myCurrentWidget = this._myWidgets[this._myCurrentVariable.myType];
         this._myCurrentWidget.setEasyTuneVariable(this._myCurrentVariable, this._createIndexString());
-        this._myCurrentWidget.setVisible(true);
+        this._myCurrentWidget.setVisible(this._myIsVisible);
     }
 
-    _updateWidgetVisibility() {
-        let bottomButtonJustPressed = this._myGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).myIsPressed && !this._myGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).myIsPrevPressed;
-        let topButtonJustPressed = this._myGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).myIsPressed && !this._myGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).myIsPrevPressed;
+    _refreshEasyTuneVariables() {
+        this._myVariableNames = Array.from(this._myEasyTuneVariables.keys());
+        this._myEasyTuneLastSize = this._myEasyTuneVariables.size;
 
-        if ((bottomButtonJustPressed && this._myGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).myIsPressed) ||
-            (topButtonJustPressed && this._myGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).myIsPressed)) {
-            this._toggleVisibility();
+        if (this._myEasyTuneVariables.size > 0) {
+            if (this._myCurrentVariable && this._myEasyTuneVariables.has(this._myCurrentVariable.myName)) {
+                this._myCurrentVariable = this._myEasyTuneVariables.get(this._myCurrentVariable.myName);
+            } else {
+                this._myCurrentVariable = this._myEasyTuneVariables.get(this._myVariableNames[0]);
+            }
+
+            this._selectCurrentWidget();
+        } else {
+            this._myCurrentVariable = null;
+            if (this._myCurrentWidget) {
+                this._myCurrentWidget.setVisible(false);
+                this._myCurrentWidget = null;
+            }
+        }
+    }
+
+    _updateGamepadWidgetVisibility() {
+        if (this._myGamepad) {
+            let bottomButtonJustPressed = this._myGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).myIsPressed && !this._myGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).myIsPrevPressed;
+            let topButtonJustPressed = this._myGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).myIsPressed && !this._myGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).myIsPrevPressed;
+
+            if ((bottomButtonJustPressed && this._myGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).myIsPressed) ||
+                (topButtonJustPressed && this._myGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).myIsPressed)) {
+                this._toggleVisibility();
+            }
         }
     }
 
@@ -107,11 +145,17 @@ PP.EasyTune = class EasyTune {
             }
         }
 
-        this._myCurrentWidget.setVisible(this._myIsVisible);
+        if (this._myCurrentWidget) {
+            if (this._myEasyTuneVariables.size > 0) {
+                this._myCurrentWidget.setVisible(this._myIsVisible);
+            } else {
+                this._myCurrentWidget.setVisible(false);
+            }
+        }
     }
 
-    _updateScrollVariable(dt) {
-        if (this._myGamepad.getButtonInfo(this._mySetup.myScrollVariableButtonType).myIsPressed) {
+    _updateGamepadScrollVariable(dt) {
+        if (this._myGamepad && this._myGamepad.getButtonInfo(this._mySetup.myScrollVariableButtonType).myIsPressed) {
             let x = this._myGamepad.getAxesInfo().myAxes[0];
             if (Math.abs(x) > this._mySetup.myScrollVariableMinThreshold) {
                 this._myScrollVariableTimer += dt;
@@ -128,17 +172,24 @@ PP.EasyTune = class EasyTune {
     }
 
     _scrollVariable(amount) {
-        let variableIndex = this._getVariableIndex(this._myCurrentVariable);
-        let newIndex = (((variableIndex + amount) % this._myVariableNames.length) + this._myVariableNames.length) % this._myVariableNames.length; //manage negative numbers
+        if (this._myEasyTuneVariables.size <= 0) {
+            return;
+        }
 
-        this._myCurrentVariable = this._myEasyTuneVariables.get(this._myVariableNames[newIndex]);
-        this._selectCurrentWidget();
+        let variableIndex = this._getVariableIndex(this._myCurrentVariable);
+        if (variableIndex >= 0) {
+            let newIndex = (((variableIndex + amount) % this._myVariableNames.length) + this._myVariableNames.length) % this._myVariableNames.length; //manage negative numbers
+            this._myCurrentVariable = this._myEasyTuneVariables.get(this._myVariableNames[newIndex]);
+            this._selectCurrentWidget();
+        } else {
+            this._refreshEasyTuneVariables();
+        }
     }
 
     _createIndexString() {
         let indexString = " (";
-        let index = this._getVariableIndex(this._myCurrentVariable).toString();
-        let length = (this._myEasyTuneVariables.size - 1).toString();
+        let index = (this._getVariableIndex(this._myCurrentVariable) + 1).toString();
+        let length = (this._myEasyTuneVariables.size).toString();
         while (index.length < length.length) {
             index = "0".concat(index);
         }
@@ -150,7 +201,6 @@ PP.EasyTune = class EasyTune {
 
     _getVariableIndex(variable) {
         let variableIndex = this._myVariableNames.findIndex((function (item) { return item == variable.myName; }).bind(this));
-
         return variableIndex;
     }
 

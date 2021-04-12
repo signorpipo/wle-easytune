@@ -73,7 +73,7 @@ PP.EasyTuneNumberWidget = class EasyTuneNumberWidget {
     _updateValue(dt) {
         let stickVariableIntensity = 0;
 
-        if (!this._myGamepad.getButtonInfo(this._myBlockModifyButtonType).myIsPressed) {
+        if (this._myGamepad && !this._myGamepad.getButtonInfo(this._myBlockModifyButtonType).myIsPressed) {
             let y = this._myGamepad.getAxesInfo().myAxes[1];
 
             if (Math.abs(y) > this._mySetup.myModifyThumbstickMinThreshold) {

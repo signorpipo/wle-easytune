@@ -7,24 +7,11 @@ WL.registerComponent('easy-tune', {
 }, {
     init: function () {
         this._myImpl = new PP.EasyTune();
-        this.fillVariables();
     },
     start: function () {
         this._myImpl.start(this, PP.EasyTuneVariables, "Speed");
     },
     update: function (dt) {
         this._myImpl.update(dt);
-    },
-    fillVariables: function () {
-        this.addVariable(new PP.EasyTuneNumber("Speed", 10.32, 4, 0.01));
-        this.addVariable(new PP.EasyTuneInteger("Lives", 3, 1));
-        this.addVariable(new PP.EasyTuneNumber("Visibility X", 0, 4, 0.01));
-        this.addVariable(new PP.EasyTuneNumber("Visibility Y", 0, 4, 0.01));
-        this.addVariable(new PP.EasyTuneNumber("Visibility Z", 0, 4, 0.01));
-    },
-    addVariable: function (variable) {
-        PP.EasyTuneVariables.set(variable.myName, variable);
     }
 });
-
-PP.EasyTuneVariables = new Map();

@@ -340,7 +340,7 @@
                         "_myTextMaterial": "DefaultFontMaterial",
                         "_myShowOnStart": true,
                         "_myHandedness": "left",
-                        "_myShowVisibilityButton": false
+                        "_myShowVisibilityButton": true
                     }
                 }
             ]
@@ -2426,7 +2426,7 @@
                 0.18000006675720216,
                 0.0,
                 1.4901161193847657e-8,
-                8.940696716308597e-8,
+                8.940696716308599e-8,
                 0.006499975919723511,
                 1.0000001192092896
             ]
@@ -2511,6 +2511,359 @@
                 0.0,
                 0.0,
                 0.006500013172626495,
+                1.0
+            ]
+        },
+        "142": {
+            "name": "Magic Sphere",
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                -9.313225746154786e-10,
+                1.0,
+                -1.0,
+                1.0
+            ],
+            "components": [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                    "type": "collision",
+                    "collision": {
+                        "sphere": {
+                            "radius": 0.10000000149011612
+                        },
+                        "groups": 4
+                    }
+                },
+                {
+                    "type": "addVariables"
+                },
+                {
+                    "type": "magic-sphere"
+                }
+            ]
+        },
+        "144": {
+            "link": {
+                "name": "flatSPhere",
+                "file": "assets\\models\\flatSphere.glb"
+            },
+            "parent": "142",
+            "deleted": true
+        },
+        "145": {
+            "name": "Collision",
+            "parent": "48",
+            "components": [
+                {
+                    "type": "collision",
+                    "collision": {
+                        "sphere": {
+                            "radius": 0.03999999910593033
+                        }
+                    }
+                },
+                {
+                    "type": "hand-type"
+                }
+            ],
+            "transformation": [
+                0.0010000000474974514,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0010000000474974514,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0010000000474974514,
+                0.0,
+                0.09999199211597443,
+                0.0000028047265914210586,
+                -0.00005095595042803325,
+                1.0
+            ],
+            "deleted": true
+        },
+        "146": {
+            "name": "Collision",
+            "parent": "48",
+            "components": [
+                {
+                    "type": "collision",
+                    "collision": {
+                        "sphere": {
+                            "radius": 0.03999999910593033
+                        }
+                    }
+                },
+                {
+                    "type": "hand-type"
+                }
+            ],
+            "transformation": [
+                0.0010000000474974514,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0010000000474974514,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0010000000474974514,
+                0.0,
+                -0.000008001923561096192,
+                0.0000028047265914210586,
+                -0.00005095595042803325,
+                1.0
+            ],
+            "deleted": true
+        },
+        "147": {
+            "name": "Collision",
+            "parent": "48",
+            "components": [
+                {
+                    "type": "collision",
+                    "collision": {
+                        "sphere": {
+                            "radius": 0.03999999910593033
+                        },
+                        "groups": 4
+                    }
+                }
+            ],
+            "transformation": [
+                0.0010000000474974514,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0010000000474974514,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0010000000474974514,
+                0.0,
+                -0.000007100403308868408,
+                -0.020381346344947816,
+                -0.05000000074505806,
+                1.0
+            ]
+        },
+        "148": {
+            "name": "Collision",
+            "parent": "56",
+            "components": [
+                {
+                    "type": "collision",
+                    "collision": {
+                        "sphere": {
+                            "radius": 0.03999999910593033
+                        },
+                        "groups": 4
+                    }
+                }
+            ],
+            "transformation": [
+                0.0010000000474974514,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0010000000474974514,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0010000000474974514,
+                0.0,
+                -0.000007100403308868408,
+                -0.020381346344947816,
+                -0.05000000074505806,
+                1.0
+            ]
+        },
+        "149": {
+            "name": "Particles",
+            "parent": "142",
+            "components": [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                    "type": "mesh-particles",
+                    "active": true,
+                    "mesh-particles": {
+                        "mesh": "143",
+                        "material": "33",
+                        "particleScale": 0.009999999776482582,
+                        "initialSpeed": 5.0
+                    }
+                }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.05000000074505806,
+                0.0,
+                1.0
+            ]
+        },
+        "150": {
+            "name": "Magic Sphere",
+            "parent": "142",
+            "components": [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                    "mesh": {
+                        "mesh": "143",
+                        "material": "32"
+                    },
+                    "type": "mesh",
+                    "imported": true
+                },
+                {
+                    "type": "rotate-sphere"
+                }
+            ],
+            "transformation": [
+                0.02500000037252903,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.02500000037252903,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.02500000037252903,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
                 1.0
             ]
         }
@@ -2634,6 +2987,12 @@
             "link": {
                 "name": "Mesh.008",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
+            }
+        },
+        "143": {
+            "link": {
+                "name": "Icosphere",
+                "file": "assets\\models\\flatSphere.glb"
             }
         }
     },
@@ -2903,7 +3262,8 @@
                 "js/gamepad",
                 "js/console-vr",
                 "js/easy-tune",
-                "js/pp-common"
+                "js/pp-common",
+                "js/misc"
             ]
         },
         "rendering": {
@@ -2922,6 +3282,7 @@
     "animations": {},
     "skins": {},
     "files": [
-        "assets/models/quest_controllers_credits_Jezza3D.glb"
+        "assets/models/quest_controllers_credits_Jezza3D.glb",
+        "assets/models/flatSphere.glb"
     ]
 }

@@ -1,3 +1,21 @@
+//Variable Map
+PP.EasyTuneVariableMap = class EasyTuneVariableMap extends Map {
+    constructor() {
+        super();
+    }
+
+    addVariable(variable) {
+        this.set(variable.myName, variable);
+    }
+};
+
+PP.EasyTuneVariables = new PP.EasyTuneVariableMap();
+
+//Variable Types
+PP.EasyTuneVariableType = {
+    NUMBER: 0
+};
+
 PP.EasyTuneVariable = class EasyTuneVariable {
     constructor(name, type, value) {
         this.myName = name;
@@ -9,13 +27,9 @@ PP.EasyTuneVariable = class EasyTuneVariable {
     }
 };
 
-PP.EasyTuneVariable.Type = {
-    NUMBER: 0
-};
-
 PP.EasyTuneNumber = class EasyTuneNumber extends PP.EasyTuneVariable {
-    constructor(name, value, decimalPlaces, stepPerSecond) {
-        super(name, PP.EasyTuneVariable.Type.NUMBER, value);
+    constructor(name, value, stepPerSecond, decimalPlaces) {
+        super(name, PP.EasyTuneVariableType.NUMBER, value);
 
         this.myDecimalPlaces = decimalPlaces;
         this.myStepPerSecond = stepPerSecond;
@@ -27,6 +41,6 @@ PP.EasyTuneNumber = class EasyTuneNumber extends PP.EasyTuneVariable {
 
 PP.EasyTuneInteger = class EasyTuneInteger extends PP.EasyTuneNumber {
     constructor(name, value, stepPerSecond) {
-        super(name, value, 0, stepPerSecond);
+        super(name, value, stepPerSecond, 0);
     }
 };

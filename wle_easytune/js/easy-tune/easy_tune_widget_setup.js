@@ -54,6 +54,8 @@ PP.EasyTuneWidgetSetup = class EasyTuneWidgetSetup {
     }
 
     _initializeRuntimeSetup() {
+        this.myGamepadHandedness = PP.EasyTune.Handedness.RIGHT;
+
         this.myButtonHoverColor = [150 / 255, 150 / 255, 150 / 255, 1];
         this.myButtonDisabledTextColor = this.myBackgroundColor;
         this.myButtonDisabledBackgroundColor = [110 / 255, 110 / 255, 110 / 255, 1];
