@@ -41,7 +41,6 @@ PP.EasyTuneNumberWidgetSetup = class EasyTuneNumberWidgetSetup {
         this.myTextColor = this.myDefaultTextColor;
         this.myTextOutlineColor = this.myDefaultTextColor;
 
-
         //Display
         {
             this.myDisplayPanelPosition = [0, 0.1025, 0];

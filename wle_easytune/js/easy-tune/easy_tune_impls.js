@@ -16,15 +16,21 @@ PP.EasyTune = class EasyTune {
 
         this._myIsVisible = true;
 
-        //Setup
         this._myGamepad = PP.RightGamepad; //@EDIT get a gamepad here based on how you store it in your game
 
-        this._myScrollVariableDelay = 0.5;
-        this._myScrollVariableMinThreshold = 0.6;
-        this._myScrollVariableButtonType = PP.ButtonType.SQUEEZE;
+        this._mySetup = new PP.EasyTuneWidgetSetup();
+        this._myUI = new PP.EasyTuneWidgetUI();
+
+        this._myVisibilityButtonVisible = false;
     }
 
     start(easyTuneComponent, easyTuneVariables, startVariableName) {
+        this._myVisibilityButtonVisible = easyTuneComponent._myShowVisibilityButton;
+        if (this._myVisibilityButtonVisible) {
+            this._myUI.build(easyTuneComponent, this._mySetup);
+            this._addListeners();
+        }
+
         this._myEasyTuneVariables = easyTuneVariables;
         this._myVariableNames = Array.from(this._myEasyTuneVariables.keys());
 
@@ -47,11 +53,15 @@ PP.EasyTune = class EasyTune {
             this._updateScrollVariable(dt);
         }
 
-        this._updateVisibility();
+        if (this._myVisibilityButtonVisible) {
+            this._myUI.update(dt);
+        }
+
+        this._updateWidgetVisibility();
     }
 
     _initializeWidgets(easyTuneComponent) {
-        this._myWidgets[PP.EasyTuneVariable.Type.NUMBER] = new PP.EasyTuneNumberWidget(this._myGamepad, this._myScrollVariableButtonType);
+        this._myWidgets[PP.EasyTuneVariable.Type.NUMBER] = new PP.EasyTuneNumberWidget(this._myGamepad, this._mySetup.myScrollVariableButtonType);
 
         for (let item of this._myWidgets) {
             item.start(easyTuneComponent);
@@ -72,7 +82,7 @@ PP.EasyTune = class EasyTune {
         this._myCurrentWidget.setVisible(true);
     }
 
-    _updateVisibility() {
+    _updateWidgetVisibility() {
         let bottomButtonJustPressed = this._myGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).myIsPressed && !this._myGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).myIsPrevPressed;
         let topButtonJustPressed = this._myGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).myIsPressed && !this._myGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).myIsPrevPressed;
 
@@ -84,23 +94,36 @@ PP.EasyTune = class EasyTune {
 
     _toggleVisibility() {
         this._myIsVisible = !this._myIsVisible;
+
+        if (this._myVisibilityButtonVisible) {
+            let textMaterial = this._myUI.myVisibilityButtonTextComponent.material;
+            let backgroundMaterial = this._myUI.myVisibilityButtonBackgroundComponent.material;
+            if (this._myIsVisible) {
+                textMaterial.color = this._mySetup.myDefaultTextColor;
+                backgroundMaterial.color = this._mySetup.myBackgroundColor;
+            } else {
+                textMaterial.color = this._mySetup.myButtonDisabledTextColor;
+                backgroundMaterial.color = this._mySetup.myButtonDisabledBackgroundColor;
+            }
+        }
+
         this._myCurrentWidget.setVisible(this._myIsVisible);
     }
 
     _updateScrollVariable(dt) {
-        if (this._myGamepad.getButtonInfo(this._myScrollVariableButtonType).myIsPressed) {
+        if (this._myGamepad.getButtonInfo(this._mySetup.myScrollVariableButtonType).myIsPressed) {
             let x = this._myGamepad.getAxesInfo().myAxes[0];
-            if (Math.abs(x) > this._myScrollVariableMinThreshold) {
+            if (Math.abs(x) > this._mySetup.myScrollVariableMinThreshold) {
                 this._myScrollVariableTimer += dt;
-                while (this._myScrollVariableTimer > this._myScrollVariableDelay) {
-                    this._myScrollVariableTimer -= this._myScrollVariableDelay;
+                while (this._myScrollVariableTimer > this._mySetup.myScrollVariableDelay) {
+                    this._myScrollVariableTimer -= this._mySetup.myScrollVariableDelay;
                     this._scrollVariable(Math.sign(x));
                 }
             } else {
-                this._myScrollVariableTimer = this._myScrollVariableDelay;
+                this._myScrollVariableTimer = this._mySetup.myScrollVariableDelay;
             }
         } else {
-            this._myScrollVariableTimer = this._myScrollVariableDelay;
+            this._myScrollVariableTimer = this._mySetup.myScrollVariableDelay;
         }
     }
 
@@ -129,6 +152,26 @@ PP.EasyTune = class EasyTune {
         let variableIndex = this._myVariableNames.findIndex((function (item) { return item == variable.myName; }).bind(this));
 
         return variableIndex;
+    }
+
+    _addListeners() {
+        let ui = this._myUI;
+
+        ui.myVisibilityButtonCursorTargetComponent.addClickFunction(this._toggleVisibility.bind(this));
+        ui.myVisibilityButtonCursorTargetComponent.addHoverFunction(this._visibilityHover.bind(this, ui.myVisibilityButtonBackgroundComponent.material));
+        ui.myVisibilityButtonCursorTargetComponent.addUnHoverFunction(this._visibilityUnHover.bind(this, ui.myVisibilityButtonBackgroundComponent.material));
+    }
+
+    _visibilityHover(material) {
+        material.color = this._mySetup.myButtonHoverColor;
+    }
+
+    _visibilityUnHover(material) {
+        if (this._myIsVisible) {
+            material.color = this._mySetup.myBackgroundColor;
+        } else {
+            material.color = this._mySetup.myButtonDisabledBackgroundColor;
+        }
     }
 };
 

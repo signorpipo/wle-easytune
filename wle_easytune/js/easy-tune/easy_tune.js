@@ -1,6 +1,7 @@
 WL.registerComponent('easy-tune', {
     _myHandedness: { type: WL.Type.Enum, values: ['none', 'left', 'right'], default: 'none' },
     _myShowOnStart: { type: WL.Type.Bool, default: false },
+    _myShowVisibilityButton: { type: WL.Type.Bool, default: false },
     _myPlaneMaterial: { type: WL.Type.Material, default: null },
     _myTextMaterial: { type: WL.Type.Material, default: null }
 }, {
@@ -17,6 +18,9 @@ WL.registerComponent('easy-tune', {
     fillVariables: function () {
         this.addVariable(new PP.EasyTuneNumber("Speed", 10.32, 4, 0.01));
         this.addVariable(new PP.EasyTuneInteger("Lives", 3, 1));
+        this.addVariable(new PP.EasyTuneNumber("Visibility X", 0, 4, 0.01));
+        this.addVariable(new PP.EasyTuneNumber("Visibility Y", 0, 4, 0.01));
+        this.addVariable(new PP.EasyTuneNumber("Visibility Z", 0, 4, 0.01));
     },
     addVariable: function (variable) {
         PP.EasyTuneVariables.set(variable.myName, variable);
