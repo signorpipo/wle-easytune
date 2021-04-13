@@ -5,7 +5,11 @@ PP.EasyTuneVariableMap = class EasyTuneVariableMap extends Map {
     }
 
     addVariable(variable) {
-        this.set(variable.myName, variable);
+        super.set(variable.myName, variable);
+    }
+
+    set() {
+        console.error("Use addVariable instead of set");
     }
 };
 

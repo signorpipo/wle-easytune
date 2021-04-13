@@ -9,10 +9,8 @@ WL.registerComponent('magic-sphere', {
         this.myCollider = this.object.getComponent("collision");
     },
     update: function (dt) {
-        if (PP.EasyTuneVariables.has("Magic Sphere X")) {
-            this.object.setTranslationLocal([PP.EasyTuneVariables.get("Magic Sphere X").myValue, PP.EasyTuneVariables.get("Magic Sphere Y").myValue, PP.EasyTuneVariables.get("Magic Sphere Z").myValue]);
+        this.object.setTranslationLocal([PP.EasyTuneVariables.get("Magic Sphere X").myValue, PP.EasyTuneVariables.get("Magic Sphere Y").myValue, PP.EasyTuneVariables.get("Magic Sphere Z").myValue]);
 
-        }
         let collidingComps = this.myCollider.queryOverlaps();
         if (collidingComps.length > 0) {
             spawnParticles = true;

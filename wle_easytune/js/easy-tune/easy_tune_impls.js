@@ -60,7 +60,9 @@ PP.EasyTune = class EasyTune {
         }
 
         if (this._myIsVisible && this._myEasyTuneVariables.size > 0) {
-            this._myCurrentWidget.update(dt);
+            if (this._myCurrentWidget) {
+                this._myCurrentWidget.update(dt);
+            }
             this._updateGamepadScrollVariable(dt);
         }
 
@@ -92,9 +94,13 @@ PP.EasyTune = class EasyTune {
             this._myCurrentWidget.setVisible(false);
         }
 
-        this._myCurrentWidget = this._myWidgets[this._myCurrentVariable.myType];
-        this._myCurrentWidget.setEasyTuneVariable(this._myCurrentVariable, this._createIndexString());
-        this._myCurrentWidget.setVisible(this._myIsVisible);
+        if (this._myCurrentVariable.myType in this._myWidgets) {
+            this._myCurrentWidget = this._myWidgets[this._myCurrentVariable.myType];
+            this._myCurrentWidget.setEasyTuneVariable(this._myCurrentVariable, this._createIndexString());
+            this._myCurrentWidget.setVisible(this._myIsVisible);
+        } else {
+            this._myCurrentWidget = null;
+        }
     }
 
     _refreshEasyTuneVariables() {
@@ -152,6 +158,10 @@ PP.EasyTune = class EasyTune {
                 this._myCurrentWidget.setVisible(false);
             }
         }
+
+        if (this._myIsVisible) {
+            this._refreshEasyTuneVariables();
+        }
     }
 
     _updateGamepadScrollVariable(dt) {
@@ -179,8 +189,12 @@ PP.EasyTune = class EasyTune {
         let variableIndex = this._getVariableIndex(this._myCurrentVariable);
         if (variableIndex >= 0) {
             let newIndex = (((variableIndex + amount) % this._myVariableNames.length) + this._myVariableNames.length) % this._myVariableNames.length; //manage negative numbers
-            this._myCurrentVariable = this._myEasyTuneVariables.get(this._myVariableNames[newIndex]);
-            this._selectCurrentWidget();
+            if (this._myEasyTuneVariables.has(this._myVariableNames[newIndex])) {
+                this._myCurrentVariable = this._myEasyTuneVariables.get(this._myVariableNames[newIndex]);
+                this._selectCurrentWidget();
+            } else {
+                this._refreshEasyTuneVariables();
+            }
         } else {
             this._refreshEasyTuneVariables();
         }
@@ -200,7 +214,7 @@ PP.EasyTune = class EasyTune {
     }
 
     _getVariableIndex(variable) {
-        let variableIndex = this._myVariableNames.findIndex((function (item) { return item == variable.myName; }).bind(this));
+        let variableIndex = this._myVariableNames.indexOf(variable.myName);
         return variableIndex;
     }
 
