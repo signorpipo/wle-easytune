@@ -244,3 +244,9 @@ PP.EasyTune.Handedness = {
     LEFT: 1,
     RIGHT: 2,
 };
+
+PP.InputSourceType = {
+    NONE: 0,
+    GAMEPAD: 1,
+    HAND: 2
+};

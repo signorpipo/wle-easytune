@@ -1,9 +1,47 @@
+
+
 PP.ConsoleVR_UI = class ConsoleVR_UI {
 
+    constructor() {
+        this._myHandedness = PP.ConsoleVR.Handedness.NONE;
+        this._myInputSourceType = PP.InputSourceType.NONE;
+    }
+
     build(consoleVRComponent, consoleVRSetup) {
+        this._myHandedness = consoleVRComponent._myHandedness;
+        this._mySetup = consoleVRSetup;
+
         this._createSkeleton(consoleVRComponent);
         this._setTransforms(consoleVRComponent, consoleVRSetup);
         this._addComponents(consoleVRComponent, consoleVRSetup);
+    }
+
+    update(dt) {
+        if (this._myHandedness != PP.ConsoleVR.Handedness.NONE) {
+            let useHand = false;
+            if (WL.xrSession) {
+                for (let input of WL.xrSession.inputSources) {
+                    if (input.hand && ((input.handedness == "right" && this._myHandedness != PP.ConsoleVR.Handedness.RIGHT) ||
+                        input.handedness == "left" && this._myHandedness != PP.ConsoleVR.Handedness.LEFT)) {
+                        useHand = true;
+                    }
+                }
+            }
+
+            if (useHand && this._myInputSourceType != PP.InputSourceType.HAND) {
+                this._myInputSourceType = PP.InputSourceType.HAND;
+                this._myConsoleVRObject.setTranslationLocal(this._mySetup.myMainObjectHandTransforms[this._myHandedness].myPosition);
+                this._myConsoleVRObject.resetRotation();
+                this._myConsoleVRObject.rotateObject(this._mySetup.myMainObjectHandTransforms[this._myHandedness].myRotation);
+
+            } else if (!useHand && this._myInputSourceType != PP.InputSourceType.GAMEPAD) {
+                this._myInputSourceType = PP.InputSourceType.GAMEPAD;
+                this._myConsoleVRObject.setTranslationLocal(this._mySetup.myMainObjectGamepadTransforms[this._myHandedness].myPosition);
+                this._myConsoleVRObject.resetRotation();
+                this._myConsoleVRObject.rotateObject(this._mySetup.myMainObjectGamepadTransforms[this._myHandedness].myRotation);
+
+            }
+        }
     }
 
     //Skeleton
@@ -63,9 +101,6 @@ PP.ConsoleVR_UI = class ConsoleVR_UI {
     }
     //Transforms
     _setTransforms(consoleVRComponent, consoleVRSetup) {
-        this._myConsoleVRObject.setTranslationLocal(consoleVRSetup.myConsoleVRObjectTransforms[consoleVRComponent._myHandedness].myPosition);
-        this._myConsoleVRObject.rotateObject(consoleVRSetup.myConsoleVRObjectTransforms[consoleVRComponent._myHandedness].myRotation);
-
         this._setMessagesTransforms(consoleVRComponent, consoleVRSetup);
         this._setButtonsTransforms(consoleVRComponent, consoleVRSetup);
         this._setPointerTransform(consoleVRComponent, consoleVRSetup);

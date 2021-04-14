@@ -75,6 +75,8 @@ PP.ConsoleVR = class ConsoleVR {
 
     update(dt) {
         if (this._myIsVisible) {
+            this._myConsoleVR_UI.update(dt);
+
             this._myOnClickAlreadyTriggeredThisFrame = false;
             this._updateScroll(dt);
         }
