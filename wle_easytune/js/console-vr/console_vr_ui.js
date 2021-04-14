@@ -1,5 +1,3 @@
-
-
 PP.ConsoleVR_UI = class ConsoleVR_UI {
 
     constructor() {
