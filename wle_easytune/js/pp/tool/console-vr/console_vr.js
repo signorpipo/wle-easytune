@@ -10,7 +10,8 @@ WL.registerComponent('console-vr', {
     },
     start: function () {
         let additionalSetup = {};
-        additionalSetup.myHandedness = this._myHandedness;
+        additionalSetup.myHandednessIndex = this._myHandedness;
+        additionalSetup.myHandedness = PP.InputUtils.getHandednessByIndex(this._myHandedness);
         additionalSetup.myShowOnStart = this._myShowOnStart;
         additionalSetup.myShowVisibilityButton = this._myShowVisibilityButton;
         additionalSetup.myPulseOnNewMessage = this._myPulseOnNewMessage;

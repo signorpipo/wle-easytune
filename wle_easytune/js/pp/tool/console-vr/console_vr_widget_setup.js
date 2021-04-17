@@ -150,14 +150,14 @@ PP.ConsoleVRWidgetSetup = class ConsoleVRWidgetSetup {
             let buttonXOffset = this.myVisibilityButtonBackgroundScale[0] * (2 * toolIndex) + distanceBetweenToolsVisibilityButton * toolIndex;
 
             this.myVisibilityButtonPosition = [];
-            this.myVisibilityButtonPosition[PP.ConsoleVRWidget.Handedness.NONE] = {};
-            this.myVisibilityButtonPosition[PP.ConsoleVRWidget.Handedness.NONE].myPosition = [-0.202 + buttonXOffset, 0.028, 0.015];
+            this.myVisibilityButtonPosition[PP.HandednessIndex.NONE] = {};
+            this.myVisibilityButtonPosition[PP.HandednessIndex.NONE].myPosition = [-0.202 + buttonXOffset, 0.028, 0.015];
 
-            this.myVisibilityButtonPosition[PP.ConsoleVRWidget.Handedness.LEFT] = {};
-            this.myVisibilityButtonPosition[PP.ConsoleVRWidget.Handedness.LEFT].myPosition = [-0.202 + buttonXOffset, 0.028, 0.015];
+            this.myVisibilityButtonPosition[PP.HandednessIndex.LEFT] = {};
+            this.myVisibilityButtonPosition[PP.HandednessIndex.LEFT].myPosition = [-0.202 + buttonXOffset, 0.028, 0.015];
 
-            this.myVisibilityButtonPosition[PP.ConsoleVRWidget.Handedness.RIGHT] = {};
-            this.myVisibilityButtonPosition[PP.ConsoleVRWidget.Handedness.RIGHT].myPosition = [0.195 - buttonXOffset, 0.028, 0.015];
+            this.myVisibilityButtonPosition[PP.HandednessIndex.RIGHT] = {};
+            this.myVisibilityButtonPosition[PP.HandednessIndex.RIGHT].myPosition = [0.195 - buttonXOffset, 0.028, 0.015];
 
             this.myVisibilityButtonText = "C";
 
@@ -170,24 +170,24 @@ PP.ConsoleVRWidgetSetup = class ConsoleVRWidgetSetup {
 
     _initializeRuntimeSetup() {
         this.myPivotObjectGamepadRotation = [];
-        this.myPivotObjectGamepadRotation[PP.ConsoleVRWidget.Handedness.LEFT] = [-0.645, 0.425, 0.25, 0.584];
-        this.myPivotObjectGamepadRotation[PP.ConsoleVRWidget.Handedness.RIGHT] = [-0.645, -0.425, -0.25, 0.584];
-        glMatrix.quat.normalize(this.myPivotObjectGamepadRotation[PP.ConsoleVRWidget.Handedness.LEFT], this.myPivotObjectGamepadRotation[PP.ConsoleVRWidget.Handedness.LEFT]);
-        glMatrix.quat.normalize(this.myPivotObjectGamepadRotation[PP.ConsoleVRWidget.Handedness.RIGHT], this.myPivotObjectGamepadRotation[PP.ConsoleVRWidget.Handedness.RIGHT]);
+        this.myPivotObjectGamepadRotation[PP.HandednessIndex.LEFT] = [-0.645, 0.425, 0.25, 0.584];
+        this.myPivotObjectGamepadRotation[PP.HandednessIndex.RIGHT] = [-0.645, -0.425, -0.25, 0.584];
+        glMatrix.quat.normalize(this.myPivotObjectGamepadRotation[PP.HandednessIndex.LEFT], this.myPivotObjectGamepadRotation[PP.HandednessIndex.LEFT]);
+        glMatrix.quat.normalize(this.myPivotObjectGamepadRotation[PP.HandednessIndex.RIGHT], this.myPivotObjectGamepadRotation[PP.HandednessIndex.RIGHT]);
 
         this.myPivotObjectHandRotation = [];
-        this.myPivotObjectHandRotation[PP.ConsoleVRWidget.Handedness.LEFT] = [-0.084, 0.697, -0.218, 0.678];
-        this.myPivotObjectHandRotation[PP.ConsoleVRWidget.Handedness.RIGHT] = [-0.156, -0.756, 0.236, 0.590];
-        glMatrix.quat.normalize(this.myPivotObjectHandRotation[PP.ConsoleVRWidget.Handedness.LEFT], this.myPivotObjectHandRotation[PP.ConsoleVRWidget.Handedness.LEFT]);
-        glMatrix.quat.normalize(this.myPivotObjectHandRotation[PP.ConsoleVRWidget.Handedness.RIGHT], this.myPivotObjectHandRotation[PP.ConsoleVRWidget.Handedness.RIGHT]);
+        this.myPivotObjectHandRotation[PP.HandednessIndex.LEFT] = [-0.084, 0.697, -0.218, 0.678];
+        this.myPivotObjectHandRotation[PP.HandednessIndex.RIGHT] = [-0.156, -0.756, 0.236, 0.590];
+        glMatrix.quat.normalize(this.myPivotObjectHandRotation[PP.HandednessIndex.LEFT], this.myPivotObjectHandRotation[PP.HandednessIndex.LEFT]);
+        glMatrix.quat.normalize(this.myPivotObjectHandRotation[PP.HandednessIndex.RIGHT], this.myPivotObjectHandRotation[PP.HandednessIndex.RIGHT]);
 
         this.myMainObjectGamepadPosition = [];
-        this.myMainObjectGamepadPosition[PP.ConsoleVRWidget.Handedness.LEFT] = [0.098, 0.228, -0.020];
-        this.myMainObjectGamepadPosition[PP.ConsoleVRWidget.Handedness.RIGHT] = [0.07, 0.228, -0.020];
+        this.myMainObjectGamepadPosition[PP.HandednessIndex.LEFT] = [0.098, 0.228, -0.020];
+        this.myMainObjectGamepadPosition[PP.HandednessIndex.RIGHT] = [0.07, 0.228, -0.020];
 
         this.myMainObjectHandPosition = [];
-        this.myMainObjectHandPosition[PP.ConsoleVRWidget.Handedness.LEFT] = [0.098, 0.228, -0.020];
-        this.myMainObjectHandPosition[PP.ConsoleVRWidget.Handedness.RIGHT] = [0.07, 0.228, -0.020];
+        this.myMainObjectHandPosition[PP.HandednessIndex.LEFT] = [0.098, 0.228, -0.020];
+        this.myMainObjectHandPosition[PP.HandednessIndex.RIGHT] = [0.07, 0.228, -0.020];
 
         this.myTabString = "    ";
         this.myAssertStartString = "Assertion failed:";
@@ -209,7 +209,7 @@ PP.ConsoleVRWidgetSetup = class ConsoleVRWidgetSetup {
 
         this.myScrollDelay = 0.1;
         this.myScrollAmount = 1;
-        this.myScrollThumbstickHandedness = PP.ConsoleVRWidget.Handedness.RIGHT;
+        this.myScrollThumbstickHandedness = PP.HandednessIndex.RIGHT;
         this.myScrollThumbstickDelay = 0.1;
         this.myScrollThumbstickMinThreshold = 0.2;
         this.myScrollThumbstickAmount = 3;

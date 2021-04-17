@@ -141,12 +141,12 @@ PP.EasyTuneNumberWidgetSetup = class EasyTuneNumberWidgetSetup {
 
     _initializeRuntimeSetup() {
         this.myPivotObjectGamepadPosition = [];
-        this.myPivotObjectGamepadPosition[PP.ConsoleVRWidget.Handedness.LEFT] = [0.049, 0.228, -0.020];
-        this.myPivotObjectGamepadPosition[PP.ConsoleVRWidget.Handedness.RIGHT] = [0, 0.228, -0.020];
+        this.myPivotObjectGamepadPosition[PP.HandednessIndex.LEFT] = [0.049, 0.228, -0.020];
+        this.myPivotObjectGamepadPosition[PP.HandednessIndex.RIGHT] = [0, 0.228, -0.020];
 
         this.myPivotObjectHandPosition = [];
-        this.myPivotObjectHandPosition[PP.ConsoleVRWidget.Handedness.LEFT] = [0.049, 0.228, -0.020];
-        this.myPivotObjectHandPosition[PP.ConsoleVRWidget.Handedness.RIGHT] = [0, 0.228, -0.020];
+        this.myPivotObjectHandPosition[PP.HandednessIndex.LEFT] = [0.049, 0.228, -0.020];
+        this.myPivotObjectHandPosition[PP.HandednessIndex.RIGHT] = [0, 0.228, -0.020];
 
         this.myButtonHoverColor = [150 / 255, 150 / 255, 150 / 255, 1];
 

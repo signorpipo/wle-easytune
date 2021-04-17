@@ -25,9 +25,9 @@ PP.EasyTuneWidget = class EasyTuneWidget {
         this._myUI = new PP.EasyTuneWidgetUI();
 
         this._myGamepad = null;
-        if (this._mySetup.myGamepadHandedness == PP.EasyTuneWidget.Handedness.RIGHT) {
+        if (this._mySetup.myGamepadHandedness == PP.HandednessIndex.RIGHT) {
             this._myGamepad = this._myRightGamepad;
-        } else if (this._mySetup.myGamepadHandedness == PP.EasyTuneWidget.Handedness.LEFT) {
+        } else if (this._mySetup.myGamepadHandedness == PP.HandednessIndex.LEFT) {
             this._myGamepad = this._myLeftGamepad;
         }
     }
@@ -238,16 +238,4 @@ PP.EasyTuneWidget = class EasyTuneWidget {
             material.color = this._mySetup.myButtonDisabledBackgroundColor;
         }
     }
-};
-
-PP.EasyTuneWidget.Handedness = {
-    NONE: 0,
-    LEFT: 1,
-    RIGHT: 2,
-};
-
-PP.InputSourceType = {
-    NONE: 0,
-    GAMEPAD: 1,
-    HAND: 2
 };

@@ -25,11 +25,11 @@ WL.registerComponent('finger-cursor', {
         this._updateHand();
 
         if (this._myHandInputSource) {
-            const overlaps = this._myCollisionComponent.queryOverlaps();
+            let overlaps = this._myCollisionComponent.queryOverlaps();
             let overlapObject = null;
             for (let i = 0; i < overlaps.length; ++i) {
-                const object = overlaps[i].object;
-                const target = object.getComponent('cursor-target');
+                let object = overlaps[i].object;
+                let target = object.getComponent('cursor-target');
                 if (target) {
                     overlapObject = target;
                     break;
@@ -64,17 +64,7 @@ WL.registerComponent('finger-cursor', {
         this.active = isActive;
     },
     _updateHand() {
-        this._myHandInputSource = null;
-
-        if (WL.xrSession) {
-            for (let i = 0; i < WL.xrSession.inputSources.length; i++) {
-                let input = WL.xrSession.inputSources[i];
-                if (input.hand && input.handedness == this._myHandednessString) {
-                    this._myHandInputSource = input;
-                    break;
-                }
-            }
-        }
+        this._myHandInputSource = PP.InputUtils.getInputSource(PP.InputSourceType.HAND, this._myHandednessString);
 
         if (this._myHandInputSource) {
             let tip = Module['webxr_frame'].getJointPose(this._myHandInputSource.hand.get("index-finger-tip"), this._myRefSpace);
@@ -92,7 +82,7 @@ WL.registerComponent('finger-cursor', {
                     tip.transform.position.z]);
 
                 /* Last joint radius of each finger is null */
-                const r = tip.radius || 0.007;
+                let r = tip.radius || 0.007;
                 this._myCollision.scale([r, r, r]);
             }
         }

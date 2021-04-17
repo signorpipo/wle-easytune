@@ -27,7 +27,7 @@ PP.EasyTuneWidgetUI = class EasyTuneWidgetUI {
     setVisibilityButtonVisible(isVisible) {
         if (isVisible) {
             this.myVisibilityButtonPanel.resetTransform();
-            this.myVisibilityButtonPanel.setTranslationLocal(this._mySetup.myVisibilityButtonPosition[this._myAdditionalSetup.myHandedness].myPosition);
+            this.myVisibilityButtonPanel.setTranslationLocal(this._mySetup.myVisibilityButtonPosition[this._myAdditionalSetup.myHandednessIndex].myPosition);
         } else {
             this.myVisibilityButtonPanel.scale([0, 0, 0]);
             this.myMainPanel.setTranslationWorld([0, -3000, 0]);
@@ -35,25 +35,17 @@ PP.EasyTuneWidgetUI = class EasyTuneWidgetUI {
     }
 
     update(dt) {
-        if (this._myAdditionalSetup.myHandedness != PP.ConsoleVRWidget.Handedness.NONE) {
-            let useHand = false;
-            if (WL.xrSession) {
-                for (let input of WL.xrSession.inputSources) {
-                    if (input.hand && ((input.handedness == "right" && this._myAdditionalSetup.myHandedness != PP.ConsoleVRWidget.Handedness.RIGHT) ||
-                        input.handedness == "left" && this._myAdditionalSetup.myHandedness != PP.ConsoleVRWidget.Handedness.LEFT)) {
-                        useHand = true;
-                    }
-                }
-            }
+        if (this._myAdditionalSetup.myHandednessIndex != PP.HandednessIndex.NONE) {
+            let useHand = PP.InputUtils.getInputSource(PP.InputSourceType.HAND, this._myAdditionalSetup.myHandedness) != null;
 
             if (useHand && this._myInputSourceType != PP.InputSourceType.HAND) {
                 this._myInputSourceType = PP.InputSourceType.HAND;
                 this.myPivotObject.resetRotation();
-                this.myPivotObject.rotateObject(this._mySetup.myPivotObjectHandRotation[this._myAdditionalSetup.myHandedness]);
+                this.myPivotObject.rotateObject(this._mySetup.myPivotObjectHandRotation[this._myAdditionalSetup.myHandednessIndex]);
             } else if (!useHand && this._myInputSourceType != PP.InputSourceType.GAMEPAD) {
                 this._myInputSourceType = PP.InputSourceType.GAMEPAD;
                 this.myPivotObject.resetRotation();
-                this.myPivotObject.rotateObject(this._mySetup.myPivotObjectGamepadRotation[this._myAdditionalSetup.myHandedness]);
+                this.myPivotObject.rotateObject(this._mySetup.myPivotObjectGamepadRotation[this._myAdditionalSetup.myHandednessIndex]);
             }
         }
     }
@@ -74,7 +66,7 @@ PP.EasyTuneWidgetUI = class EasyTuneWidgetUI {
     _setTransforms() {
         this.myPivotObject.setDirty();
 
-        this.myVisibilityButtonPanel.setTranslationLocal(this._mySetup.myVisibilityButtonPosition[this._myAdditionalSetup.myHandedness].myPosition);
+        this.myVisibilityButtonPanel.setTranslationLocal(this._mySetup.myVisibilityButtonPosition[this._myAdditionalSetup.myHandednessIndex].myPosition);
         this.myVisibilityButtonBackground.scale(this._mySetup.myVisibilityButtonBackgroundScale);
         this.myVisibilityButtonText.setTranslationLocal(this._mySetup.myVisibilityButtonTextPosition);
         this.myVisibilityButtonText.scale(this._mySetup.myVisibilityButtonTextScale);

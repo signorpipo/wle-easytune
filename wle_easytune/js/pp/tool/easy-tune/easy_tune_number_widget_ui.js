@@ -25,23 +25,15 @@ PP.EasyTuneNumberWidgetUI = class EasyTuneNumberWidgetUI {
     }
 
     update(dt) {
-        if (this._myAdditionalSetup.myHandedness != PP.ConsoleVRWidget.Handedness.NONE) {
-            let useHand = false;
-            if (WL.xrSession) {
-                for (let input of WL.xrSession.inputSources) {
-                    if (input.hand && ((input.handedness == "right" && this._myAdditionalSetup.myHandedness != PP.ConsoleVRWidget.Handedness.RIGHT) ||
-                        input.handedness == "left" && this._myAdditionalSetup.myHandedness != PP.ConsoleVRWidget.Handedness.LEFT)) {
-                        useHand = true;
-                    }
-                }
-            }
+        if (this._myAdditionalSetup.myHandednessIndex != PP.HandednessIndex.NONE) {
+            let useHand = PP.InputUtils.getInputSource(PP.InputSourceType.HAND, this._myAdditionalSetup.myHandedness) != null;
 
             if (useHand && this._myInputSourceType != PP.InputSourceType.HAND) {
                 this._myInputSourceType = PP.InputSourceType.HAND;
-                this.myPivotObject.setTranslationLocal(this._mySetup.myPivotObjectHandPosition[this._myAdditionalSetup.myHandedness]);
+                this.myPivotObject.setTranslationLocal(this._mySetup.myPivotObjectHandPosition[this._myAdditionalSetup.myHandednessIndex]);
             } else if (!useHand && this._myInputSourceType != PP.InputSourceType.GAMEPAD) {
                 this._myInputSourceType = PP.InputSourceType.GAMEPAD;
-                this.myPivotObject.setTranslationLocal(this._mySetup.myPivotObjectGamepadPosition[this._myAdditionalSetup.myHandedness]);
+                this.myPivotObject.setTranslationLocal(this._mySetup.myPivotObjectGamepadPosition[this._myAdditionalSetup.myHandednessIndex]);
             }
         }
     }
