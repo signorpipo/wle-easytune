@@ -13,7 +13,14 @@ WL.registerComponent('easy-tune', {
         //Integer: PP.EasyTuneVariables.addVariable(new PP.EasyTuneInteger("Lives", 3, 1));
     },
     start: function () {
-        this._myWidget.start(this, PP.EasyTuneVariables, "X");
+        let additionalSetup = {};
+        additionalSetup.myHandedness = this._myHandedness;
+        additionalSetup.myShowOnStart = this._myShowOnStart;
+        additionalSetup.myShowVisibilityButton = this._myShowVisibilityButton;
+        additionalSetup.myPlaneMaterial = this._myPlaneMaterial;
+        additionalSetup.myTextMaterial = this._myTextMaterial;
+
+        this._myWidget.start(this, additionalSetup, PP.EasyTuneVariables, "X");
     },
     update: function (dt) {
         this._myWidget.update(dt);

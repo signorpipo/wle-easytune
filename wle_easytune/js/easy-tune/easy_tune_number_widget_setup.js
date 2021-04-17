@@ -12,21 +12,6 @@ PP.EasyTuneNumberWidgetSetup = class EasyTuneNumberWidgetSetup {
 
     _initializeBuildSetup() {
         //General
-        this.myMainObjectTransforms = [];
-        this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.NONE] = {};
-        this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.NONE].myPosition = [0, 0, 0];
-        this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.NONE].myRotation = [0, 0, 0, 1];
-
-        this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.LEFT] = {};
-        this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.LEFT].myPosition = [-0.165, -0.025, -0.155];
-        this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.LEFT].myRotation = [-0.645, 0.425, 0.25, 0.584];
-        glMatrix.quat.normalize(this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.LEFT].myRotation, this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.LEFT].myRotation);
-
-        this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.RIGHT] = {};
-        this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.RIGHT].myPosition = [0.231, 0.005, -0.061];
-        this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.RIGHT].myRotation = [-0.645, -0.425, -0.25, 0.584];
-        glMatrix.quat.normalize(this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.RIGHT].myRotation, this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.RIGHT].myRotation);
-
         this.myCursorTargetCollisionCollider = 2; // box
         this.myCursorTargetCollisionGroup = 7;
         this.myCursorTargetCollisionThickness = 0.001;
@@ -155,6 +140,14 @@ PP.EasyTuneNumberWidgetSetup = class EasyTuneNumberWidgetSetup {
     }
 
     _initializeRuntimeSetup() {
+        this.myPivotObjectGamepadPosition = [];
+        this.myPivotObjectGamepadPosition[PP.ConsoleVRWidget.Handedness.LEFT] = [0.049, 0.228, -0.020];
+        this.myPivotObjectGamepadPosition[PP.ConsoleVRWidget.Handedness.RIGHT] = [0, 0.228, -0.020];
+
+        this.myPivotObjectHandPosition = [];
+        this.myPivotObjectHandPosition[PP.ConsoleVRWidget.Handedness.LEFT] = [0.049, 0.228, -0.020];
+        this.myPivotObjectHandPosition[PP.ConsoleVRWidget.Handedness.RIGHT] = [0, 0.228, -0.020];
+
         this.myButtonHoverColor = [150 / 255, 150 / 255, 150 / 255, 1];
 
         this.myModifyThumbstickMinThreshold = 0.2;

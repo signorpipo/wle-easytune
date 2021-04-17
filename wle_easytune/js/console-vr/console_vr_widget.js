@@ -71,9 +71,9 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
     }
 
     update(dt) {
-        if (this._myIsVisible) {
-            this._myUI.update(dt);
+        this._myUI.update(dt);
 
+        if (this._myIsVisible) {
             this._updateScroll(dt);
         }
 

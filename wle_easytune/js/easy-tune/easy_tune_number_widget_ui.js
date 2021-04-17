@@ -1,12 +1,18 @@
 
 PP.EasyTuneNumberWidgetUI = class EasyTuneNumberWidgetUI {
 
-    build(easyTuneComponent, setup) {
+    constructor() {
+        this._myInputSourceType = PP.InputSourceType.NONE;
+    }
+
+    build(parentObject, setup, additionalSetup) {
+        this._mySetup = setup;
+        this._myAdditionalSetup = additionalSetup;
         this._myPlaneMesh = PP.MeshUtils.createPlaneMesh();
 
-        this._createSkeleton(easyTuneComponent);
-        this._setTransforms(easyTuneComponent, setup);
-        this._addComponents(easyTuneComponent, setup);
+        this._createSkeleton(parentObject);
+        this._setTransforms();
+        this._addComponents();
     }
 
     setVisible(isVisible) {
@@ -18,10 +24,33 @@ PP.EasyTuneNumberWidgetUI = class EasyTuneNumberWidgetUI {
         }
     }
 
+    update(dt) {
+        if (this._myAdditionalSetup.myHandedness != PP.ConsoleVRWidget.Handedness.NONE) {
+            let useHand = false;
+            if (WL.xrSession) {
+                for (let input of WL.xrSession.inputSources) {
+                    if (input.hand && ((input.handedness == "right" && this._myAdditionalSetup.myHandedness != PP.ConsoleVRWidget.Handedness.RIGHT) ||
+                        input.handedness == "left" && this._myAdditionalSetup.myHandedness != PP.ConsoleVRWidget.Handedness.LEFT)) {
+                        useHand = true;
+                    }
+                }
+            }
+
+            if (useHand && this._myInputSourceType != PP.InputSourceType.HAND) {
+                this._myInputSourceType = PP.InputSourceType.HAND;
+                this.myPivotObject.setTranslationLocal(this._mySetup.myPivotObjectHandPosition[this._myAdditionalSetup.myHandedness]);
+            } else if (!useHand && this._myInputSourceType != PP.InputSourceType.GAMEPAD) {
+                this._myInputSourceType = PP.InputSourceType.GAMEPAD;
+                this.myPivotObject.setTranslationLocal(this._mySetup.myPivotObjectGamepadPosition[this._myAdditionalSetup.myHandedness]);
+            }
+        }
+    }
+
     //Skeleton
-    _createSkeleton(easyTuneComponent) {
-        this.myMainObject = WL.scene.addObject(easyTuneComponent.object);
-        this.myMainPanel = WL.scene.addObject(this.myMainObject);
+    _createSkeleton(parentObject) {
+        this.myPivotObject = WL.scene.addObject(parentObject);
+
+        this.myMainPanel = WL.scene.addObject(this.myPivotObject);
 
         this._createDisplaySkeleton();
         this._createStepSkeleton();
@@ -90,183 +119,182 @@ PP.EasyTuneNumberWidgetUI = class EasyTuneNumberWidgetUI {
     }
 
     //Transforms
-    _setTransforms(easyTuneComponent, setup) {
-        this.myMainObject.setTranslationLocal(setup.myMainObjectTransforms[easyTuneComponent._myHandedness].myPosition);
-        this.myMainObject.rotateObject(setup.myMainObjectTransforms[easyTuneComponent._myHandedness].myRotation);
+    _setTransforms() {
+        this.myPivotObject.setDirty();
 
-        this._setDisplayTransforms(easyTuneComponent, setup);
-        this._setStepTransforms(easyTuneComponent, setup);
-        this._setPointerTransform(easyTuneComponent, setup);
+        this._setDisplayTransforms();
+        this._setStepTransforms();
+        this._setPointerTransform();
     }
 
-    _setDisplayTransforms(easyTuneComponent, setup) {
-        this.myDisplayPanel.setTranslationLocal(setup.myDisplayPanelPosition);
-        this.myDisplayBackground.scale(setup.myDisplayBackgroundScale);
+    _setDisplayTransforms() {
+        this.myDisplayPanel.setTranslationLocal(this._mySetup.myDisplayPanelPosition);
+        this.myDisplayBackground.scale(this._mySetup.myDisplayBackgroundScale);
 
-        this.myVariableLabelPanel.setTranslationLocal(setup.myVariableLabelPanelPosition);
-        this.myVariableLabelText.scale(setup.myVariableLabelTextScale);
+        this.myVariableLabelPanel.setTranslationLocal(this._mySetup.myVariableLabelPanelPosition);
+        this.myVariableLabelText.scale(this._mySetup.myVariableLabelTextScale);
 
-        this.myValuePanel.setTranslationLocal(setup.myValuePanelPosition);
-        this.myValueText.scale(setup.myValueTextScale);
-        this.myResetValueCursorTarget.setTranslationLocal(setup.myResetValueCursorTargetPosition);
+        this.myValuePanel.setTranslationLocal(this._mySetup.myValuePanelPosition);
+        this.myValueText.scale(this._mySetup.myValueTextScale);
+        this.myResetValueCursorTarget.setTranslationLocal(this._mySetup.myResetValueCursorTargetPosition);
 
         //Next/Previous
-        this.myNextButtonPanel.setTranslationLocal(setup.myNextButtonPosition);
-        this.myNextButtonBackground.scale(setup.myDisplayButtonBackgroundScale);
-        this.myNextButtonText.setTranslationLocal(setup.myDisplayButtonTextPosition);
-        this.myNextButtonText.scale(setup.myDisplayButtonTextScale);
-        this.myNextButtonCursorTarget.setTranslationLocal(setup.myDisplayButtonCursorTargetPosition);
+        this.myNextButtonPanel.setTranslationLocal(this._mySetup.myNextButtonPosition);
+        this.myNextButtonBackground.scale(this._mySetup.myDisplayButtonBackgroundScale);
+        this.myNextButtonText.setTranslationLocal(this._mySetup.myDisplayButtonTextPosition);
+        this.myNextButtonText.scale(this._mySetup.myDisplayButtonTextScale);
+        this.myNextButtonCursorTarget.setTranslationLocal(this._mySetup.myDisplayButtonCursorTargetPosition);
 
-        this.myPreviousButtonPanel.setTranslationLocal(setup.myPreviousButtonPosition);
-        this.myPreviousButtonBackground.scale(setup.myDisplayButtonBackgroundScale);
-        this.myPreviousButtonText.setTranslationLocal(setup.myDisplayButtonTextPosition);
-        this.myPreviousButtonText.scale(setup.myDisplayButtonTextScale);
-        this.myPreviousButtonCursorTarget.setTranslationLocal(setup.myDisplayButtonCursorTargetPosition);
+        this.myPreviousButtonPanel.setTranslationLocal(this._mySetup.myPreviousButtonPosition);
+        this.myPreviousButtonBackground.scale(this._mySetup.myDisplayButtonBackgroundScale);
+        this.myPreviousButtonText.setTranslationLocal(this._mySetup.myDisplayButtonTextPosition);
+        this.myPreviousButtonText.scale(this._mySetup.myDisplayButtonTextScale);
+        this.myPreviousButtonCursorTarget.setTranslationLocal(this._mySetup.myDisplayButtonCursorTargetPosition);
 
         //Increase/Decrease
-        this.myIncreaseButtonPanel.setTranslationLocal(setup.myIncreaseButtonPosition);
-        this.myIncreaseButtonBackground.scale(setup.myDisplayButtonBackgroundScale);
-        this.myIncreaseButtonText.setTranslationLocal(setup.myDisplayButtonTextPosition);
-        this.myIncreaseButtonText.scale(setup.myDisplayButtonTextScale);
-        this.myIncreaseButtonCursorTarget.setTranslationLocal(setup.myDisplayButtonCursorTargetPosition);
+        this.myIncreaseButtonPanel.setTranslationLocal(this._mySetup.myIncreaseButtonPosition);
+        this.myIncreaseButtonBackground.scale(this._mySetup.myDisplayButtonBackgroundScale);
+        this.myIncreaseButtonText.setTranslationLocal(this._mySetup.myDisplayButtonTextPosition);
+        this.myIncreaseButtonText.scale(this._mySetup.myDisplayButtonTextScale);
+        this.myIncreaseButtonCursorTarget.setTranslationLocal(this._mySetup.myDisplayButtonCursorTargetPosition);
 
-        this.myDecreaseButtonPanel.setTranslationLocal(setup.myDecreaseButtonPosition);
-        this.myDecreaseButtonBackground.scale(setup.myDisplayButtonBackgroundScale);
-        this.myDecreaseButtonText.setTranslationLocal(setup.myDisplayButtonTextPosition);
-        this.myDecreaseButtonText.scale(setup.myDisplayButtonTextScale);
-        this.myDecreaseButtonCursorTarget.setTranslationLocal(setup.myDisplayButtonCursorTargetPosition);
+        this.myDecreaseButtonPanel.setTranslationLocal(this._mySetup.myDecreaseButtonPosition);
+        this.myDecreaseButtonBackground.scale(this._mySetup.myDisplayButtonBackgroundScale);
+        this.myDecreaseButtonText.setTranslationLocal(this._mySetup.myDisplayButtonTextPosition);
+        this.myDecreaseButtonText.scale(this._mySetup.myDisplayButtonTextScale);
+        this.myDecreaseButtonCursorTarget.setTranslationLocal(this._mySetup.myDisplayButtonCursorTargetPosition);
     }
 
-    _setStepTransforms(easyTuneComponent, setup) {
-        this.myStepPanel.setTranslationLocal(setup.myStepPanelPosition);
-        this.myStepBackground.scale(setup.myStepBackgroundScale);
+    _setStepTransforms() {
+        this.myStepPanel.setTranslationLocal(this._mySetup.myStepPanelPosition);
+        this.myStepBackground.scale(this._mySetup.myStepBackgroundScale);
 
-        this.myStepLabelPanel.setTranslationLocal(setup.myStepLabelPanelPosition);
-        this.myStepLabelText.scale(setup.myStepLabelTextScale);
-        this.myResetStepCursorTarget.setTranslationLocal(setup.myResetStepCursorTargetPosition);
+        this.myStepLabelPanel.setTranslationLocal(this._mySetup.myStepLabelPanelPosition);
+        this.myStepLabelText.scale(this._mySetup.myStepLabelTextScale);
+        this.myResetStepCursorTarget.setTranslationLocal(this._mySetup.myResetStepCursorTargetPosition);
 
-        this.myStepButtonsPanel.setTranslationLocal(setup.myStepButtonsPanelPosition);
+        this.myStepButtonsPanel.setTranslationLocal(this._mySetup.myStepButtonsPanelPosition);
 
         for (let i = 0; i < this.myStepButtons.length; ++i) {
             let stepButton = this.myStepButtons[i];
 
-            stepButton.myPanel.setTranslationLocal(setup.myStepButtonsSetupList[i].myPosition);
-            stepButton.myBackground.scale(setup.myStepButtonBackgroundScale);
-            stepButton.myText.setTranslationLocal(setup.myStepButtonTextPosition);
-            stepButton.myText.scale(setup.myStepButtonTextScale);
-            stepButton.myCursorTarget.setTranslationLocal(setup.myStepButtonCursorTargetPosition);
+            stepButton.myPanel.setTranslationLocal(this._mySetup.myStepButtonsSetupList[i].myPosition);
+            stepButton.myBackground.scale(this._mySetup.myStepButtonBackgroundScale);
+            stepButton.myText.setTranslationLocal(this._mySetup.myStepButtonTextPosition);
+            stepButton.myText.scale(this._mySetup.myStepButtonTextScale);
+            stepButton.myCursorTarget.setTranslationLocal(this._mySetup.myStepButtonCursorTargetPosition);
         }
     }
 
-    _setPointerTransform(easyTuneComponent, setup) {
-        this.myPointerCursorTarget.setTranslationLocal(setup.myPointerCursorTargetPosition);
+    _setPointerTransform() {
+        this.myPointerCursorTarget.setTranslationLocal(this._mySetup.myPointerCursorTargetPosition);
     }
 
     //Components
-    _addComponents(easyTuneComponent, setup) {
-        this._addDisplayComponents(easyTuneComponent, setup);
-        this._addStepComponents(easyTuneComponent, setup);
-        this._addPointerComponents(easyTuneComponent, setup);
+    _addComponents() {
+        this._addDisplayComponents();
+        this._addStepComponents();
+        this._addPointerComponents();
     }
 
-    _addDisplayComponents(easyTuneComponent, setup) {
+    _addDisplayComponents() {
         this.myDisplayBackgroundComponent = this.myDisplayBackground.addComponent('mesh');
         this.myDisplayBackgroundComponent.mesh = this._myPlaneMesh;
-        this.myDisplayBackgroundComponent.material = easyTuneComponent._myPlaneMaterial.clone();
-        this.myDisplayBackgroundComponent.material.color = setup.myDisplayBackgroundColor;
+        this.myDisplayBackgroundComponent.material = this._myAdditionalSetup.myPlaneMaterial.clone();
+        this.myDisplayBackgroundComponent.material.color = this._mySetup.myDisplayBackgroundColor;
 
         this.myVariableLabelTextComponent = this.myVariableLabelText.addComponent('text');
-        this._setupTextComponent(this.myVariableLabelTextComponent, easyTuneComponent, setup);
+        this._setupTextComponent(this.myVariableLabelTextComponent);
         this.myVariableLabelTextComponent.text = " ";
 
         this.myValueTextComponent = this.myValueText.addComponent('text');
-        this._setupTextComponent(this.myValueTextComponent, easyTuneComponent, setup);
+        this._setupTextComponent(this.myValueTextComponent);
         this.myValueTextComponent.text = " ";
 
         this.myResetValueCursorTargetComponent = this.myResetValueCursorTarget.addComponent('cursor-target');
         this.myResetValueCollisionComponent = this.myResetValueCursorTarget.addComponent('collision');
-        this.myResetValueCollisionComponent.collider = setup.myCursorTargetCollisionCollider;
-        this.myResetValueCollisionComponent.group = 1 << setup.myCursorTargetCollisionGroup;
-        this.myResetValueCollisionComponent.extents = setup.myResetValueCollisionExtents;
+        this.myResetValueCollisionComponent.collider = this._mySetup.myCursorTargetCollisionCollider;
+        this.myResetValueCollisionComponent.group = 1 << this._mySetup.myCursorTargetCollisionGroup;
+        this.myResetValueCollisionComponent.extents = this._mySetup.myResetValueCollisionExtents;
 
         //Next/Previous
         this.myNextButtonBackgroundComponent = this.myNextButtonBackground.addComponent('mesh');
         this.myNextButtonBackgroundComponent.mesh = this._myPlaneMesh;
-        this.myNextButtonBackgroundComponent.material = easyTuneComponent._myPlaneMaterial.clone();
-        this.myNextButtonBackgroundComponent.material.color = setup.myBackgroundColor;
+        this.myNextButtonBackgroundComponent.material = this._myAdditionalSetup.myPlaneMaterial.clone();
+        this.myNextButtonBackgroundComponent.material.color = this._mySetup.myBackgroundColor;
 
         this.myNextButtonTextComponent = this.myNextButtonText.addComponent('text');
-        this._setupTextComponent(this.myNextButtonTextComponent, easyTuneComponent, setup);
-        this.myNextButtonTextComponent.text = setup.myNextButtonText;
+        this._setupTextComponent(this.myNextButtonTextComponent);
+        this.myNextButtonTextComponent.text = this._mySetup.myNextButtonText;
 
         this.myNextButtonCursorTargetComponent = this.myNextButtonCursorTarget.addComponent('cursor-target');
         this.myNextButtonCollisionComponent = this.myNextButtonCursorTarget.addComponent('collision');
-        this.myNextButtonCollisionComponent.collider = setup.myCursorTargetCollisionCollider;
-        this.myNextButtonCollisionComponent.group = 1 << setup.myCursorTargetCollisionGroup;
-        this.myNextButtonCollisionComponent.extents = setup.myDisplayButtonCollisionExtents;
+        this.myNextButtonCollisionComponent.collider = this._mySetup.myCursorTargetCollisionCollider;
+        this.myNextButtonCollisionComponent.group = 1 << this._mySetup.myCursorTargetCollisionGroup;
+        this.myNextButtonCollisionComponent.extents = this._mySetup.myDisplayButtonCollisionExtents;
 
         this.myPreviousButtonBackgroundComponent = this.myPreviousButtonBackground.addComponent('mesh');
         this.myPreviousButtonBackgroundComponent.mesh = this._myPlaneMesh;
-        this.myPreviousButtonBackgroundComponent.material = easyTuneComponent._myPlaneMaterial.clone();
-        this.myPreviousButtonBackgroundComponent.material.color = setup.myBackgroundColor;
+        this.myPreviousButtonBackgroundComponent.material = this._myAdditionalSetup.myPlaneMaterial.clone();
+        this.myPreviousButtonBackgroundComponent.material.color = this._mySetup.myBackgroundColor;
 
         this.myPreviousButtonTextComponent = this.myPreviousButtonText.addComponent('text');
-        this._setupTextComponent(this.myPreviousButtonTextComponent, easyTuneComponent, setup);
-        this.myPreviousButtonTextComponent.text = setup.myPreviousButtonText;
+        this._setupTextComponent(this.myPreviousButtonTextComponent);
+        this.myPreviousButtonTextComponent.text = this._mySetup.myPreviousButtonText;
 
         this.myPreviousButtonCursorTargetComponent = this.myPreviousButtonCursorTarget.addComponent('cursor-target');
         this.myPreviousButtonCollisionComponent = this.myPreviousButtonCursorTarget.addComponent('collision');
-        this.myPreviousButtonCollisionComponent.collider = setup.myCursorTargetCollisionCollider;
-        this.myPreviousButtonCollisionComponent.group = 1 << setup.myCursorTargetCollisionGroup;
-        this.myPreviousButtonCollisionComponent.extents = setup.myDisplayButtonCollisionExtents;
+        this.myPreviousButtonCollisionComponent.collider = this._mySetup.myCursorTargetCollisionCollider;
+        this.myPreviousButtonCollisionComponent.group = 1 << this._mySetup.myCursorTargetCollisionGroup;
+        this.myPreviousButtonCollisionComponent.extents = this._mySetup.myDisplayButtonCollisionExtents;
 
         //Increase/Decrease
         this.myIncreaseButtonBackgroundComponent = this.myIncreaseButtonBackground.addComponent('mesh');
         this.myIncreaseButtonBackgroundComponent.mesh = this._myPlaneMesh;
-        this.myIncreaseButtonBackgroundComponent.material = easyTuneComponent._myPlaneMaterial.clone();
-        this.myIncreaseButtonBackgroundComponent.material.color = setup.myBackgroundColor;
+        this.myIncreaseButtonBackgroundComponent.material = this._myAdditionalSetup.myPlaneMaterial.clone();
+        this.myIncreaseButtonBackgroundComponent.material.color = this._mySetup.myBackgroundColor;
 
         this.myIncreaseButtonTextComponent = this.myIncreaseButtonText.addComponent('text');
-        this._setupTextComponent(this.myIncreaseButtonTextComponent, easyTuneComponent, setup);
-        this.myIncreaseButtonTextComponent.text = setup.myIncreaseButtonText;
+        this._setupTextComponent(this.myIncreaseButtonTextComponent);
+        this.myIncreaseButtonTextComponent.text = this._mySetup.myIncreaseButtonText;
 
         this.myIncreaseButtonCursorTargetComponent = this.myIncreaseButtonCursorTarget.addComponent('cursor-target');
         this.myIncreaseButtonCollisionComponent = this.myIncreaseButtonCursorTarget.addComponent('collision');
-        this.myIncreaseButtonCollisionComponent.collider = setup.myCursorTargetCollisionCollider;
-        this.myIncreaseButtonCollisionComponent.group = 1 << setup.myCursorTargetCollisionGroup;
-        this.myIncreaseButtonCollisionComponent.extents = setup.myDisplayButtonCollisionExtents;
+        this.myIncreaseButtonCollisionComponent.collider = this._mySetup.myCursorTargetCollisionCollider;
+        this.myIncreaseButtonCollisionComponent.group = 1 << this._mySetup.myCursorTargetCollisionGroup;
+        this.myIncreaseButtonCollisionComponent.extents = this._mySetup.myDisplayButtonCollisionExtents;
 
         this.myDecreaseButtonBackgroundComponent = this.myDecreaseButtonBackground.addComponent('mesh');
         this.myDecreaseButtonBackgroundComponent.mesh = this._myPlaneMesh;
-        this.myDecreaseButtonBackgroundComponent.material = easyTuneComponent._myPlaneMaterial.clone();
-        this.myDecreaseButtonBackgroundComponent.material.color = setup.myBackgroundColor;
+        this.myDecreaseButtonBackgroundComponent.material = this._myAdditionalSetup.myPlaneMaterial.clone();
+        this.myDecreaseButtonBackgroundComponent.material.color = this._mySetup.myBackgroundColor;
 
         this.myDecreaseButtonTextComponent = this.myDecreaseButtonText.addComponent('text');
-        this._setupTextComponent(this.myDecreaseButtonTextComponent, easyTuneComponent, setup);
-        this.myDecreaseButtonTextComponent.text = setup.myDecreaseButtonText;
+        this._setupTextComponent(this.myDecreaseButtonTextComponent);
+        this.myDecreaseButtonTextComponent.text = this._mySetup.myDecreaseButtonText;
 
         this.myDecreaseButtonCursorTargetComponent = this.myDecreaseButtonCursorTarget.addComponent('cursor-target');
         this.myDecreaseButtonCollisionComponent = this.myDecreaseButtonCursorTarget.addComponent('collision');
-        this.myDecreaseButtonCollisionComponent.collider = setup.myCursorTargetCollisionCollider;
-        this.myDecreaseButtonCollisionComponent.group = 1 << setup.myCursorTargetCollisionGroup;
-        this.myDecreaseButtonCollisionComponent.extents = setup.myDisplayButtonCollisionExtents;
+        this.myDecreaseButtonCollisionComponent.collider = this._mySetup.myCursorTargetCollisionCollider;
+        this.myDecreaseButtonCollisionComponent.group = 1 << this._mySetup.myCursorTargetCollisionGroup;
+        this.myDecreaseButtonCollisionComponent.extents = this._mySetup.myDisplayButtonCollisionExtents;
     }
 
-    _addStepComponents(easyTuneComponent, setup) {
+    _addStepComponents() {
         this.myStepBackgroundComponent = this.myStepBackground.addComponent('mesh');
         this.myStepBackgroundComponent.mesh = this._myPlaneMesh;
-        this.myStepBackgroundComponent.material = easyTuneComponent._myPlaneMaterial.clone();
-        this.myStepBackgroundComponent.material.color = setup.myStepBackgroundColor;
+        this.myStepBackgroundComponent.material = this._myAdditionalSetup.myPlaneMaterial.clone();
+        this.myStepBackgroundComponent.material.color = this._mySetup.myStepBackgroundColor;
 
         this.myStepLabelTextComponent = this.myStepLabelText.addComponent('text');
-        this._setupTextComponent(this.myStepLabelTextComponent, easyTuneComponent, setup);
+        this._setupTextComponent(this.myStepLabelTextComponent);
         this.myStepLabelTextComponent.text = " ";
 
         this.myResetStepCursorTargetComponent = this.myResetStepCursorTarget.addComponent('cursor-target');
         this.myResetStepCollisionComponent = this.myResetStepCursorTarget.addComponent('collision');
-        this.myResetStepCollisionComponent.collider = setup.myCursorTargetCollisionCollider;
-        this.myResetStepCollisionComponent.group = 1 << setup.myCursorTargetCollisionGroup;
-        this.myResetStepCollisionComponent.extents = setup.myResetStepCollisionExtents;
+        this.myResetStepCollisionComponent.collider = this._mySetup.myCursorTargetCollisionCollider;
+        this.myResetStepCollisionComponent.group = 1 << this._mySetup.myCursorTargetCollisionGroup;
+        this.myResetStepCollisionComponent.extents = this._mySetup.myResetStepCollisionExtents;
 
         this.myStepButtonsComponents = [];
 
@@ -276,39 +304,39 @@ PP.EasyTuneNumberWidgetUI = class EasyTuneNumberWidgetUI {
 
             stepButtonComponents.myBackground = stepButton.myBackground.addComponent('mesh');
             stepButtonComponents.myBackground.mesh = this._myPlaneMesh;
-            stepButtonComponents.myBackground.material = easyTuneComponent._myPlaneMaterial.clone();
-            stepButtonComponents.myBackground.material.color = setup.myBackgroundColor;
+            stepButtonComponents.myBackground.material = this._myAdditionalSetup.myPlaneMaterial.clone();
+            stepButtonComponents.myBackground.material.color = this._mySetup.myBackgroundColor;
 
             stepButtonComponents.myText = stepButton.myText.addComponent('text');
-            this._setupTextComponent(stepButtonComponents.myText, easyTuneComponent, setup);
+            this._setupTextComponent(stepButtonComponents.myText);
             stepButtonComponents.myText.text = " ";
-            stepButtonComponents.myText.text = setup.myStepButtonStartString.concat(setup.myStepButtonsSetupList[i].myStepMultiplier);
+            stepButtonComponents.myText.text = this._mySetup.myStepButtonStartString.concat(this._mySetup.myStepButtonsSetupList[i].myStepMultiplier);
 
             stepButtonComponents.myCursorTarget = stepButton.myCursorTarget.addComponent('cursor-target');
             stepButtonComponents.myCollision = stepButton.myCursorTarget.addComponent('collision');
-            stepButtonComponents.myCollision.collider = setup.myCursorTargetCollisionCollider;
-            stepButtonComponents.myCollision.group = 1 << setup.myCursorTargetCollisionGroup;
-            stepButtonComponents.myCollision.extents = setup.myStepButtonCollisionExtents;
+            stepButtonComponents.myCollision.collider = this._mySetup.myCursorTargetCollisionCollider;
+            stepButtonComponents.myCollision.group = 1 << this._mySetup.myCursorTargetCollisionGroup;
+            stepButtonComponents.myCollision.extents = this._mySetup.myStepButtonCollisionExtents;
 
             this.myStepButtonsComponents[i] = stepButtonComponents;
         }
     }
 
-    _addPointerComponents(easyTuneComponent, setup) {
+    _addPointerComponents() {
         this.myPointerCursorTargetComponent = this.myPointerCursorTarget.addComponent('cursor-target');
 
         this.myPointerCollisionComponent = this.myPointerCursorTarget.addComponent('collision');
-        this.myPointerCollisionComponent.collider = setup.myCursorTargetCollisionCollider;
-        this.myPointerCollisionComponent.group = 1 << setup.myCursorTargetCollisionGroup;
-        this.myPointerCollisionComponent.extents = setup.myPointerCollisionExtents;
+        this.myPointerCollisionComponent.collider = this._mySetup.myCursorTargetCollisionCollider;
+        this.myPointerCollisionComponent.group = 1 << this._mySetup.myCursorTargetCollisionGroup;
+        this.myPointerCollisionComponent.extents = this._mySetup.myPointerCollisionExtents;
     }
 
-    _setupTextComponent(textComponent, easyTuneComponent, setup) {
-        textComponent.alignment = setup.myTextAlignment;
-        textComponent.justification = setup.myTextJustification;
-        textComponent.material = easyTuneComponent._myTextMaterial.clone();
-        textComponent.material.outlineRange = setup.myTextOutlineRange;
-        textComponent.material.color = setup.myTextColor;
-        textComponent.material.outlineColor = setup.myTextOutlineColor;
+    _setupTextComponent(textComponent) {
+        textComponent.alignment = this._mySetup.myTextAlignment;
+        textComponent.justification = this._mySetup.myTextJustification;
+        textComponent.material = this._myAdditionalSetup.myTextMaterial.clone();
+        textComponent.material.outlineRange = this._mySetup.myTextOutlineRange;
+        textComponent.material.color = this._mySetup.myTextColor;
+        textComponent.material.outlineColor = this._mySetup.myTextOutlineColor;
     }
 };

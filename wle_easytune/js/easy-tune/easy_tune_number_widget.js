@@ -57,13 +57,15 @@ PP.EasyTuneNumberWidget = class EasyTuneNumberWidget {
         this._myScrollVariableCallbacks.delete(id);
     }
 
-    start(easyTuneComponent) {
-        this._myUI.build(easyTuneComponent, this._mySetup);
+    start(parentObject, additionalSetup) {
+        this._myUI.build(parentObject, this._mySetup, additionalSetup);
 
         this._addListeners();
     }
 
     update(dt) {
+        this._myUI.update(dt);
+
         if (this._isActive()) {
             this._updateValue(dt);
             this._updateScrollVariable(dt);

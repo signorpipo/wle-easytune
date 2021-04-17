@@ -27,9 +27,10 @@ PP.ConsoleVRWidgetUI = class ConsoleVRWidgetUI {
     setVisibilityButtonVisible(isVisible) {
         if (isVisible) {
             this.myVisibilityButtonPanel.resetTransform();
+            this.myVisibilityButtonPanel.setTranslationLocal(this._mySetup.myVisibilityButtonPosition[this._myAdditionalSetup.myHandedness].myPosition);
         } else {
             this.myVisibilityButtonPanel.scale([0, 0, 0]);
-            this.myVisibilityButtonPanel.setTranslationLocal(this._mySetup.myVisibilityButtonPosition[this._myAdditionalSetup.myHandedness].myPosition);
+            this.myMainPanel.setTranslationWorld([0, -3000, 0]);
         }
     }
 
@@ -47,15 +48,14 @@ PP.ConsoleVRWidgetUI = class ConsoleVRWidgetUI {
 
             if (useHand && this._myInputSourceType != PP.InputSourceType.HAND) {
                 this._myInputSourceType = PP.InputSourceType.HAND;
-                this.myPivotRotationObject.resetRotation();
-                this.myPivotRotationObject.rotateObject(this._mySetup.myMainObjectHandTransforms[this._myAdditionalSetup.myHandedness].myRotation);
-                this.myPivotPositionObject.setTranslationLocal(this._mySetup.myMainObjectHandTransforms[this._myAdditionalSetup.myHandedness].myPosition);
-
+                this.myPivotObject.resetRotation();
+                this.myPivotObject.rotateObject(this._mySetup.myPivotObjectHandRotation[this._myAdditionalSetup.myHandedness]);
+                this.myMainObject.setTranslationLocal(this._mySetup.myMainObjectHandPosition[this._myAdditionalSetup.myHandedness]);
             } else if (!useHand && this._myInputSourceType != PP.InputSourceType.GAMEPAD) {
                 this._myInputSourceType = PP.InputSourceType.GAMEPAD;
-                this.myPivotRotationObject.resetRotation();
-                this.myPivotRotationObject.rotateObject(this._mySetup.myMainObjectGamepadTransforms[this._myAdditionalSetup.myHandedness].myRotation);
-                this.myPivotPositionObject.setTranslationLocal(this._mySetup.myMainObjectGamepadTransforms[this._myAdditionalSetup.myHandedness].myPosition);
+                this.myPivotObject.resetRotation();
+                this.myPivotObject.rotateObject(this._mySetup.myPivotObjectGamepadRotation[this._myAdditionalSetup.myHandedness]);
+                this.myMainObject.setTranslationLocal(this._mySetup.myMainObjectGamepadPosition[this._myAdditionalSetup.myHandedness]);
             }
         }
     }
@@ -63,10 +63,8 @@ PP.ConsoleVRWidgetUI = class ConsoleVRWidgetUI {
     //Skeleton
     _createSkeleton(parentObject) {
         this.myPivotObject = WL.scene.addObject(parentObject);
-        this.myPivotRotationObject = WL.scene.addObject(this.myPivotObject);
-        this.myPivotPositionObject = WL.scene.addObject(this.myPivotRotationObject);
+        this.myMainObject = WL.scene.addObject(this.myPivotObject);
 
-        this.myMainObject = WL.scene.addObject(this.myPivotPositionObject);
         this.myMainPanel = WL.scene.addObject(this.myMainObject);
 
         this._createMessagesSkeleton();
@@ -122,7 +120,7 @@ PP.ConsoleVRWidgetUI = class ConsoleVRWidgetUI {
     }
 
     _createFlagsSkeleton() {
-        this.myVisibilityButtonPanel = WL.scene.addObject(this.myMainObject);
+        this.myVisibilityButtonPanel = WL.scene.addObject(this.myPivotObject);
         this.myVisibilityButtonBackground = WL.scene.addObject(this.myVisibilityButtonPanel);
         this.myVisibilityButtonText = WL.scene.addObject(this.myVisibilityButtonPanel);
         this.myVisibilityButtonCursorTarget = WL.scene.addObject(this.myVisibilityButtonPanel);

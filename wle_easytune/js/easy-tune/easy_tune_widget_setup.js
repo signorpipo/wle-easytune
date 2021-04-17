@@ -12,21 +12,6 @@ PP.EasyTuneWidgetSetup = class EasyTuneWidgetSetup {
 
     _initializeBuildSetup() {
         //General
-        this.myMainObjectTransforms = [];
-        this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.NONE] = {};
-        this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.NONE].myPosition = [0, 0, 0];
-        this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.NONE].myRotation = [0, 0, 0, 1];
-
-        this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.LEFT] = {};
-        this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.LEFT].myPosition = [0, 0, 0];
-        this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.LEFT].myRotation = [-0.645, 0.425, 0.25, 0.584];
-        glMatrix.quat.normalize(this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.LEFT].myRotation, this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.LEFT].myRotation);
-
-        this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.RIGHT] = {};
-        this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.RIGHT].myPosition = [0, 0, 0];
-        this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.RIGHT].myRotation = [-0.645, -0.425, -0.25, 0.584];
-        glMatrix.quat.normalize(this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.RIGHT].myRotation, this.myMainObjectTransforms[PP.EasyTuneWidget.Handedness.RIGHT].myRotation);
-
         this.myCursorTargetCollisionCollider = 2; // box
         this.myCursorTargetCollisionGroup = 7;
         this.myCursorTargetCollisionThickness = 0.001;
@@ -40,20 +25,47 @@ PP.EasyTuneWidgetSetup = class EasyTuneWidgetSetup {
         this.myTextOutlineColor = this.myDefaultTextColor;
 
         //VisibilityButton
-        this.myVisibilityButtonPosition = [-0.2 + 0.015 + 0.01 + 0.015, 0.038, 0];
-        this.myVisibilityButtonBackgroundScale = [0.015, 0.015, 1];
-        this.myVisibilityButtonTextPosition = [0, 0, 0.007];
-        this.myVisibilityButtonTextScale = [0.18, 0.18, 0.18];
+        {
+            this.myVisibilityButtonBackgroundScale = [0.015, 0.015, 1];
+            this.myVisibilityButtonTextPosition = [0, 0, 0.007];
+            this.myVisibilityButtonTextScale = [0.18, 0.18, 0.18];
 
-        this.myVisibilityButtonText = "E";
+            let distanceBetweenToolsVisibilityButton = 0.01;
+            let toolIndex = 1;
+            let buttonXOffset = this.myVisibilityButtonBackgroundScale[0] * (2 * toolIndex) + distanceBetweenToolsVisibilityButton * toolIndex;
 
-        this.myVisibilityButtonCursorTargetPosition = [0, 0, 0];
-        this.myVisibilityButtonCursorTargetPosition[2] = this.myVisibilityButtonTextPosition[2];
-        this.myVisibilityButtonCollisionExtents = this.myVisibilityButtonBackgroundScale;
-        this.myVisibilityButtonCollisionExtents[2] = this.myCursorTargetCollisionThickness;
+            this.myVisibilityButtonPosition = [];
+            this.myVisibilityButtonPosition[PP.ConsoleVRWidget.Handedness.NONE] = {};
+            this.myVisibilityButtonPosition[PP.ConsoleVRWidget.Handedness.NONE].myPosition = [-0.202 + buttonXOffset, 0.028, 0.015];
+
+            this.myVisibilityButtonPosition[PP.ConsoleVRWidget.Handedness.LEFT] = {};
+            this.myVisibilityButtonPosition[PP.ConsoleVRWidget.Handedness.LEFT].myPosition = [-0.202 + buttonXOffset, 0.028, 0.015];
+
+            this.myVisibilityButtonPosition[PP.ConsoleVRWidget.Handedness.RIGHT] = {};
+            this.myVisibilityButtonPosition[PP.ConsoleVRWidget.Handedness.RIGHT].myPosition = [0.195 - buttonXOffset, 0.028, 0.015];
+
+            this.myVisibilityButtonText = "E";
+
+            this.myVisibilityButtonCursorTargetPosition = [0, 0, 0];
+            this.myVisibilityButtonCursorTargetPosition[2] = this.myVisibilityButtonTextPosition[2];
+            this.myVisibilityButtonCollisionExtents = this.myVisibilityButtonBackgroundScale;
+            this.myVisibilityButtonCollisionExtents[2] = this.myCursorTargetCollisionThickness;
+        }
     }
 
     _initializeRuntimeSetup() {
+        this.myPivotObjectGamepadRotation = [];
+        this.myPivotObjectGamepadRotation[PP.ConsoleVRWidget.Handedness.LEFT] = [-0.645, 0.425, 0.25, 0.584];
+        this.myPivotObjectGamepadRotation[PP.ConsoleVRWidget.Handedness.RIGHT] = [-0.645, -0.425, -0.25, 0.584];
+        glMatrix.quat.normalize(this.myPivotObjectGamepadRotation[PP.ConsoleVRWidget.Handedness.LEFT], this.myPivotObjectGamepadRotation[PP.ConsoleVRWidget.Handedness.LEFT]);
+        glMatrix.quat.normalize(this.myPivotObjectGamepadRotation[PP.ConsoleVRWidget.Handedness.RIGHT], this.myPivotObjectGamepadRotation[PP.ConsoleVRWidget.Handedness.RIGHT]);
+
+        this.myPivotObjectHandRotation = [];
+        this.myPivotObjectHandRotation[PP.ConsoleVRWidget.Handedness.LEFT] = [-0.084, 0.697, -0.218, 0.678];
+        this.myPivotObjectHandRotation[PP.ConsoleVRWidget.Handedness.RIGHT] = [-0.156, -0.756, 0.236, 0.590];
+        glMatrix.quat.normalize(this.myPivotObjectHandRotation[PP.ConsoleVRWidget.Handedness.LEFT], this.myPivotObjectHandRotation[PP.ConsoleVRWidget.Handedness.LEFT]);
+        glMatrix.quat.normalize(this.myPivotObjectHandRotation[PP.ConsoleVRWidget.Handedness.RIGHT], this.myPivotObjectHandRotation[PP.ConsoleVRWidget.Handedness.RIGHT]);
+
         this.myGamepadHandedness = PP.EasyTuneWidget.Handedness.RIGHT;
 
         this.myButtonHoverColor = [150 / 255, 150 / 255, 150 / 255, 1];
