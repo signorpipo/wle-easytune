@@ -4,11 +4,13 @@
     - Some messages are not intercepted, like the error from glMatrix.mat4.invert(null, null)
 */
 
-PP.ConsoleVR = class ConsoleVR {
+PP.ConsoleVRWidget = class ConsoleVRWidget {
 
     constructor() {
-        this._myConsoleVRSetup = new PP.ConsoleVRSetup();
-        this._myConsoleVR_UI = new PP.ConsoleVR_UI();
+        this._mySetup = new PP.ConsoleVRWidgetSetup();
+        this._myAdditionalSetup = null;
+
+        this._myUI = new PP.ConsoleVRWidgetUI();
 
         this._myMessages = [];
 
@@ -17,11 +19,9 @@ PP.ConsoleVR = class ConsoleVR {
         this._myOldConsole = [];
 
         this._myTypeFilters = [];
-        for (let key in PP.ConsoleVR.MessageType) {
-            this._myTypeFilters[PP.ConsoleVR.MessageType[key]] = false;
+        for (let key in PP.ConsoleVRWidget.MessageType) {
+            this._myTypeFilters[PP.ConsoleVRWidget.MessageType[key]] = false;
         }
-
-        this._myOnClickAlreadyTriggeredThisFrame = false; //fix an issue in cursor-target that calls onclick twice
 
         this._myScrollUp = false;
         this._myScrollDown = false;
@@ -31,22 +31,19 @@ PP.ConsoleVR = class ConsoleVR {
 
         this._myPulseTimer = 0;
 
-        this._myHandedness = PP.ConsoleVR.Handedness.NONE;
-
         this._myLeftGamepad = PP.LeftGamepad; //@EDIT get gamepad LEFT here based on how you store it in your game
         this._myRightGamepad = PP.RightGamepad; //@EDIT get gamepad RIGHT here based on how you store it in your game
     }
 
-    start(consoleVRComponent) {
-        this._myHandedness = consoleVRComponent._myHandedness;
-        this._myPulseOnNewMessage = consoleVRComponent._myPulseOnNewMessage;
+    start(parentObject, additionalSetup) {
+        this._myAdditionalSetup = additionalSetup;
 
-        this._myConsoleVR_UI.build(consoleVRComponent, this._myConsoleVRSetup);
+        this._myUI.build(parentObject, this._mySetup, additionalSetup);
 
-        this._addButtonsListeners();
+        this._addListeners();
 
-        if (!consoleVRComponent._myShowOnStart) {
-            this._toggleConsoleVisibility();
+        if (!this._myAdditionalSetup.myShowOnStart) {
+            this._toggleVisibility(false);
         }
 
         this._shimConsoleFunctions();
@@ -54,30 +51,29 @@ PP.ConsoleVR = class ConsoleVR {
 
     //This must be done only when all the setup is complete, to avoid issues with other part of the code calling the console and then triggering the console vr while not ready yet
     _shimConsoleFunctions() {
-        this._myOldConsole[PP.ConsoleVR.ConsoleType.LOG] = console.log;
-        console.log = this._consolePrint.bind(this, PP.ConsoleVR.ConsoleType.LOG);
+        this._myOldConsole[PP.ConsoleVRWidget.ConsoleType.LOG] = console.log;
+        console.log = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.LOG);
 
-        this._myOldConsole[PP.ConsoleVR.ConsoleType.ERROR] = console.error;
-        console.error = this._consolePrint.bind(this, PP.ConsoleVR.ConsoleType.ERROR);
+        this._myOldConsole[PP.ConsoleVRWidget.ConsoleType.ERROR] = console.error;
+        console.error = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.ERROR);
 
-        this._myOldConsole[PP.ConsoleVR.ConsoleType.WARN] = console.warn;
-        console.warn = this._consolePrint.bind(this, PP.ConsoleVR.ConsoleType.WARN);
+        this._myOldConsole[PP.ConsoleVRWidget.ConsoleType.WARN] = console.warn;
+        console.warn = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.WARN);
 
-        this._myOldConsole[PP.ConsoleVR.ConsoleType.INFO] = console.info;
-        console.info = this._consolePrint.bind(this, PP.ConsoleVR.ConsoleType.INFO);
+        this._myOldConsole[PP.ConsoleVRWidget.ConsoleType.INFO] = console.info;
+        console.info = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.INFO);
 
-        this._myOldConsole[PP.ConsoleVR.ConsoleType.DEBUG] = console.debug;
-        console.debug = this._consolePrint.bind(this, PP.ConsoleVR.ConsoleType.DEBUG);
+        this._myOldConsole[PP.ConsoleVRWidget.ConsoleType.DEBUG] = console.debug;
+        console.debug = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.DEBUG);
 
-        this._myOldConsole[PP.ConsoleVR.ConsoleType.ASSERT] = console.assert;
-        console.assert = this._consolePrint.bind(this, PP.ConsoleVR.ConsoleType.ASSERT);
+        this._myOldConsole[PP.ConsoleVRWidget.ConsoleType.ASSERT] = console.assert;
+        console.assert = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.ASSERT);
     }
 
     update(dt) {
         if (this._myIsVisible) {
-            this._myConsoleVR_UI.update(dt);
+            this._myUI.update(dt);
 
-            this._myOnClickAlreadyTriggeredThisFrame = false;
             this._updateScroll(dt);
         }
 
@@ -95,7 +91,7 @@ PP.ConsoleVR = class ConsoleVR {
 
             let scrollLinesToSkip = Math.round(this._myScrollOffset);
 
-            while (i >= 0 && linesCount < this._myConsoleVRSetup.myMaxLines) {
+            while (i >= 0 && linesCount < this._mySetup.myMaxLines) {
                 let message = this._myMessages[i];
 
                 //skip filtered messages
@@ -111,7 +107,7 @@ PP.ConsoleVR = class ConsoleVR {
                 if (scrollLinesToSkip > 0) {
                     let additionalEmptyLines = 0;
                     if (i != this._myMessages.length - 1) {
-                        additionalEmptyLines = this._myConsoleVRSetup.myLinesBetweenMessages;
+                        additionalEmptyLines = this._mySetup.myLinesBetweenMessages;
                     }
 
                     if (scrollLinesToSkip >= messageLines + additionalEmptyLines) { // + empty lines between messages
@@ -125,9 +121,9 @@ PP.ConsoleVR = class ConsoleVR {
 
                 //add empty lines between messages
                 if (i != this._myMessages.length - 1) {
-                    let emptyLinesToSkip = this._myConsoleVRSetup.myLinesBetweenMessages - Math.max(this._myConsoleVRSetup.myLinesBetweenMessages - linesToSkip, 0);
-                    let emptyLinesToShow = this._myConsoleVRSetup.myLinesBetweenMessages - emptyLinesToSkip;
-                    if (linesCount + emptyLinesToShow > this._myConsoleVRSetup.myMaxLines) {
+                    let emptyLinesToSkip = this._mySetup.myLinesBetweenMessages - Math.max(this._mySetup.myLinesBetweenMessages - linesToSkip, 0);
+                    let emptyLinesToShow = this._mySetup.myLinesBetweenMessages - emptyLinesToSkip;
+                    if (linesCount + emptyLinesToShow > this._mySetup.myMaxLines) {
                         emptyLinesToShow = this._myMaxLines - linesCount;
                     }
 
@@ -141,8 +137,8 @@ PP.ConsoleVR = class ConsoleVR {
 
                 //computing the number of message lines to show
                 let linesToShow = messageLines - linesToSkip;
-                if (linesCount + linesToShow > this._myConsoleVRSetup.myMaxLines) {
-                    linesToShow = this._myConsoleVRSetup.myMaxLines - linesCount;
+                if (linesCount + linesToShow > this._mySetup.myMaxLines) {
+                    linesToShow = this._mySetup.myMaxLines - linesCount;
                 }
 
                 if (linesToShow > 0) {
@@ -169,18 +165,18 @@ PP.ConsoleVR = class ConsoleVR {
             }
         }
 
-        consoleText = this._myConsoleVRSetup.myMessagesTextStartString.concat(consoleText);
+        consoleText = this._mySetup.myMessagesTextStartString.concat(consoleText);
 
-        this._myConsoleVR_UI._myMessagesTextComponents[messageType].text = consoleText;
+        this._myUI.myMessagesTextComponents[messageType].text = consoleText;
     }
 
     _consolePrint(consoleType, ...args) {
-        if (consoleType != PP.ConsoleVR.ConsoleType.ASSERT || (args.length > 0 && !args[0])) {
+        if (consoleType != PP.ConsoleVRWidget.ConsoleType.ASSERT || (args.length > 0 && !args[0])) {
             let message = this._argsToMessage(consoleType, ...args);
             this._addMessage(message);
 
-            if (this._myMessages.length >= this._myConsoleVRSetup.myMaxMessages + this._myConsoleVRSetup.myMaxMessagesDeletePad) {
-                this._myMessages = this._myMessages.slice(this._myMessages.length - this._myConsoleVRSetup.myMaxMessages);
+            if (this._myMessages.length >= this._mySetup.myMaxMessages + this._mySetup.myMaxMessagesDeletePad) {
+                this._myMessages = this._myMessages.slice(this._myMessages.length - this._mySetup.myMaxMessages);
             }
 
             this._updateAllTexts();
@@ -192,23 +188,23 @@ PP.ConsoleVR = class ConsoleVR {
     }
 
     _consoleTypeToMessageType(consoleType) {
-        let messageType = PP.ConsoleVR.MessageType.LOG;
+        let messageType = PP.ConsoleVRWidget.MessageType.LOG;
 
-        if (consoleType < PP.ConsoleVR.ConsoleType.DEBUG) {
+        if (consoleType < PP.ConsoleVRWidget.ConsoleType.DEBUG) {
             messageType = consoleType;
-        } else if (consoleType == PP.ConsoleVR.ConsoleType.DEBUG) {
-            messageType = PP.ConsoleVR.MessageType.LOG;
+        } else if (consoleType == PP.ConsoleVRWidget.ConsoleType.DEBUG) {
+            messageType = PP.ConsoleVRWidget.MessageType.LOG;
         } else {
-            messageType = PP.ConsoleVR.MessageType.ERROR;
+            messageType = PP.ConsoleVRWidget.MessageType.ERROR;
         }
 
         return messageType;
     }
 
     _argsToMessage(consoleType, ...args) {
-        if (consoleType == PP.ConsoleVR.ConsoleType.ASSERT) {
+        if (consoleType == PP.ConsoleVRWidget.ConsoleType.ASSERT) {
             args = args.slice(1);
-            args.splice(0, 0, this._myConsoleVRSetup.myAssertStartString);
+            args.splice(0, 0, this._mySetup.myAssertStartString);
         }
 
         let messageType = this._consoleTypeToMessageType(consoleType);
@@ -217,14 +213,14 @@ PP.ConsoleVR = class ConsoleVR {
 
         let lines = this._splitLongLines(formattedText);
 
-        if (messageType == PP.ConsoleVR.MessageType.DEBUG) {
-            messageType = PP.ConsoleVR.MessageType.LOG;
-        } else if (messageType == PP.ConsoleVR.MessageType.EXCEPTION || messageType == PP.ConsoleVR.MessageType.ASSERT) {
-            messageType = PP.ConsoleVR.MessageType.ERROR;
+        if (messageType == PP.ConsoleVRWidget.MessageType.DEBUG) {
+            messageType = PP.ConsoleVRWidget.MessageType.LOG;
+        } else if (messageType == PP.ConsoleVRWidget.MessageType.EXCEPTION || messageType == PP.ConsoleVRWidget.MessageType.ASSERT) {
+            messageType = PP.ConsoleVRWidget.MessageType.ERROR;
         }
 
 
-        let message = new PP.ConsoleVR.Message(messageType, lines);
+        let message = new PP.ConsoleVRWidget.Message(messageType, lines);
 
         return message;
     }
@@ -242,14 +238,14 @@ PP.ConsoleVR = class ConsoleVR {
         for (let i = 0; i < linesToSplit.length; i++) {
             let lineToSplit = linesToSplit[i];
 
-            if (lineToSplit.length > this._myConsoleVRSetup.myMaxCharactersPerLine) {
+            if (lineToSplit.length > this._mySetup.myMaxCharactersPerLine) {
                 let spacesAtStart = this._getSpacesAtStart(lineToSplit);
-                let spaceToAdd = this._myConsoleVRSetup.myTabString.concat(spacesAtStart);
+                let spaceToAdd = this._mySetup.myTabString.concat(spacesAtStart);
                 let lineSplits = 0;
 
-                while (lineToSplit.length > this._myConsoleVRSetup.myMaxCharactersPerLine && lineSplits < this._myConsoleVRSetup.myMaxLineSplits) {
-                    let firstSub = lineToSplit.substr(0, this._myConsoleVRSetup.myMaxCharactersPerLine - 1);
-                    let secondSub = lineToSplit.substr(this._myConsoleVRSetup.myMaxCharactersPerLine - 1);
+                while (lineToSplit.length > this._mySetup.myMaxCharactersPerLine && lineSplits < this._mySetup.myMaxLineSplits) {
+                    let firstSub = lineToSplit.substr(0, this._mySetup.myMaxCharactersPerLine - 1);
+                    let secondSub = lineToSplit.substr(this._mySetup.myMaxCharactersPerLine - 1);
                     secondSub = spaceToAdd.concat(secondSub);
 
                     lines.push(firstSub);
@@ -298,14 +294,14 @@ PP.ConsoleVR = class ConsoleVR {
     //if you have scrolled, new messages does not move the scroll position
     _adjustScrollOffsetAfterMessageAdded(message, hasSameInfoAsPrev) {
         if (!hasSameInfoAsPrev && !(this._myTypeFilters[message.myType]) && this._myScrollOffset > 0) {
-            this._myScrollOffset += message.myLines.length + this._myConsoleVRSetup.myLinesBetweenMessages;
+            this._myScrollOffset += message.myLines.length + this._mySetup.myLinesBetweenMessages;
         }
     }
 
     _updateAllTexts() {
         if (this._myIsVisible) {
-            for (let key in PP.ConsoleVR.MessageType) {
-                this._updateText(PP.ConsoleVR.MessageType[key]);
+            for (let key in PP.ConsoleVRWidget.MessageType) {
+                this._updateText(PP.ConsoleVRWidget.MessageType[key]);
             }
         }
     }
@@ -313,15 +309,15 @@ PP.ConsoleVR = class ConsoleVR {
     _updateScroll(dt) {
         if (this._myScrollUp) {
             this._myScrollTimer += dt;
-            while (this._myScrollTimer > this._myConsoleVRSetup.myScrollDelay) {
-                this._myScrollTimer -= this._myConsoleVRSetup.myScrollDelay;
-                this._myScrollOffset += this._myConsoleVRSetup.myScrollAmount;
+            while (this._myScrollTimer > this._mySetup.myScrollDelay) {
+                this._myScrollTimer -= this._mySetup.myScrollDelay;
+                this._myScrollOffset += this._mySetup.myScrollAmount;
             }
         } else if (this._myScrollDown) {
             this._myScrollTimer += dt;
-            while (this._myScrollTimer > this._myConsoleVRSetup.myScrollDelay) {
-                this._myScrollTimer -= this._myConsoleVRSetup.myScrollDelay;
-                this._myScrollOffset -= this._myConsoleVRSetup.myScrollAmount;
+            while (this._myScrollTimer > this._mySetup.myScrollDelay) {
+                this._myScrollTimer -= this._mySetup.myScrollDelay;
+                this._myScrollOffset -= this._mySetup.myScrollAmount;
             }
         }
 
@@ -338,17 +334,17 @@ PP.ConsoleVR = class ConsoleVR {
     }
 
     _getMaxScrollOffset() {
-        return Math.max(this._getLinesCount() - this._myConsoleVRSetup.myMaxLines, 0);
+        return Math.max(this._getLinesCount() - this._mySetup.myMaxLines, 0);
     }
 
     _getLinesCount() {
         let linesCount = 0;
         for (let message of this._myMessages) {
             if (!this._myTypeFilters[message.myType]) {
-                linesCount += message.myLines.length + this._myConsoleVRSetup.myLinesBetweenMessages;
+                linesCount += message.myLines.length + this._mySetup.myLinesBetweenMessages;
             }
         }
-        linesCount -= this._myConsoleVRSetup.myLinesBetweenMessages; //empty line is added only between messages
+        linesCount -= this._mySetup.myLinesBetweenMessages; //empty line is added only between messages
         linesCount = Math.max(linesCount, 0);
 
         return linesCount;
@@ -356,22 +352,22 @@ PP.ConsoleVR = class ConsoleVR {
 
     //Listener section
 
-    _addButtonsListeners() {
-        let ui = this._myConsoleVR_UI;
+    _addListeners() {
+        let ui = this._myUI;
 
-        for (let key in PP.ConsoleVR.MessageType) {
-            let cursorTarget = ui._myFilterButtonsCursorTargetComponents[PP.ConsoleVR.MessageType[key]];
-            let backgroundMaterial = ui._myFilterButtonsBackgroundComponents[PP.ConsoleVR.MessageType[key]].material;
-            let textMaterial = ui._myFilterButtonsTextComponents[PP.ConsoleVR.MessageType[key]].material;
+        for (let key in PP.ConsoleVRWidget.MessageType) {
+            let cursorTarget = ui.myFilterButtonsCursorTargetComponents[PP.ConsoleVRWidget.MessageType[key]];
+            let backgroundMaterial = ui.myFilterButtonsBackgroundComponents[PP.ConsoleVRWidget.MessageType[key]].material;
+            let textMaterial = ui.myFilterButtonsTextComponents[PP.ConsoleVRWidget.MessageType[key]].material;
 
-            cursorTarget.addClickFunction(this._toggleFilter.bind(this, PP.ConsoleVR.MessageType[key], backgroundMaterial, textMaterial));
-            cursorTarget.addHoverFunction(this._filterHover.bind(this, PP.ConsoleVR.MessageType[key], backgroundMaterial));
-            cursorTarget.addUnHoverFunction(this._filterUnHover.bind(this, PP.ConsoleVR.MessageType[key], backgroundMaterial));
+            cursorTarget.addClickFunction(this._toggleFilter.bind(this, PP.ConsoleVRWidget.MessageType[key], backgroundMaterial, textMaterial));
+            cursorTarget.addHoverFunction(this._filterHover.bind(this, PP.ConsoleVRWidget.MessageType[key], backgroundMaterial));
+            cursorTarget.addUnHoverFunction(this._filterUnHover.bind(this, PP.ConsoleVRWidget.MessageType[key], backgroundMaterial));
         }
 
         {
-            let cursorTarget = ui._myClearButtonCursorTargetComponent;
-            let backgroundMaterial = ui._myClearButtonBackgroundComponent.material;
+            let cursorTarget = ui.myClearButtonCursorTargetComponent;
+            let backgroundMaterial = ui.myClearButtonBackgroundComponent.material;
 
             cursorTarget.addClickFunction(this._clearConsole.bind(this));
             cursorTarget.addHoverFunction(this._genericHover.bind(this, backgroundMaterial));
@@ -379,8 +375,8 @@ PP.ConsoleVR = class ConsoleVR {
         }
 
         {
-            let cursorTarget = ui._myUpButtonCursorTargetComponent;
-            let backgroundMaterial = ui._myUpButtonBackgroundComponent.material;
+            let cursorTarget = ui.myUpButtonCursorTargetComponent;
+            let backgroundMaterial = ui.myUpButtonBackgroundComponent.material;
 
             cursorTarget.addClickFunction(this._instantScrollUp.bind(this));
             cursorTarget.addHoverFunction(this._setScrollUp.bind(this, backgroundMaterial, true));
@@ -388,79 +384,85 @@ PP.ConsoleVR = class ConsoleVR {
         }
 
         {
-            let cursorTarget = ui._myDownButtonCursorTargetComponent;
-            let backgroundMaterial = ui._myDownButtonBackgroundComponent.material;
+            let cursorTarget = ui.myDownButtonCursorTargetComponent;
+            let backgroundMaterial = ui.myDownButtonBackgroundComponent.material;
 
             cursorTarget.addClickFunction(this._instantScrollDown.bind(this));
             cursorTarget.addHoverFunction(this._setScrollDown.bind(this, backgroundMaterial, true));
             cursorTarget.addUnHoverFunction(this._setScrollDown.bind(this, backgroundMaterial, false));
         }
+
+        if (this._myAdditionalSetup.myShowVisibilityButton) {
+            ui.myVisibilityButtonCursorTargetComponent.addClickFunction(this._toggleVisibility.bind(this, true));
+            ui.myVisibilityButtonCursorTargetComponent.addHoverFunction(this._visibilityHover.bind(this, ui.myVisibilityButtonBackgroundComponent.material));
+            ui.myVisibilityButtonCursorTargetComponent.addUnHoverFunction(this._visibilityUnHover.bind(this, ui.myVisibilityButtonBackgroundComponent.material));
+        }
     }
 
     _toggleFilter(messageType, backgroundMaterial, textMaterial) {
-        if (this._myOnClickAlreadyTriggeredThisFrame) {
-            return;
+        if (this._myIsVisible) {
+            this._myTypeFilters[messageType] = !this._myTypeFilters[messageType];
+            if (this._myTypeFilters[messageType]) {
+                textMaterial.color = this._mySetup.myFilterButtonDisabledTextColor;
+            } else {
+                textMaterial.color = this._mySetup.myMessageTypeColors[messageType];
+            }
+
+            this._clampScrollOffset();
+            this._updateAllTexts();
         }
-
-        this._myTypeFilters[messageType] = !this._myTypeFilters[messageType];
-        if (this._myTypeFilters[messageType]) {
-            textMaterial.color = this._myConsoleVRSetup.myFilterButtonDisabledTextColor;
-        } else {
-            textMaterial.color = this._myConsoleVRSetup.myMessageTypeColors[messageType];
-        }
-
-        this._clampScrollOffset();
-        this._updateAllTexts();
-
-        this._myOnClickAlreadyTriggeredThisFrame = true;
     }
 
     _clearConsole() {
-        if (this._myOnClickAlreadyTriggeredThisFrame) {
-            return;
+        if (this._myIsVisible) {
+            this._myMessages = [];
+            this._clampScrollOffset();
+            this._updateAllTexts();
+
+            if (this._mySetup.myClearOriginalConsoleWhenClearPressed) {
+                console.clear();
+            }
         }
-
-        this._myMessages = [];
-        this._clampScrollOffset();
-        this._updateAllTexts();
-
-        if (this._myConsoleVRSetup.myClearOriginalConsoleWhenClearPressed) {
-            console.clear();
-        }
-
-        this._myOnClickAlreadyTriggeredThisFrame = true;
     }
 
     _setScrollUp(material, value) {
-        if (value) {
-            this._myScrollTimer = 0;
-            this._genericHover(material);
-        } else {
-            this._genericUnHover(material);
-        }
+        if (this._myIsVisible) {
+            if (value) {
+                this._myScrollTimer = 0;
+                this._genericHover(material);
+            } else {
+                this._genericUnHover(material);
+            }
 
-        this._myScrollUp = value;
+            this._myScrollUp = value;
+        }
     }
 
     _setScrollDown(material, value) {
-        if (value) {
-            this._myScrollTimer = 0;
-            this._genericHover(material);
-        } else {
-            this._genericUnHover(material);
-        }
+        if (this._myIsVisible) {
+            if (value) {
+                this._myScrollTimer = 0;
+                this._genericHover(material);
+            } else {
+                this._genericUnHover(material);
+            }
 
-        this._myScrollDown = value;
+            this._myScrollDown = value;
+        }
     }
 
     _instantScrollUp() {
-        this._myScrollOffset = this._getMaxScrollOffset();
-        this._updateAllTexts();
+        if (this._myIsVisible) {
+            this._myScrollOffset = this._getMaxScrollOffset();
+            this._updateAllTexts();
+        }
     }
 
     _instantScrollDown() {
-        this._myScrollOffset = 0;
-        this._updateAllTexts();
+        if (this._myIsVisible) {
+            this._myScrollOffset = 0;
+            this._updateAllTexts();
+        }
     }
 
     _filterHover(messageType, material) {
@@ -469,18 +471,59 @@ PP.ConsoleVR = class ConsoleVR {
 
     _filterUnHover(messageType, material) {
         if (this._myTypeFilters[messageType]) {
-            material.color = this._myConsoleVRSetup.myFilterButtonDisabledBackgroundColor;
+            material.color = this._mySetup.myFilterButtonDisabledBackgroundColor;
         } else {
-            material.color = this._myConsoleVRSetup.myBackgroundColor;
+            material.color = this._mySetup.myBackgroundColor;
         }
     }
 
     _genericHover(material) {
-        material.color = this._myConsoleVRSetup.myButtonHoverColor;
+        material.color = this._mySetup.myButtonHoverColor;
     }
 
     _genericUnHover(material) {
-        material.color = this._myConsoleVRSetup.myBackgroundColor;
+        material.color = this._mySetup.myBackgroundColor;
+    }
+
+    _toggleVisibility(isButton) {
+        if (isButton && !this._myAdditionalSetup.myShowVisibilityButton) {
+            return;
+        }
+
+        this._myIsVisible = !this._myIsVisible;
+
+        if (this._myIsVisible) {
+            this._updateAllTexts();
+        }
+
+        this._myUI.setVisible(this._myIsVisible);
+
+        let textMaterial = this._myUI.myVisibilityButtonTextComponent.material;
+        let backgroundMaterial = this._myUI.myVisibilityButtonBackgroundComponent.material;
+        if (this._myIsVisible) {
+            textMaterial.color = this._mySetup.myDefaultTextColor;
+            if (!isButton) {
+                backgroundMaterial.color = this._mySetup.myBackgroundColor;
+            }
+        } else {
+            textMaterial.color = this._mySetup.myButtonDisabledTextColor;
+            if (!isButton) {
+                backgroundMaterial.color = this._mySetup.myButtonDisabledBackgroundColor;
+            }
+        }
+
+    }
+
+    _visibilityHover(material) {
+        material.color = this._mySetup.myButtonHoverColor;
+    }
+
+    _visibilityUnHover(material) {
+        if (this._myIsVisible) {
+            material.color = this._mySetup.myBackgroundColor;
+        } else {
+            material.color = this._mySetup.myButtonDisabledBackgroundColor;
+        }
     }
 
     //Gamepad section 
@@ -492,7 +535,7 @@ PP.ConsoleVR = class ConsoleVR {
 
             if ((leftThumbstickJustPressed && this._myRightGamepad.getButtonInfo(PP.ButtonType.THUMBSTICK).myIsPressed) ||
                 (rightThumbstickJustPressed && this._myLeftGamepad.getButtonInfo(PP.ButtonType.THUMBSTICK).myIsPressed)) {
-                this._toggleConsoleVisibility();
+                this._toggleVisibility(false);
             }
 
             this._myPulseTimer = Math.max(this._myPulseTimer - dt, 0);
@@ -504,20 +547,20 @@ PP.ConsoleVR = class ConsoleVR {
     _updateScrollWithThumbstick(dt) {
         if (this._myIsVisible) {
             let axes = [0, 0];
-            if (this._myConsoleVRSetup.myScrollThumbstickHandedness == PP.ConsoleVR.Handedness.LEFT) {
+            if (this._mySetup.myScrollThumbstickHandedness == PP.ConsoleVRWidget.Handedness.LEFT) {
                 axes = this._myLeftGamepad.getAxesInfo().myAxes;
-            } else if (this._myConsoleVRSetup.myScrollThumbstickHandedness == PP.ConsoleVR.Handedness.RIGHT) {
+            } else if (this._mySetup.myScrollThumbstickHandedness == PP.ConsoleVRWidget.Handedness.RIGHT) {
                 axes = this._myRightGamepad.getAxesInfo().myAxes;
             }
 
-            if (Math.abs(axes[1]) > this._myConsoleVRSetup.myScrollThumbstickMinThreshold) {
+            if (Math.abs(axes[1]) > this._mySetup.myScrollThumbstickMinThreshold) {
                 this._myScrollThumbstickTimer += dt;
 
-                while (this._myScrollThumbstickTimer > this._myConsoleVRSetup.myScrollThumbstickDelay) {
-                    this._myScrollThumbstickTimer -= this._myConsoleVRSetup.myScrollThumbstickDelay;
+                while (this._myScrollThumbstickTimer > this._mySetup.myScrollThumbstickDelay) {
+                    this._myScrollThumbstickTimer -= this._mySetup.myScrollThumbstickDelay;
 
-                    let normalizedScrollAmount = (Math.abs(axes[1]) - this._myConsoleVRSetup.myScrollThumbstickMinThreshold) / (1 - this._myConsoleVRSetup.myScrollThumbstickMinThreshold);
-                    this._myScrollOffset += Math.sign(axes[1]) * normalizedScrollAmount * this._myConsoleVRSetup.myScrollThumbstickAmount;
+                    let normalizedScrollAmount = (Math.abs(axes[1]) - this._mySetup.myScrollThumbstickMinThreshold) / (1 - this._mySetup.myScrollThumbstickMinThreshold);
+                    this._myScrollOffset += Math.sign(axes[1]) * normalizedScrollAmount * this._mySetup.myScrollThumbstickAmount;
                 }
 
                 this._clampScrollOffset();
@@ -530,34 +573,21 @@ PP.ConsoleVR = class ConsoleVR {
 
     _pulseGamepad() {
         if (this._myLeftGamepad && this._myRightGamepad) {
-            let pulseEnabled = this._myPulseOnNewMessage == PP.ConsoleVR.PulseOnNewMessage.ALWAYS || (!this._myIsVisible && this._myPulseOnNewMessage == PP.ConsoleVR.PulseOnNewMessage.WHEN_HIDDEN);
+            let pulseType = this._myAdditionalSetup.myPulseOnNewMessage;
+            let pulseEnabled = pulseType == PP.ConsoleVRWidget.PulseOnNewMessage.ALWAYS || (!this._myIsVisible && pulseType == PP.ConsoleVRWidget.PulseOnNewMessage.WHEN_HIDDEN);
             if (pulseEnabled && this._myPulseTimer == 0) {
-                if (this._myHandedness == PP.ConsoleVR.Handedness.RIGHT) {
-                    this._myRightGamepad.pulse(this._myConsoleVRSetup.myPulseIntensity, this._myConsoleVRSetup.myPulseDuration);
+                if (this._myAdditionalSetup.myHandedness == PP.ConsoleVRWidget.Handedness.RIGHT) {
+                    this._myRightGamepad.pulse(this._mySetup.myPulseIntensity, this._mySetup.myPulseDuration);
                 } else {
-                    this._myLeftGamepad.pulse(this._myConsoleVRSetup.myPulseIntensity, this._myConsoleVRSetup.myPulseDuration);
+                    this._myLeftGamepad.pulse(this._mySetup.myPulseIntensity, this._mySetup.myPulseDuration);
                 }
-                this._myPulseTimer = this._myConsoleVRSetup.myPulseDelay;
+                this._myPulseTimer = this._mySetup.myPulseDelay;
             }
-        }
-    }
-
-    _toggleConsoleVisibility() {
-        if (this._myIsVisible) {
-            this._myConsoleVR_UI._myConsoleVRMainPanel.scale([0, 0, 0]);
-            this._myConsoleVR_UI._myConsoleVRMainPanel.setTranslationWorld([0, -3000, 0]);
-
-            this._myIsVisible = false;
-        } else {
-            this._myConsoleVR_UI._myConsoleVRMainPanel.resetTransform();
-
-            this._myIsVisible = true;
-            this._updateAllTexts();
         }
     }
 };
 
-PP.ConsoleVR.MessageType = {
+PP.ConsoleVRWidget.MessageType = {
     INFO: 0,
     WARN: 1,
     ERROR: 2,
@@ -565,7 +595,7 @@ PP.ConsoleVR.MessageType = {
 };
 
 
-PP.ConsoleVR.ConsoleType = {
+PP.ConsoleVRWidget.ConsoleType = {
     INFO: 0,
     WARN: 1,
     ERROR: 2,
@@ -574,7 +604,7 @@ PP.ConsoleVR.ConsoleType = {
     ASSERT: 5
 };
 
-PP.ConsoleVR.Message = class Message {
+PP.ConsoleVRWidget.Message = class Message {
     constructor(messageType, messageLines) {
         this.myType = messageType;
         this.myLines = messageLines;
@@ -599,13 +629,13 @@ PP.ConsoleVR.Message = class Message {
     }
 };
 
-PP.ConsoleVR.Handedness = {
+PP.ConsoleVRWidget.Handedness = {
     NONE: 0,
     LEFT: 1,
     RIGHT: 2,
 };
 
-PP.ConsoleVR.PulseOnNewMessage = {
+PP.ConsoleVRWidget.PulseOnNewMessage = {
     NONE: 0,
     ALWAYS: 1,
     WHEN_HIDDEN: 2,

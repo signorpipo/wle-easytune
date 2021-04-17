@@ -1,5 +1,5 @@
 
-PP.EasyTune = class EasyTune {
+PP.EasyTuneWidget = class EasyTuneWidget {
 
     constructor() {
         this._myWidgets = [];
@@ -23,9 +23,9 @@ PP.EasyTune = class EasyTune {
         this._myUI = new PP.EasyTuneWidgetUI();
 
         this._myGamepad = null;
-        if (this._mySetup.myGamepadHandedness == PP.EasyTune.Handedness.RIGHT) {
+        if (this._mySetup.myGamepadHandedness == PP.EasyTuneWidget.Handedness.RIGHT) {
             this._myGamepad = this._myRightGamepad;
-        } else if (this._mySetup.myGamepadHandedness == PP.EasyTune.Handedness.LEFT) {
+        } else if (this._mySetup.myGamepadHandedness == PP.EasyTuneWidget.Handedness.LEFT) {
             this._myGamepad = this._myLeftGamepad;
         }
     }
@@ -239,7 +239,7 @@ PP.EasyTune = class EasyTune {
     }
 };
 
-PP.EasyTune.Handedness = {
+PP.EasyTuneWidget.Handedness = {
     NONE: 0,
     LEFT: 1,
     RIGHT: 2,

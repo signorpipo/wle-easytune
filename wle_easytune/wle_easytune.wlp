@@ -322,17 +322,6 @@
                     "active": true
                 },
                 {
-                    "type": "console-vr",
-                    "console-vr": {
-                        "_myHandedness": "left",
-                        "_mShowOnStart": false,
-                        "_myPlaneMesh": "7",
-                        "_myTextMaterial": "DefaultFontMaterial",
-                        "_myPlaneMaterial": "64"
-                    },
-                    "active": true
-                },
-                {
                     "type": "easy-tune",
                     "easy-tune": {
                         "_myPlaneMesh": "7",
@@ -341,8 +330,53 @@
                         "_myShowOnStart": true,
                         "_myHandedness": "left",
                         "_myShowVisibilityButton": true
+                    },
+                    "active": true
+                },
+                {
+                    "type": "tool-cursor",
+                    "tool-cursor": {
+                        "_myCursorMesh": "9",
+                        "_myCursorMaterial": "64"
+                    },
+                    "active": true
+                },
+                {
+                    "type": "console-vr",
+                    "console-vr": {
+                        "_myHandedness": "left",
+                        "_myShowOnStart": true,
+                        "_myPlaneMesh": "7",
+                        "_myPlaneMaterial": "64",
+                        "_myTextMaterial": "DefaultFontMaterial"
+                    },
+                    "active": true
+                },
+                {
+                    "type": "hand-tracking",
+                    "hand-tracking": {
+                        "jointMesh": "9",
+                        "jointMaterial": "22"
                     }
                 }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                -0.462939977645874,
+                0.0,
+                0.0,
+                1.0
             ]
         },
         "49": {
@@ -425,6 +459,27 @@
                         "_myCursorMesh": "9",
                         "_myCursorMaterial": "64",
                         "_myHandedness": "right"
+                    },
+                    "active": true
+                },
+                {
+                    "type": "console-vr",
+                    "console-vr": {
+                        "_myHandedness": "right",
+                        "_mShowOnStart": false,
+                        "_myPlaneMesh": "7",
+                        "_myTextMaterial": "DefaultFontMaterial",
+                        "_myPlaneMaterial": "64",
+                        "_myShowOnStart": true
+                    },
+                    "active": true
+                },
+                {
+                    "type": "hand-tracking",
+                    "hand-tracking": {
+                        "jointMesh": "9",
+                        "jointMaterial": "22",
+                        "handedness": "right"
                     }
                 }
             ]
@@ -2307,9 +2362,9 @@
                 0.0,
                 1.0,
                 0.0,
+                -0.22997644543647767,
                 0.0,
-                0.0,
-                -1.0,
+                -0.5795824527740479,
                 1.0
             ],
             "components": [
@@ -2323,8 +2378,19 @@
                         "_myShowOnStart": true
                     },
                     "active": false
+                },
+                {
+                    "type": "console-vr",
+                    "console-vr": {
+                        "_myShowOnStart": true,
+                        "_myPlaneMesh": "7",
+                        "_myPlaneMaterial": "64",
+                        "_myTextMaterial": "DefaultFontMaterial",
+                        "_myHandedness": "none"
+                    }
                 }
-            ]
+            ],
+            "parent": "151"
         },
         "135": {
             "name": "Test Easy Tune",
@@ -2426,7 +2492,7 @@
                 0.18000006675720216,
                 0.0,
                 1.4901161193847657e-8,
-                8.940696716308599e-8,
+                8.9406967163086e-8,
                 0.006499975919723511,
                 1.0000001192092896
             ]
@@ -2621,7 +2687,7 @@
                 0.0,
                 0.0010000000474974514,
                 0.0,
-                0.09999199211597443,
+                0.09999199211597444,
                 0.0000028047265914210586,
                 -0.00005095595042803325,
                 1.0
@@ -2866,6 +2932,9 @@
                 0.0,
                 1.0
             ]
+        },
+        "151": {
+            "name": "Empty.000"
         }
     },
     "meshes": {
@@ -3276,7 +3345,7 @@
             ]
         },
         "runtime": {
-            "visualizeColliders": false
+            "visualizeColliders": true
         }
     },
     "animations": {},

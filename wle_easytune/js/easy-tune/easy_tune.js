@@ -6,12 +6,16 @@ WL.registerComponent('easy-tune', {
     _myTextMaterial: { type: WL.Type.Material, default: null }
 }, {
     init: function () {
-        this._myImpl = new PP.EasyTune();
+        this._myWidget = new PP.EasyTuneWidget();
+
+        //Examples
+        //Number: PP.EasyTuneVariables.addVariable(new PP.EasyTuneNumber("Speed", 10.32, 0.01, 3));
+        //Integer: PP.EasyTuneVariables.addVariable(new PP.EasyTuneInteger("Lives", 3, 1));
     },
     start: function () {
-        this._myImpl.start(this, PP.EasyTuneVariables, "Speed");
+        this._myWidget.start(this, PP.EasyTuneVariables, "X");
     },
     update: function (dt) {
-        this._myImpl.update(dt);
+        this._myWidget.update(dt);
     }
 });
