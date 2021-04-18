@@ -140,18 +140,39 @@ PP.EasyTuneNumberWidgetSetup = class EasyTuneNumberWidgetSetup {
     }
 
     _initializeRuntimeSetup() {
-        this.myPivotObjectGamepadPosition = [];
-        this.myPivotObjectGamepadPosition[PP.HandednessIndex.LEFT] = [0.049, 0.228, -0.020];
-        this.myPivotObjectGamepadPosition[PP.HandednessIndex.RIGHT] = [0, 0.228, -0.020];
-
-        this.myPivotObjectHandPosition = [];
-        this.myPivotObjectHandPosition[PP.HandednessIndex.LEFT] = [0.049, 0.228, -0.020];
-        this.myPivotObjectHandPosition[PP.HandednessIndex.RIGHT] = [0, 0.228, -0.020];
+        this._initializeObjectsTransforms();
 
         this.myButtonHoverColor = [150 / 255, 150 / 255, 150 / 255, 1];
 
         this.myModifyThumbstickMinThreshold = 0.2;
 
         this.myScrollVariableDelay = 0.75;
+    }
+
+    _initializeObjectsTransforms() {
+        this.myPivotObjectTransforms = [];
+        this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD] = [];
+
+        this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.LEFT] = {};
+        this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.LEFT].myPosition = [0.049, 0.228, -0.020];
+        this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.LEFT].myRotation = [0, 0, 0, 1];
+        glMatrix.quat.normalize(this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.LEFT], this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.LEFT]);
+
+        this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.RIGHT] = {};
+        this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.RIGHT].myPosition = [0, 0.228, -0.020];
+        this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.RIGHT].myRotation = [0, 0, 0, 1];
+        glMatrix.quat.normalize(this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.RIGHT], this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.RIGHT]);
+
+        this.myPivotObjectTransforms[PP.InputSourceType.HAND] = [];
+
+        this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.LEFT] = {};
+        this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.LEFT].myPosition = [0.049, 0.228, -0.020];
+        this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.LEFT].myRotation = [0, 0, 0, 1];
+        glMatrix.quat.normalize(this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.LEFT], this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.LEFT]);
+
+        this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.RIGHT] = {};
+        this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.RIGHT].myPosition = [0, 0.228, -0.020];
+        this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.RIGHT].myRotation = [0, 0, 0, 1];
+        glMatrix.quat.normalize(this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.RIGHT], this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.RIGHT]);
     }
 };

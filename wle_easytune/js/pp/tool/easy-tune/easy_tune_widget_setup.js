@@ -54,17 +54,7 @@ PP.EasyTuneWidgetSetup = class EasyTuneWidgetSetup {
     }
 
     _initializeRuntimeSetup() {
-        this.myPivotObjectGamepadRotation = [];
-        this.myPivotObjectGamepadRotation[PP.HandednessIndex.LEFT] = [-0.645, 0.425, 0.25, 0.584];
-        this.myPivotObjectGamepadRotation[PP.HandednessIndex.RIGHT] = [-0.645, -0.425, -0.25, 0.584];
-        glMatrix.quat.normalize(this.myPivotObjectGamepadRotation[PP.HandednessIndex.LEFT], this.myPivotObjectGamepadRotation[PP.HandednessIndex.LEFT]);
-        glMatrix.quat.normalize(this.myPivotObjectGamepadRotation[PP.HandednessIndex.RIGHT], this.myPivotObjectGamepadRotation[PP.HandednessIndex.RIGHT]);
-
-        this.myPivotObjectHandRotation = [];
-        this.myPivotObjectHandRotation[PP.HandednessIndex.LEFT] = [-0.084, 0.697, -0.218, 0.678];
-        this.myPivotObjectHandRotation[PP.HandednessIndex.RIGHT] = [-0.156, -0.756, 0.236, 0.590];
-        glMatrix.quat.normalize(this.myPivotObjectHandRotation[PP.HandednessIndex.LEFT], this.myPivotObjectHandRotation[PP.HandednessIndex.LEFT]);
-        glMatrix.quat.normalize(this.myPivotObjectHandRotation[PP.HandednessIndex.RIGHT], this.myPivotObjectHandRotation[PP.HandednessIndex.RIGHT]);
+        this._initializeObjectsTransforms();
 
         this.myGamepadHandedness = PP.HandednessIndex.RIGHT;
 
@@ -75,5 +65,32 @@ PP.EasyTuneWidgetSetup = class EasyTuneWidgetSetup {
         this.myScrollVariableDelay = 0.5;
         this.myScrollVariableMinThreshold = 0.6;
         this.myScrollVariableButtonType = PP.ButtonType.SQUEEZE;
+    }
+
+    _initializeObjectsTransforms() {
+        this.myPivotObjectTransforms = [];
+        this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD] = [];
+
+        this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.LEFT] = {};
+        this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.LEFT].myPosition = [0, 0, 0];
+        this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.LEFT].myRotation = [-0.645, 0.425, 0.25, 0.584];
+        glMatrix.quat.normalize(this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.LEFT], this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.LEFT]);
+
+        this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.RIGHT] = {};
+        this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.RIGHT].myPosition = [0, 0, 0];
+        this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.RIGHT].myRotation = [-0.645, -0.425, -0.25, 0.584];
+        glMatrix.quat.normalize(this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.RIGHT], this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.RIGHT]);
+
+        this.myPivotObjectTransforms[PP.InputSourceType.HAND] = [];
+
+        this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.LEFT] = {};
+        this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.LEFT].myPosition = [0, 0, 0];
+        this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.LEFT].myRotation = [-0.084, 0.697, -0.218, 0.678];
+        glMatrix.quat.normalize(this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.LEFT], this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.LEFT]);
+
+        this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.RIGHT] = {};
+        this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.RIGHT].myPosition = [0, 0, 0];
+        this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.RIGHT].myRotation = [-0.084, -0.697, 0.218, 0.678];
+        glMatrix.quat.normalize(this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.RIGHT], this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.RIGHT]);
     }
 };

@@ -36,18 +36,19 @@ PP.ConsoleVRWidgetUI = class ConsoleVRWidgetUI {
 
     update(dt) {
         if (this._myAdditionalSetup.myHandednessIndex != PP.HandednessIndex.NONE) {
-            let useHand = PP.InputUtils.getInputSource(PP.InputSourceType.HAND, this._myAdditionalSetup.myHandedness) != null;
+            let inputSourceType = PP.InputUtils.getInputSourceType(this._myAdditionalSetup.myHandedness);
 
-            if (useHand && this._myInputSourceType != PP.InputSourceType.HAND) {
-                this._myInputSourceType = PP.InputSourceType.HAND;
-                this.myPivotObject.resetRotation();
-                this.myPivotObject.rotateObject(this._mySetup.myPivotObjectHandRotation[this._myAdditionalSetup.myHandednessIndex]);
-                this.myMainObject.setTranslationLocal(this._mySetup.myMainObjectHandPosition[this._myAdditionalSetup.myHandednessIndex]);
-            } else if (!useHand && this._myInputSourceType != PP.InputSourceType.GAMEPAD) {
-                this._myInputSourceType = PP.InputSourceType.GAMEPAD;
-                this.myPivotObject.resetRotation();
-                this.myPivotObject.rotateObject(this._mySetup.myPivotObjectGamepadRotation[this._myAdditionalSetup.myHandednessIndex]);
-                this.myMainObject.setTranslationLocal(this._mySetup.myMainObjectGamepadPosition[this._myAdditionalSetup.myHandednessIndex]);
+            if (inputSourceType != this._myInputSourceType) {
+                this._myInputSourceType = inputSourceType;
+                if (this._myInputSourceType != PP.InputSourceType.NONE) {
+                    this.myPivotObject.setTranslationLocal(this._mySetup.myPivotObjectTransforms[this._myInputSourceType][this._myAdditionalSetup.myHandednessIndex].myPosition);
+                    this.myPivotObject.resetRotation();
+                    this.myPivotObject.rotateObject(this._mySetup.myPivotObjectTransforms[this._myInputSourceType][this._myAdditionalSetup.myHandednessIndex].myRotation);
+
+                    this.myMainObject.setTranslationLocal(this._mySetup.myMainObjectTransforms[this._myInputSourceType][this._myAdditionalSetup.myHandednessIndex].myPosition);
+                    this.myMainObject.resetRotation();
+                    this.myMainObject.rotateObject(this._mySetup.myMainObjectTransforms[this._myInputSourceType][this._myAdditionalSetup.myHandednessIndex].myRotation);
+                }
             }
         }
     }

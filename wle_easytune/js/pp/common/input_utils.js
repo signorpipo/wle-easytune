@@ -16,14 +16,14 @@ PP.InputUtils = {
 
         return handedness;
     },
-    getInputSource: function (inputSourceType, handedness) {
+    getInputSource: function (handedness, inputSourceType) {
         let inputSource = null;
 
         if (WL.xrSession) {
             for (let i = 0; i < WL.xrSession.inputSources.length; i++) {
                 let input = WL.xrSession.inputSources[i];
 
-                let isCorrectType = (inputSourceType == PP.InputSourceType.GAMEPAD && !input.hand) || (inputSourceType == PP.InputSourceType.HAND && input.hand);
+                let isCorrectType = (!inputSourceType) || (inputSourceType == PP.InputSourceType.GAMEPAD && !input.hand) || (inputSourceType == PP.InputSourceType.HAND && input.hand);
                 if (isCorrectType && input.handedness == handedness) {
                     inputSource = input;
                     break;
@@ -32,5 +32,19 @@ PP.InputUtils = {
         }
 
         return inputSource;
+    },
+    getInputSourceType: function (handedness) {
+        let inputSourceType = PP.InputSourceType.NONE;
+
+        let inputSource = PP.InputUtils.getInputSource(handedness);
+        if (inputSource) {
+            if (inputSource.hand) {
+                inputSourceType = PP.InputSourceType.HAND;
+            } else {
+                inputSourceType = PP.InputSourceType.GAMEPAD;
+            }
+        }
+
+        return inputSourceType;
     }
 };
