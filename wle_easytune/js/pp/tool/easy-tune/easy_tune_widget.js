@@ -14,7 +14,7 @@ PP.EasyTuneWidget = class EasyTuneWidget {
         this._myScrollVariableTimer = 0;
 
         this._myIsVisible = true;
-        this._myVisibilityButtonVisible = false;
+        this._myIsPinned = false;
 
         this._myRightGamepad = PP.RightGamepad; //@EDIT get right gamepad here based on how you store it in your game
         this._myLeftGamepad = PP.LeftGamepad; //@EDIT get left gamepad here based on how you store it in your game
@@ -222,17 +222,49 @@ PP.EasyTuneWidget = class EasyTuneWidget {
     _addListeners() {
         let ui = this._myUI;
 
-        ui.myVisibilityButtonCursorTargetComponent.addClickFunction(this._toggleVisibility.bind(this, true));
-        ui.myVisibilityButtonCursorTargetComponent.addHoverFunction(this._visibilityHover.bind(this, ui.myVisibilityButtonBackgroundComponent.material));
-        ui.myVisibilityButtonCursorTargetComponent.addUnHoverFunction(this._visibilityUnHover.bind(this, ui.myVisibilityButtonBackgroundComponent.material));
+        ui.myPinButtonCursorTargetComponent.addClickFunction(this._togglePin.bind(this));
+        ui.myPinButtonCursorTargetComponent.addHoverFunction(this._genericHover.bind(this, ui.myPinButtonBackgroundComponent.material));
+        ui.myPinButtonCursorTargetComponent.addUnHoverFunction(this._pinUnHover.bind(this, ui.myPinButtonBackgroundComponent.material));
+
+        if (this._myAdditionalSetup.myShowVisibilityButton) {
+            ui.myVisibilityButtonCursorTargetComponent.addClickFunction(this._toggleVisibility.bind(this, true));
+            ui.myVisibilityButtonCursorTargetComponent.addHoverFunction(this._genericHover.bind(this, ui.myVisibilityButtonBackgroundComponent.material));
+            ui.myVisibilityButtonCursorTargetComponent.addUnHoverFunction(this._visibilityUnHover.bind(this, ui.myVisibilityButtonBackgroundComponent.material));
+        }
     }
 
-    _visibilityHover(material) {
+    _genericHover(material) {
         material.color = this._mySetup.myButtonHoverColor;
     }
 
     _visibilityUnHover(material) {
         if (this._myIsVisible) {
+            material.color = this._mySetup.myBackgroundColor;
+        } else {
+            material.color = this._mySetup.myButtonDisabledBackgroundColor;
+        }
+    }
+
+    _togglePin() {
+        if (this._myIsVisible) {
+            this._myIsPinned = !this._myIsPinned;
+
+            this._myUI.setPinned(this._myIsPinned);
+
+            let textMaterial = this._myUI.myPinButtonTextComponent.material;
+            let backgroundMaterial = this._myUI.myPinButtonBackgroundComponent.material;
+            if (this._myIsPinned) {
+                textMaterial.color = this._mySetup.myDefaultTextColor;
+                backgroundMaterial.color = this._mySetup.myBackgroundColor;
+            } else {
+                textMaterial.color = this._mySetup.myButtonDisabledTextColor;
+                backgroundMaterial.color = this._mySetup.myButtonDisabledBackgroundColor;
+            }
+        }
+    }
+
+    _pinUnHover(material) {
+        if (this._myIsPinned) {
             material.color = this._mySetup.myBackgroundColor;
         } else {
             material.color = this._mySetup.myButtonDisabledBackgroundColor;

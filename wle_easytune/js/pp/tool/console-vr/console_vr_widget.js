@@ -15,6 +15,7 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
         this._myMessages = [];
 
         this._myIsVisible = true;
+        this._myIsPinned = false;
 
         this._myOldConsole = [];
 
@@ -360,7 +361,7 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
             let backgroundMaterial = ui.myFilterButtonsBackgroundComponents[PP.ConsoleVRWidget.MessageType[key]].material;
             let textMaterial = ui.myFilterButtonsTextComponents[PP.ConsoleVRWidget.MessageType[key]].material;
 
-            cursorTarget.addClickFunction(this._toggleFilter.bind(this, PP.ConsoleVRWidget.MessageType[key], backgroundMaterial, textMaterial));
+            cursorTarget.addClickFunction(this._toggleFilter.bind(this, PP.ConsoleVRWidget.MessageType[key], textMaterial));
             cursorTarget.addHoverFunction(this._filterHover.bind(this, PP.ConsoleVRWidget.MessageType[key], backgroundMaterial));
             cursorTarget.addUnHoverFunction(this._filterUnHover.bind(this, PP.ConsoleVRWidget.MessageType[key], backgroundMaterial));
         }
@@ -392,14 +393,18 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
             cursorTarget.addUnHoverFunction(this._setScrollDown.bind(this, backgroundMaterial, false));
         }
 
+        ui.myPinButtonCursorTargetComponent.addClickFunction(this._togglePin.bind(this));
+        ui.myPinButtonCursorTargetComponent.addHoverFunction(this._genericHover.bind(this, ui.myPinButtonBackgroundComponent.material));
+        ui.myPinButtonCursorTargetComponent.addUnHoverFunction(this._pinUnHover.bind(this, ui.myPinButtonBackgroundComponent.material));
+
         if (this._myAdditionalSetup.myShowVisibilityButton) {
             ui.myVisibilityButtonCursorTargetComponent.addClickFunction(this._toggleVisibility.bind(this, true));
-            ui.myVisibilityButtonCursorTargetComponent.addHoverFunction(this._visibilityHover.bind(this, ui.myVisibilityButtonBackgroundComponent.material));
+            ui.myVisibilityButtonCursorTargetComponent.addHoverFunction(this._genericHover.bind(this, ui.myVisibilityButtonBackgroundComponent.material));
             ui.myVisibilityButtonCursorTargetComponent.addUnHoverFunction(this._visibilityUnHover.bind(this, ui.myVisibilityButtonBackgroundComponent.material));
         }
     }
 
-    _toggleFilter(messageType, backgroundMaterial, textMaterial) {
+    _toggleFilter(messageType, textMaterial) {
         if (this._myIsVisible) {
             this._myTypeFilters[messageType] = !this._myTypeFilters[messageType];
             if (this._myTypeFilters[messageType]) {
@@ -511,11 +516,6 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
                 backgroundMaterial.color = this._mySetup.myButtonDisabledBackgroundColor;
             }
         }
-
-    }
-
-    _visibilityHover(material) {
-        material.color = this._mySetup.myButtonHoverColor;
     }
 
     _visibilityUnHover(material) {
@@ -526,7 +526,33 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
         }
     }
 
-    //Gamepad section 
+    _togglePin() {
+        if (this._myIsVisible) {
+            this._myIsPinned = !this._myIsPinned;
+
+            this._myUI.setPinned(this._myIsPinned);
+
+            let textMaterial = this._myUI.myPinButtonTextComponent.material;
+            let backgroundMaterial = this._myUI.myPinButtonBackgroundComponent.material;
+            if (this._myIsPinned) {
+                textMaterial.color = this._mySetup.myDefaultTextColor;
+                backgroundMaterial.color = this._mySetup.myBackgroundColor;
+            } else {
+                textMaterial.color = this._mySetup.myButtonDisabledTextColor;
+                backgroundMaterial.color = this._mySetup.myButtonDisabledBackgroundColor;
+            }
+        }
+    }
+
+    _pinUnHover(material) {
+        if (this._myIsPinned) {
+            material.color = this._mySetup.myBackgroundColor;
+        } else {
+            material.color = this._mySetup.myButtonDisabledBackgroundColor;
+        }
+    }
+
+    //Gamepad section
 
     _updateGamepadsExtraActions(dt) {
         if (this._myLeftGamepad && this._myRightGamepad) {

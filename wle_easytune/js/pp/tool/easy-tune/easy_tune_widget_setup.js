@@ -24,19 +24,20 @@ PP.EasyTuneWidgetSetup = class EasyTuneWidgetSetup {
         this.myTextColor = this.myDefaultTextColor;
         this.myTextOutlineColor = this.myDefaultTextColor;
 
-        //VisibilityButton
+
+        //Flag Buttons
         {
             this.myVisibilityButtonBackgroundScale = [0.015, 0.015, 1];
             this.myVisibilityButtonTextPosition = [0, 0, 0.007];
             this.myVisibilityButtonTextScale = [0.18, 0.18, 0.18];
 
-            let distanceBetweenToolsVisibilityButton = 0.01;
+            let distanceBetweenToolsVisibilityButtons = 0.01;
             let toolIndex = 1;
-            let buttonXOffset = this.myVisibilityButtonBackgroundScale[0] * (2 * toolIndex) + distanceBetweenToolsVisibilityButton * toolIndex;
+            let buttonXOffset = this.myVisibilityButtonBackgroundScale[0] * (2 * toolIndex) + distanceBetweenToolsVisibilityButtons * toolIndex;
 
             this.myVisibilityButtonPosition = [];
             this.myVisibilityButtonPosition[PP.HandednessIndex.NONE] = {};
-            this.myVisibilityButtonPosition[PP.HandednessIndex.NONE].myPosition = [-0.202 + buttonXOffset, 0.028, 0.015];
+            this.myVisibilityButtonPosition[PP.HandednessIndex.NONE].myPosition = [-0.3 + buttonXOffset, -0.2, 0.035];
 
             this.myVisibilityButtonPosition[PP.HandednessIndex.LEFT] = {};
             this.myVisibilityButtonPosition[PP.HandednessIndex.LEFT].myPosition = [-0.202 + buttonXOffset, 0.028, 0.015];
@@ -50,6 +51,35 @@ PP.EasyTuneWidgetSetup = class EasyTuneWidgetSetup {
             this.myVisibilityButtonCursorTargetPosition[2] = this.myVisibilityButtonTextPosition[2];
             this.myVisibilityButtonCollisionExtents = this.myVisibilityButtonBackgroundScale;
             this.myVisibilityButtonCollisionExtents[2] = this.myCursorTargetCollisionThickness;
+
+            this.myFlagButtonBackgroundScale = [0.0125, 0.0125, 1];
+            this.myFlagButtonTextPosition = [0, 0, 0.007];
+            this.myFlagButtonTextScale = [0.15, 0.15, 0.15];
+
+            let distanceBetweenFlagButtons = 0.0075;
+            let pinFlagIndex = 0;
+            let pinButtonYOffset = this.myVisibilityButtonBackgroundScale[1] + this.myFlagButtonBackgroundScale[1] + distanceBetweenFlagButtons +
+                this.myFlagButtonBackgroundScale[1] * (2 * pinFlagIndex) + distanceBetweenFlagButtons * pinFlagIndex;
+
+            this.myPinButtonPosition = [];
+            this.myPinButtonPosition[PP.HandednessIndex.NONE] = {};
+            this.myPinButtonPosition[PP.HandednessIndex.NONE].myPosition = this.myVisibilityButtonPosition[PP.HandednessIndex.NONE].myPosition.slice(0);
+            this.myPinButtonPosition[PP.HandednessIndex.NONE].myPosition[1] += pinButtonYOffset;
+
+            this.myPinButtonPosition[PP.HandednessIndex.LEFT] = {};
+            this.myPinButtonPosition[PP.HandednessIndex.LEFT].myPosition = this.myVisibilityButtonPosition[PP.HandednessIndex.LEFT].myPosition.slice(0);
+            this.myPinButtonPosition[PP.HandednessIndex.LEFT].myPosition[1] += pinButtonYOffset;
+
+            this.myPinButtonPosition[PP.HandednessIndex.RIGHT] = {};
+            this.myPinButtonPosition[PP.HandednessIndex.RIGHT].myPosition = this.myVisibilityButtonPosition[PP.HandednessIndex.RIGHT].myPosition.slice(0);
+            this.myPinButtonPosition[PP.HandednessIndex.RIGHT].myPosition[1] += pinButtonYOffset;
+
+            this.myPinButtonText = "P";
+
+            this.myPinButtonCursorTargetPosition = [0, 0, 0];
+            this.myPinButtonCursorTargetPosition[2] = this.myFlagButtonTextPosition[2];
+            this.myPinButtonCollisionExtents = this.myFlagButtonBackgroundScale;
+            this.myPinButtonCollisionExtents[2] = this.myCursorTargetCollisionThickness;
         }
     }
 
@@ -68,29 +98,35 @@ PP.EasyTuneWidgetSetup = class EasyTuneWidgetSetup {
     }
 
     _initializeObjectsTransforms() {
-        this.myPivotObjectTransforms = [];
-        this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD] = [];
+        this.myPivotObjectTransforms = this._createDefaultObjectTransforms();
 
-        this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.LEFT] = {};
-        this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.LEFT].myPosition = [0, 0, 0];
         this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.LEFT].myRotation = [-0.645, 0.425, 0.25, 0.584];
-        glMatrix.quat.normalize(this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.LEFT], this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.LEFT]);
+        glMatrix.quat.normalize(this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.LEFT].myRotation, this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.LEFT].myRotation);
 
-        this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.RIGHT] = {};
-        this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.RIGHT].myPosition = [0, 0, 0];
         this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.RIGHT].myRotation = [-0.645, -0.425, -0.25, 0.584];
-        glMatrix.quat.normalize(this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.RIGHT], this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.RIGHT]);
+        glMatrix.quat.normalize(this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.RIGHT].myRotation, this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.RIGHT].myRotation);
 
-        this.myPivotObjectTransforms[PP.InputSourceType.HAND] = [];
-
-        this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.LEFT] = {};
-        this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.LEFT].myPosition = [0, 0, 0];
         this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.LEFT].myRotation = [-0.084, 0.697, -0.218, 0.678];
-        glMatrix.quat.normalize(this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.LEFT], this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.LEFT]);
+        glMatrix.quat.normalize(this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.LEFT].myRotation, this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.LEFT].myRotation);
 
-        this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.RIGHT] = {};
-        this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.RIGHT].myPosition = [0, 0, 0];
         this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.RIGHT].myRotation = [-0.084, -0.697, 0.218, 0.678];
-        glMatrix.quat.normalize(this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.RIGHT], this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.RIGHT]);
+        glMatrix.quat.normalize(this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.RIGHT].myRotation, this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.RIGHT].myRotation);
+    }
+
+    _createDefaultObjectTransforms() {
+        let defaultObjectTransforms = [];
+
+        for (let inputSourceTypeKey in PP.InputSourceType) {
+            let inputSourceType = PP.InputSourceType[inputSourceTypeKey];
+            defaultObjectTransforms[inputSourceType] = [];
+            for (let handednessKey in PP.HandednessIndex) {
+                let handedness = PP.HandednessIndex[handednessKey];
+                defaultObjectTransforms[inputSourceType][handedness] = {};
+                defaultObjectTransforms[inputSourceType][handedness].myPosition = [0, 0, 0];
+                defaultObjectTransforms[inputSourceType][handedness].myRotation = [0, 0, 0, 1];
+            }
+        }
+
+        return defaultObjectTransforms;
     }
 };

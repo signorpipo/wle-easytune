@@ -2,7 +2,7 @@
 PP.EasyTuneNumberWidgetUI = class EasyTuneNumberWidgetUI {
 
     constructor() {
-        this._myInputSourceType = PP.InputSourceType.NONE;
+        this._myInputSourceType = null;
     }
 
     build(parentObject, setup, additionalSetup) {
@@ -24,18 +24,16 @@ PP.EasyTuneNumberWidgetUI = class EasyTuneNumberWidgetUI {
         }
     }
 
-    update(dt) {
-        if (this._myAdditionalSetup.myHandednessIndex != PP.HandednessIndex.NONE) {
-            let inputSourceType = PP.InputUtils.getInputSourceType(this._myAdditionalSetup.myHandedness);
 
-            if (inputSourceType != this._myInputSourceType) {
-                this._myInputSourceType = inputSourceType;
-                if (this._myInputSourceType != PP.InputSourceType.NONE) {
-                    this.myPivotObject.setTranslationLocal(this._mySetup.myPivotObjectTransforms[this._myInputSourceType][this._myAdditionalSetup.myHandednessIndex].myPosition);
-                    this.myPivotObject.resetRotation();
-                    this.myPivotObject.rotateObject(this._mySetup.myPivotObjectTransforms[this._myInputSourceType][this._myAdditionalSetup.myHandednessIndex].myRotation);
-                }
-            }
+    update(dt) {
+        let inputSourceType = PP.InputUtils.getInputSourceType(this._myAdditionalSetup.myHandedness);
+
+        if (inputSourceType != this._myInputSourceType) {
+            this._myInputSourceType = inputSourceType;
+
+            this.myPivotObject.setTranslationLocal(this._mySetup.myPivotObjectTransforms[this._myInputSourceType][this._myAdditionalSetup.myHandednessIndex].myPosition);
+            this.myPivotObject.resetRotation();
+            this.myPivotObject.rotateObject(this._mySetup.myPivotObjectTransforms[this._myInputSourceType][this._myAdditionalSetup.myHandednessIndex].myRotation);
         }
     }
 
