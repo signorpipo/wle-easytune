@@ -21,7 +21,7 @@ WL.registerComponent('easy-tune', {
         additionalSetup.myPlaneMaterial = this._myPlaneMaterial;
         additionalSetup.myTextMaterial = this._myTextMaterial;
 
-        this._myWidget.start(this, additionalSetup, PP.EasyTuneVariables, "X");
+        this._myWidget.start(this.object, additionalSetup, PP.EasyTuneVariables, "X");
     },
     update: function (dt) {
         this._myWidget.update(dt);

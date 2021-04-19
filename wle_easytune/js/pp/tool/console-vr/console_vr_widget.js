@@ -7,15 +7,15 @@
 PP.ConsoleVRWidget = class ConsoleVRWidget {
 
     constructor() {
+        this._myWidgetFrame = new PP.WidgetFrame("C", 0);
+        this._myWidgetFrame.registerOnWidgetVisibleChangedEvent(this, this._widgetVisibleChanged.bind(this));
+
         this._mySetup = new PP.ConsoleVRWidgetSetup();
         this._myAdditionalSetup = null;
 
         this._myUI = new PP.ConsoleVRWidgetUI();
 
         this._myMessages = [];
-
-        this._myIsVisible = true;
-        this._myIsPinned = false;
 
         this._myOldConsole = [];
 
@@ -39,19 +39,17 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
     start(parentObject, additionalSetup) {
         this._myAdditionalSetup = additionalSetup;
 
-        this._myUI.build(parentObject, this._mySetup, additionalSetup);
+        this._myWidgetFrame.start(parentObject, additionalSetup);
+
+        this._myUI.build(this._myWidgetFrame.getWidgetObject(), this._mySetup, additionalSetup);
 
         this._addListeners();
 
-        if (!this._myAdditionalSetup.myShowOnStart) {
-            this._toggleVisibility(false);
-        }
-
-        this._shimConsoleFunctions();
+        this._overrideConsoleFunctions();
     }
 
     //This must be done only when all the setup is complete, to avoid issues with other part of the code calling the console and then triggering the console vr while not ready yet
-    _shimConsoleFunctions() {
+    _overrideConsoleFunctions() {
         this._myOldConsole[PP.ConsoleVRWidget.ConsoleType.LOG] = console.log;
         console.log = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.LOG);
 
@@ -72,9 +70,9 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
     }
 
     update(dt) {
-        this._myUI.update(dt);
+        this._myWidgetFrame.update(dt);
 
-        if (this._myIsVisible) {
+        if (this._myWidgetFrame.myIsWidgetVisible) {
             this._updateScroll(dt);
         }
 
@@ -300,7 +298,7 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
     }
 
     _updateAllTexts() {
-        if (this._myIsVisible) {
+        if (this._myWidgetFrame.myIsWidgetVisible) {
             for (let key in PP.ConsoleVRWidget.MessageType) {
                 this._updateText(PP.ConsoleVRWidget.MessageType[key]);
             }
@@ -392,20 +390,10 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
             cursorTarget.addHoverFunction(this._setScrollDown.bind(this, backgroundMaterial, true));
             cursorTarget.addUnHoverFunction(this._setScrollDown.bind(this, backgroundMaterial, false));
         }
-
-        ui.myPinButtonCursorTargetComponent.addClickFunction(this._togglePin.bind(this));
-        ui.myPinButtonCursorTargetComponent.addHoverFunction(this._genericHover.bind(this, ui.myPinButtonBackgroundComponent.material));
-        ui.myPinButtonCursorTargetComponent.addUnHoverFunction(this._pinUnHover.bind(this, ui.myPinButtonBackgroundComponent.material));
-
-        if (this._myAdditionalSetup.myShowVisibilityButton) {
-            ui.myVisibilityButtonCursorTargetComponent.addClickFunction(this._toggleVisibility.bind(this, true));
-            ui.myVisibilityButtonCursorTargetComponent.addHoverFunction(this._genericHover.bind(this, ui.myVisibilityButtonBackgroundComponent.material));
-            ui.myVisibilityButtonCursorTargetComponent.addUnHoverFunction(this._visibilityUnHover.bind(this, ui.myVisibilityButtonBackgroundComponent.material));
-        }
     }
 
     _toggleFilter(messageType, textMaterial) {
-        if (this._myIsVisible) {
+        if (this._myWidgetFrame.myIsWidgetVisible) {
             this._myTypeFilters[messageType] = !this._myTypeFilters[messageType];
             if (this._myTypeFilters[messageType]) {
                 textMaterial.color = this._mySetup.myFilterButtonDisabledTextColor;
@@ -419,7 +407,7 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
     }
 
     _clearConsole() {
-        if (this._myIsVisible) {
+        if (this._myWidgetFrame.myIsWidgetVisible) {
             this._myMessages = [];
             this._clampScrollOffset();
             this._updateAllTexts();
@@ -431,7 +419,7 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
     }
 
     _setScrollUp(material, value) {
-        if (this._myIsVisible) {
+        if (this._myWidgetFrame.myIsWidgetVisible) {
             if (value) {
                 this._myScrollTimer = 0;
                 this._genericHover(material);
@@ -444,7 +432,7 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
     }
 
     _setScrollDown(material, value) {
-        if (this._myIsVisible) {
+        if (this._myWidgetFrame.myIsWidgetVisible) {
             if (value) {
                 this._myScrollTimer = 0;
                 this._genericHover(material);
@@ -457,14 +445,14 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
     }
 
     _instantScrollUp() {
-        if (this._myIsVisible) {
+        if (this._myWidgetFrame.myIsWidgetVisible) {
             this._myScrollOffset = this._getMaxScrollOffset();
             this._updateAllTexts();
         }
     }
 
     _instantScrollDown() {
-        if (this._myIsVisible) {
+        if (this._myWidgetFrame.myIsWidgetVisible) {
             this._myScrollOffset = 0;
             this._updateAllTexts();
         }
@@ -490,78 +478,13 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
         material.color = this._mySetup.myBackgroundColor;
     }
 
-    _toggleVisibility(isButton) {
-        if (isButton && !this._myAdditionalSetup.myShowVisibilityButton) {
-            return;
-        }
-
-        this._myIsVisible = !this._myIsVisible;
-
-        if (this._myIsVisible) {
-            this._updateAllTexts();
-        }
-
-        this._myUI.setVisible(this._myIsVisible);
-
-        let textMaterial = this._myUI.myVisibilityButtonTextComponent.material;
-        let backgroundMaterial = this._myUI.myVisibilityButtonBackgroundComponent.material;
-        if (this._myIsVisible) {
-            textMaterial.color = this._mySetup.myDefaultTextColor;
-            if (!isButton) {
-                backgroundMaterial.color = this._mySetup.myBackgroundColor;
-            }
-        } else {
-            textMaterial.color = this._mySetup.myButtonDisabledTextColor;
-            if (!isButton) {
-                backgroundMaterial.color = this._mySetup.myButtonDisabledBackgroundColor;
-            }
-        }
-    }
-
-    _visibilityUnHover(material) {
-        if (this._myIsVisible) {
-            material.color = this._mySetup.myBackgroundColor;
-        } else {
-            material.color = this._mySetup.myButtonDisabledBackgroundColor;
-        }
-    }
-
-    _togglePin() {
-        if (this._myIsVisible) {
-            this._myIsPinned = !this._myIsPinned;
-
-            this._myUI.setPinned(this._myIsPinned);
-
-            let textMaterial = this._myUI.myPinButtonTextComponent.material;
-            let backgroundMaterial = this._myUI.myPinButtonBackgroundComponent.material;
-            if (this._myIsPinned) {
-                textMaterial.color = this._mySetup.myDefaultTextColor;
-                backgroundMaterial.color = this._mySetup.myBackgroundColor;
-            } else {
-                textMaterial.color = this._mySetup.myButtonDisabledTextColor;
-                backgroundMaterial.color = this._mySetup.myButtonDisabledBackgroundColor;
-            }
-        }
-    }
-
-    _pinUnHover(material) {
-        if (this._myIsPinned) {
-            material.color = this._mySetup.myBackgroundColor;
-        } else {
-            material.color = this._mySetup.myButtonDisabledBackgroundColor;
-        }
-    }
-
     //Gamepad section
 
     _updateGamepadsExtraActions(dt) {
         if (this._myLeftGamepad && this._myRightGamepad) {
-            let leftThumbstickJustPressed = this._myLeftGamepad.getButtonInfo(PP.ButtonType.THUMBSTICK).myIsPressed && !this._myLeftGamepad.getButtonInfo(PP.ButtonType.THUMBSTICK).myIsPrevPressed;
-            let rightThumbstickJustPressed = this._myRightGamepad.getButtonInfo(PP.ButtonType.THUMBSTICK).myIsPressed && !this._myRightGamepad.getButtonInfo(PP.ButtonType.THUMBSTICK).myIsPrevPressed;
-
-            if ((leftThumbstickJustPressed && this._myRightGamepad.getButtonInfo(PP.ButtonType.THUMBSTICK).myIsPressed) ||
-                (rightThumbstickJustPressed && this._myLeftGamepad.getButtonInfo(PP.ButtonType.THUMBSTICK).myIsPressed)) {
-                this._toggleVisibility(false);
+            if ((this._myLeftGamepad.getButtonInfo(PP.ButtonType.THUMBSTICK).isPressStart() && this._myRightGamepad.getButtonInfo(PP.ButtonType.THUMBSTICK).myIsPressed) ||
+                (this._myRightGamepad.getButtonInfo(PP.ButtonType.THUMBSTICK).isPressStart() && this._myLeftGamepad.getButtonInfo(PP.ButtonType.THUMBSTICK).myIsPressed)) {
+                this._toggleVisibility();
             }
 
             this._myPulseTimer = Math.max(this._myPulseTimer - dt, 0);
@@ -570,8 +493,18 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
         }
     }
 
+    _toggleVisibility() {
+        this._myWidgetFrame.toggleVisibility();
+    }
+
+    _widgetVisibleChanged() {
+        if (this._myWidgetFrame.myIsWidgetVisible) {
+            this._updateAllTexts();
+        }
+    }
+
     _updateScrollWithThumbstick(dt) {
-        if (this._myIsVisible) {
+        if (this._myWidgetFrame.myIsWidgetVisible) {
             let axes = [0, 0];
             if (this._mySetup.myScrollThumbstickHandedness == PP.HandednessIndex.LEFT) {
                 axes = this._myLeftGamepad.getAxesInfo().myAxes;
@@ -600,7 +533,7 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
     _pulseGamepad() {
         if (this._myLeftGamepad && this._myRightGamepad) {
             let pulseType = this._myAdditionalSetup.myPulseOnNewMessage;
-            let pulseEnabled = pulseType == PP.ConsoleVRWidget.PulseOnNewMessage.ALWAYS || (!this._myIsVisible && pulseType == PP.ConsoleVRWidget.PulseOnNewMessage.WHEN_HIDDEN);
+            let pulseEnabled = pulseType == PP.ConsoleVRWidget.PulseOnNewMessage.ALWAYS || (!this._myWidgetFrame.myIsWidgetVisible && pulseType == PP.ConsoleVRWidget.PulseOnNewMessage.WHEN_HIDDEN);
             if (pulseEnabled && this._myPulseTimer == 0) {
                 if (this._myAdditionalSetup.myHandednessIndex == PP.HandednessIndex.RIGHT) {
                     this._myRightGamepad.pulse(this._mySetup.myPulseIntensity, this._mySetup.myPulseDuration);

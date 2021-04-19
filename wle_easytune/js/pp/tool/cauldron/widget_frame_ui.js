@@ -1,12 +1,13 @@
 
-PP.EasyTuneWidgetUI = class EasyTuneWidgetUI {
+PP.WidgetFrameUI = class WidgetFrameUI {
 
     constructor() {
         this._myInputSourceType = null;
 
+        this._myIsWidgetVisible = true;
+
         this._myParentObject = null;
         this._myIsPinned = false;
-        this._myForceRefreshObjectsTransforms = false;
     }
 
     build(parentObject, setup, additionalSetup) {
@@ -20,16 +21,29 @@ PP.EasyTuneWidgetUI = class EasyTuneWidgetUI {
         this._addComponents();
     }
 
-    setVisible(visible) {
-        if (visible) {
-            this.myMainPanel.resetTransform();
+    setWidgetVisible(visible) {
+        this._myIsWidgetVisible = visible;
+        if (this._myIsWidgetVisible) {
+            this.myWidgetObject.resetTransform();
             this.myFlagsButtonPanel.resetTransform();
+
+            this._updateObjectsTransforms(true);
         } else {
-            this.myMainPanel.scale([0, 0, 0]);
-            this.myMainPanel.setTranslationWorld([0, -3000, 0]);
+            this.myWidgetObject.scale([0, 0, 0]);
+            this.myWidgetObject.setTranslationLocal([0, -7777, 0]);
 
             this.myFlagsButtonPanel.scale([0, 0, 0]);
-            this.myFlagsButtonPanel.setTranslationWorld([0, -3000, 0]);
+            this.myFlagsButtonPanel.setTranslationLocal([0, -7777, 0]);
+        }
+    }
+
+    setVisibilityButtonVisible(visible) {
+        if (visible) {
+            this.myVisibilityButtonPanel.resetTransform();
+            this.myVisibilityButtonPanel.setTranslationLocal(this._mySetup.myVisibilityButtonPosition[this._myAdditionalSetup.myHandednessIndex].myPosition);
+        } else {
+            this.myVisibilityButtonPanel.scale([0, 0, 0]);
+            this.myVisibilityButtonPanel.setTranslationLocal([0, -7777, 0]);
         }
     }
 
@@ -40,39 +54,40 @@ PP.EasyTuneWidgetUI = class EasyTuneWidgetUI {
                 PP.ObjectUtils.reparentKeepTransform(this.myPivotObject, null);
             } else {
                 PP.ObjectUtils.reparentKeepTransform(this.myPivotObject, this._myParentObject);
-                this._myForceRefreshObjectsTransforms = true;
+                this._updateObjectsTransforms(true);
             }
         }
     }
 
-    setVisibilityButtonVisible(visible) {
-        if (visible) {
-            this.myVisibilityButtonPanel.resetTransform();
-            this.myVisibilityButtonPanel.setTranslationLocal(this._mySetup.myVisibilityButtonPosition[this._myAdditionalSetup.myHandednessIndex].myPosition);
-        } else {
-            this.myVisibilityButtonPanel.scale([0, 0, 0]);
-            this.myMainPanel.setTranslationWorld([0, -3000, 0]);
-        }
+    update(dt) {
+        this._updateObjectsTransforms(false);
     }
 
-    update(dt) {
+    _updateObjectsTransforms(forceRefreshObjectsTransforms) {
         let inputSourceType = PP.InputUtils.getInputSourceType(this._myAdditionalSetup.myHandedness);
 
-        if (inputSourceType != this._myInputSourceType || this._myForceRefreshObjectsTransforms) {
+        if (inputSourceType != this._myInputSourceType || forceRefreshObjectsTransforms) {
             this._myInputSourceType = inputSourceType;
-            this._myForceRefreshObjectsTransforms = false;
 
-            this.myPivotObject.setTranslationLocal(this._mySetup.myPivotObjectTransforms[this._myInputSourceType][this._myAdditionalSetup.myHandednessIndex].myPosition);
-            this.myPivotObject.resetRotation();
-            this.myPivotObject.rotateObject(this._mySetup.myPivotObjectTransforms[this._myInputSourceType][this._myAdditionalSetup.myHandednessIndex].myRotation);
+            if (!this._myIsPinned) {
+                this.myPivotObject.setTranslationLocal(this._mySetup.myPivotObjectTransforms[this._myInputSourceType][this._myAdditionalSetup.myHandednessIndex].myPosition);
+                this.myPivotObject.resetRotation();
+                this.myPivotObject.rotateObject(this._mySetup.myPivotObjectTransforms[this._myInputSourceType][this._myAdditionalSetup.myHandednessIndex].myRotation);
+            }
+
+            if (this._myIsWidgetVisible) {
+                this.myWidgetObject.setTranslationLocal(this._mySetup.myWidgetObjectTransforms[this._myInputSourceType][this._myAdditionalSetup.myHandednessIndex].myPosition);
+                this.myWidgetObject.resetRotation();
+                this.myWidgetObject.rotateObject(this._mySetup.myWidgetObjectTransforms[this._myInputSourceType][this._myAdditionalSetup.myHandednessIndex].myRotation);
+            }
         }
     }
+
 
     //Skeleton
     _createSkeleton() {
         this.myPivotObject = WL.scene.addObject(this._myParentObject);
-
-        this.myMainPanel = WL.scene.addObject(this.myMainObject);
+        this.myWidgetObject = WL.scene.addObject(this.myPivotObject);
 
         this.myVisibilityButtonPanel = WL.scene.addObject(this.myPivotObject);
         this.myVisibilityButtonBackground = WL.scene.addObject(this.myVisibilityButtonPanel);

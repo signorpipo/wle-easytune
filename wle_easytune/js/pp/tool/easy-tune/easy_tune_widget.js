@@ -2,6 +2,12 @@
 PP.EasyTuneWidget = class EasyTuneWidget {
 
     constructor() {
+        this._myWidgetFrame = new PP.WidgetFrame("E", 1);
+        this._myWidgetFrame.registerOnWidgetVisibleChangedEvent(this, this._widgetVisibleChanged.bind(this));
+
+        this._mySetup = new PP.EasyTuneWidgetSetup();
+        this._myAdditionalSetup = null;
+
         this._myWidgets = [];
 
         this._myEasyTuneVariables = null;
@@ -13,16 +19,8 @@ PP.EasyTuneWidget = class EasyTuneWidget {
 
         this._myScrollVariableTimer = 0;
 
-        this._myIsVisible = true;
-        this._myIsPinned = false;
-
         this._myRightGamepad = PP.RightGamepad; //@EDIT get right gamepad here based on how you store it in your game
         this._myLeftGamepad = PP.LeftGamepad; //@EDIT get left gamepad here based on how you store it in your game
-
-        this._mySetup = new PP.EasyTuneWidgetSetup();
-        this._myAdditionalSetup = null;
-
-        this._myUI = new PP.EasyTuneWidgetUI();
 
         this._myGamepad = null;
         if (this._mySetup.myGamepadHandedness == PP.HandednessIndex.RIGHT) {
@@ -32,11 +30,10 @@ PP.EasyTuneWidget = class EasyTuneWidget {
         }
     }
 
-    start(easyTuneComponent, additionalSetup, easyTuneVariables, startVariableName) {
+    start(parentObject, additionalSetup, easyTuneVariables, startVariableName) {
         this._myAdditionalSetup = additionalSetup;
 
-        this._myUI.build(easyTuneComponent.object, this._mySetup, additionalSetup);
-        this._addListeners();
+        this._myWidgetFrame.start(parentObject, additionalSetup);
 
         this._myEasyTuneVariables = easyTuneVariables;
         this._myEasyTuneLastSize = this._myEasyTuneVariables.size;
@@ -48,21 +45,17 @@ PP.EasyTuneWidget = class EasyTuneWidget {
             this._myCurrentVariable = this._myEasyTuneVariables.get(this._myVariableNames[0]);
         }
 
-        this._initializeWidgets(easyTuneComponent);
-
-        if (!additionalSetup.myShowOnStart) {
-            this._toggleVisibility(false);
-        }
+        this._initializeWidgets();
     }
 
     update(dt) {
-        this._myUI.update(dt);
+        this._myWidgetFrame.update(dt);
 
         if (this._myEasyTuneVariables.size != this._myEasyTuneLastSize) {
             this._refreshEasyTuneVariables();
         }
 
-        if (this._myIsVisible && this._myEasyTuneVariables.size > 0) {
+        if (this._myWidgetFrame.myIsWidgetVisible && this._myEasyTuneVariables.size > 0) {
             if (this._myCurrentWidget) {
                 this._myCurrentWidget.update(dt);
             }
@@ -72,11 +65,11 @@ PP.EasyTuneWidget = class EasyTuneWidget {
         this._updateGamepadWidgetVisibility();
     }
 
-    _initializeWidgets(easyTuneComponent) {
+    _initializeWidgets() {
         this._myWidgets[PP.EasyTuneVariableType.NUMBER] = new PP.EasyTuneNumberWidget(this._myGamepad, this._mySetup.myScrollVariableButtonType);
 
         for (let item of this._myWidgets) {
-            item.start(this._myUI.myPivotObject, this._myAdditionalSetup);
+            item.start(this._myWidgetFrame.getWidgetObject(), this._myAdditionalSetup);
             item.setVisible(false);
             item.registerScrollVariableEvent(this, this._scrollVariable.bind(this));
         }
@@ -96,7 +89,7 @@ PP.EasyTuneWidget = class EasyTuneWidget {
         if (this._myCurrentVariable.myType in this._myWidgets) {
             this._myCurrentWidget = this._myWidgets[this._myCurrentVariable.myType];
             this._myCurrentWidget.setEasyTuneVariable(this._myCurrentVariable, this._createIndexString());
-            this._myCurrentWidget.setVisible(this._myIsVisible);
+            this._myCurrentWidget.setVisible(this._myWidgetFrame.myIsWidgetVisible);
         } else {
             this._myCurrentWidget = null;
         }
@@ -125,42 +118,27 @@ PP.EasyTuneWidget = class EasyTuneWidget {
 
     _updateGamepadWidgetVisibility() {
         if (this._myGamepad) {
-            let bottomButtonJustPressed = this._myGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).myIsPressed && !this._myGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).myIsPrevPressed;
-            let topButtonJustPressed = this._myGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).myIsPressed && !this._myGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).myIsPrevPressed;
-
-            if ((bottomButtonJustPressed && this._myGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).myIsPressed) ||
-                (topButtonJustPressed && this._myGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).myIsPressed)) {
-                this._toggleVisibility(false);
+            if ((this._myGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).isPressStart() && this._myGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).myIsPressed) ||
+                (this._myGamepad.getButtonInfo(PP.ButtonType.TOP_BUTTON).isPressStart() && this._myGamepad.getButtonInfo(PP.ButtonType.BOTTOM_BUTTON).myIsPressed)) {
+                this._toggleVisibility();
             }
         }
     }
 
-    _toggleVisibility(isButton) {
-        if (isButton && !this._myAdditionalSetup.myShowVisibilityButton) {
-            return;
-        }
+    _toggleVisibility() {
+        this._myWidgetFrame.toggleVisibility();
+    }
 
-        this._myIsVisible = !this._myIsVisible;
-
-        let textMaterial = this._myUI.myVisibilityButtonTextComponent.material;
-        let backgroundMaterial = this._myUI.myVisibilityButtonBackgroundComponent.material;
-        if (this._myIsVisible) {
-            textMaterial.color = this._mySetup.myDefaultTextColor;
-            backgroundMaterial.color = this._mySetup.myBackgroundColor;
-        } else {
-            textMaterial.color = this._mySetup.myButtonDisabledTextColor;
-            backgroundMaterial.color = this._mySetup.myButtonDisabledBackgroundColor;
-        }
-
+    _widgetVisibleChanged() {
         if (this._myCurrentWidget) {
             if (this._myEasyTuneVariables.size > 0) {
-                this._myCurrentWidget.setVisible(this._myIsVisible);
+                this._myCurrentWidget.setVisible(this._myWidgetFrame.myIsWidgetVisible);
             } else {
                 this._myCurrentWidget.setVisible(false);
             }
         }
 
-        if (this._myIsVisible) {
+        if (this._myWidgetFrame.myIsWidgetVisible) {
             this._refreshEasyTuneVariables();
         }
     }
@@ -217,57 +195,5 @@ PP.EasyTuneWidget = class EasyTuneWidget {
     _getVariableIndex(variable) {
         let variableIndex = this._myVariableNames.indexOf(variable.myName);
         return variableIndex;
-    }
-
-    _addListeners() {
-        let ui = this._myUI;
-
-        ui.myPinButtonCursorTargetComponent.addClickFunction(this._togglePin.bind(this));
-        ui.myPinButtonCursorTargetComponent.addHoverFunction(this._genericHover.bind(this, ui.myPinButtonBackgroundComponent.material));
-        ui.myPinButtonCursorTargetComponent.addUnHoverFunction(this._pinUnHover.bind(this, ui.myPinButtonBackgroundComponent.material));
-
-        if (this._myAdditionalSetup.myShowVisibilityButton) {
-            ui.myVisibilityButtonCursorTargetComponent.addClickFunction(this._toggleVisibility.bind(this, true));
-            ui.myVisibilityButtonCursorTargetComponent.addHoverFunction(this._genericHover.bind(this, ui.myVisibilityButtonBackgroundComponent.material));
-            ui.myVisibilityButtonCursorTargetComponent.addUnHoverFunction(this._visibilityUnHover.bind(this, ui.myVisibilityButtonBackgroundComponent.material));
-        }
-    }
-
-    _genericHover(material) {
-        material.color = this._mySetup.myButtonHoverColor;
-    }
-
-    _visibilityUnHover(material) {
-        if (this._myIsVisible) {
-            material.color = this._mySetup.myBackgroundColor;
-        } else {
-            material.color = this._mySetup.myButtonDisabledBackgroundColor;
-        }
-    }
-
-    _togglePin() {
-        if (this._myIsVisible) {
-            this._myIsPinned = !this._myIsPinned;
-
-            this._myUI.setPinned(this._myIsPinned);
-
-            let textMaterial = this._myUI.myPinButtonTextComponent.material;
-            let backgroundMaterial = this._myUI.myPinButtonBackgroundComponent.material;
-            if (this._myIsPinned) {
-                textMaterial.color = this._mySetup.myDefaultTextColor;
-                backgroundMaterial.color = this._mySetup.myBackgroundColor;
-            } else {
-                textMaterial.color = this._mySetup.myButtonDisabledTextColor;
-                backgroundMaterial.color = this._mySetup.myButtonDisabledBackgroundColor;
-            }
-        }
-    }
-
-    _pinUnHover(material) {
-        if (this._myIsPinned) {
-            material.color = this._mySetup.myBackgroundColor;
-        } else {
-            material.color = this._mySetup.myButtonDisabledBackgroundColor;
-        }
     }
 };

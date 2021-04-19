@@ -1,13 +1,5 @@
 PP.ConsoleVRWidgetUI = class ConsoleVRWidgetUI {
 
-    constructor() {
-        this._myInputSourceType = null;
-
-        this._myParentObject = null;
-        this._myIsPinned = false;
-        this._myForceRefreshObjectsTransforms = false;
-    }
-
     build(parentObject, setup, additionalSetup) {
         this._myParentObject = parentObject;
         this._mySetup = setup;
@@ -22,71 +14,24 @@ PP.ConsoleVRWidgetUI = class ConsoleVRWidgetUI {
 
     setVisible(visible) {
         if (visible) {
-            this.myMainPanel.resetTransform();
-            this.myFlagsButtonPanel.resetTransform();
+            this.myPivotObject.resetTransform();
         } else {
-            this.myMainPanel.scale([0, 0, 0]);
-            this.myMainPanel.setTranslationWorld([0, -3000, 0]);
-
-            this.myFlagsButtonPanel.scale([0, 0, 0]);
-            this.myFlagsButtonPanel.setTranslationWorld([0, -3000, 0]);
-        }
-    }
-
-    setPinned(pinned) {
-        if (pinned != this._myIsPinned) {
-            this._myIsPinned = pinned;
-            if (this._myIsPinned) {
-                PP.ObjectUtils.reparentKeepTransform(this.myPivotObject, null);
-            } else {
-                PP.ObjectUtils.reparentKeepTransform(this.myPivotObject, this._myParentObject);
-                this._myForceRefreshObjectsTransforms = true;
-            }
-        }
-    }
-
-    setVisibilityButtonVisible(visible) {
-        if (visible) {
-            this.myVisibilityButtonPanel.resetTransform();
-            this.myVisibilityButtonPanel.setTranslationLocal(this._mySetup.myVisibilityButtonPosition[this._myAdditionalSetup.myHandednessIndex].myPosition);
-        } else {
-            this.myVisibilityButtonPanel.scale([0, 0, 0]);
-            this.myMainPanel.setTranslationWorld([0, -3000, 0]);
-        }
-    }
-
-    update(dt) {
-        let inputSourceType = PP.InputUtils.getInputSourceType(this._myAdditionalSetup.myHandedness);
-
-        if (inputSourceType != this._myInputSourceType || this._myForceRefreshObjectsTransforms) {
-            this._myInputSourceType = inputSourceType;
-            this._myForceRefreshObjectsTransforms = false;
-
-            this.myPivotObject.setTranslationLocal(this._mySetup.myPivotObjectTransforms[this._myInputSourceType][this._myAdditionalSetup.myHandednessIndex].myPosition);
-            this.myPivotObject.resetRotation();
-            this.myPivotObject.rotateObject(this._mySetup.myPivotObjectTransforms[this._myInputSourceType][this._myAdditionalSetup.myHandednessIndex].myRotation);
-
-            this.myMainObject.setTranslationLocal(this._mySetup.myMainObjectTransforms[this._myInputSourceType][this._myAdditionalSetup.myHandednessIndex].myPosition);
-            this.myMainObject.resetRotation();
-            this.myMainObject.rotateObject(this._mySetup.myMainObjectTransforms[this._myInputSourceType][this._myAdditionalSetup.myHandednessIndex].myRotation);
+            this.myPivotObject.scale([0, 0, 0]);
+            this.myPivotObject.setTranslationLocal([0, -7777, 0]);
         }
     }
 
     //Skeleton
     _createSkeleton() {
         this.myPivotObject = WL.scene.addObject(this._myParentObject);
-        this.myMainObject = WL.scene.addObject(this.myPivotObject);
-
-        this.myMainPanel = WL.scene.addObject(this.myMainObject);
 
         this._createMessagesSkeleton();
         this._createButtonsSkeleton();
         this._createPointerSkeleton();
-        this._createFlagsSkeleton();
     }
 
     _createMessagesSkeleton() {
-        this.myMessagesPanel = WL.scene.addObject(this.myMainPanel);
+        this.myMessagesPanel = WL.scene.addObject(this.myPivotObject);
         this.myMessagesBackground = WL.scene.addObject(this.myMessagesPanel);
         this.myMessagesTextsPanel = WL.scene.addObject(this.myMessagesPanel);
 
@@ -97,7 +42,7 @@ PP.ConsoleVRWidgetUI = class ConsoleVRWidgetUI {
     }
 
     _createButtonsSkeleton() {
-        this.myButtonsPanel = WL.scene.addObject(this.myMainPanel);
+        this.myButtonsPanel = WL.scene.addObject(this.myPivotObject);
 
         this.myFilterButtonsPanels = [];
         this.myFilterButtonsBackgrounds = [];
@@ -128,21 +73,7 @@ PP.ConsoleVRWidgetUI = class ConsoleVRWidgetUI {
     }
 
     _createPointerSkeleton() {
-        this.myPointerCursorTarget = WL.scene.addObject(this.myMainPanel);
-    }
-
-    _createFlagsSkeleton() {
-        this.myVisibilityButtonPanel = WL.scene.addObject(this.myPivotObject);
-        this.myVisibilityButtonBackground = WL.scene.addObject(this.myVisibilityButtonPanel);
-        this.myVisibilityButtonText = WL.scene.addObject(this.myVisibilityButtonPanel);
-        this.myVisibilityButtonCursorTarget = WL.scene.addObject(this.myVisibilityButtonPanel);
-
-        this.myFlagsButtonPanel = WL.scene.addObject(this.myPivotObject);
-
-        this.myPinButtonPanel = WL.scene.addObject(this.myFlagsButtonPanel);
-        this.myPinButtonBackground = WL.scene.addObject(this.myPinButtonPanel);
-        this.myPinButtonText = WL.scene.addObject(this.myPinButtonPanel);
-        this.myPinButtonCursorTarget = WL.scene.addObject(this.myPinButtonPanel);
+        this.myPointerCursorTarget = WL.scene.addObject(this.myPivotObject);
     }
 
     //Transforms
@@ -152,7 +83,6 @@ PP.ConsoleVRWidgetUI = class ConsoleVRWidgetUI {
         this._setMessagesTransforms();
         this._setButtonsTransforms();
         this._setPointerTransform();
-        this._setFlagsTransform();
     }
 
     _setMessagesTransforms() {
@@ -219,28 +149,11 @@ PP.ConsoleVRWidgetUI = class ConsoleVRWidgetUI {
         this.myPointerCursorTarget.setTranslationLocal(this._mySetup.myPointerCursorTargetPosition);
     }
 
-    _setFlagsTransform() {
-        this.myVisibilityButtonPanel.setTranslationLocal(this._mySetup.myVisibilityButtonPosition[this._myAdditionalSetup.myHandednessIndex].myPosition);
-
-        this.myVisibilityButtonBackground.scale(this._mySetup.myVisibilityButtonBackgroundScale);
-        this.myVisibilityButtonText.setTranslationLocal(this._mySetup.myVisibilityButtonTextPosition);
-        this.myVisibilityButtonText.scale(this._mySetup.myVisibilityButtonTextScale);
-        this.myVisibilityButtonCursorTarget.setTranslationLocal(this._mySetup.myVisibilityButtonCursorTargetPosition);
-
-        this.myPinButtonPanel.setTranslationLocal(this._mySetup.myPinButtonPosition[this._myAdditionalSetup.myHandednessIndex].myPosition);
-
-        this.myPinButtonBackground.scale(this._mySetup.myFlagButtonBackgroundScale);
-        this.myPinButtonText.setTranslationLocal(this._mySetup.myFlagButtonTextPosition);
-        this.myPinButtonText.scale(this._mySetup.myFlagButtonTextScale);
-        this.myPinButtonCursorTarget.setTranslationLocal(this._mySetup.myPinButtonCursorTargetPosition);
-    }
-
     //Components
     _addComponents() {
         this._addMessagesComponents();
         this._addButtonsComponents();
         this._addPointerComponents();
-        this._addFlagsComponents();
     }
 
     _addMessagesComponents() {
@@ -382,41 +295,6 @@ PP.ConsoleVRWidgetUI = class ConsoleVRWidgetUI {
 
         this.myPointerCursorTargetComponent = cursorTargetComp;
         this.myPointerCollisionComponent = collisionComp;
-    }
-
-    _addFlagsComponents() {
-        this.myVisibilityButtonBackgroundComponent = this.myVisibilityButtonBackground.addComponent('mesh');
-        this.myVisibilityButtonBackgroundComponent.mesh = this._myPlaneMesh;
-        this.myVisibilityButtonBackgroundComponent.material = this._myAdditionalSetup.myPlaneMaterial.clone();
-        this.myVisibilityButtonBackgroundComponent.material.color = this._mySetup.myBackgroundColor;
-
-        this.myVisibilityButtonTextComponent = this.myVisibilityButtonText.addComponent('text');
-        this._setupButtonTextComponent(this.myVisibilityButtonTextComponent);
-        this.myVisibilityButtonTextComponent.text = this._mySetup.myVisibilityButtonText;
-
-        this.myVisibilityButtonCursorTargetComponent = this.myVisibilityButtonCursorTarget.addComponent('cursor-target');
-
-        this.myVisibilityButtonCollisionComponent = this.myVisibilityButtonCursorTarget.addComponent('collision');
-        this.myVisibilityButtonCollisionComponent.collider = this._mySetup.myCursorTargetCollisionCollider;
-        this.myVisibilityButtonCollisionComponent.group = 1 << this._mySetup.myCursorTargetCollisionGroup;
-        this.myVisibilityButtonCollisionComponent.extents = this._mySetup.myVisibilityButtonCollisionExtents;
-
-        this.myPinButtonBackgroundComponent = this.myPinButtonBackground.addComponent('mesh');
-        this.myPinButtonBackgroundComponent.mesh = this._myPlaneMesh;
-        this.myPinButtonBackgroundComponent.material = this._myAdditionalSetup.myPlaneMaterial.clone();
-        this.myPinButtonBackgroundComponent.material.color = this._mySetup.myButtonDisabledBackgroundColor;
-
-        this.myPinButtonTextComponent = this.myPinButtonText.addComponent('text');
-        this._setupButtonTextComponent(this.myPinButtonTextComponent);
-        this.myPinButtonTextComponent.material.color = this._mySetup.myButtonDisabledTextColor;
-        this.myPinButtonTextComponent.text = this._mySetup.myPinButtonText;
-
-        this.myPinButtonCursorTargetComponent = this.myPinButtonCursorTarget.addComponent('cursor-target');
-
-        this.myPinButtonCollisionComponent = this.myPinButtonCursorTarget.addComponent('collision');
-        this.myPinButtonCollisionComponent.collider = this._mySetup.myCursorTargetCollisionCollider;
-        this.myPinButtonCollisionComponent.group = 1 << this._mySetup.myCursorTargetCollisionGroup;
-        this.myPinButtonCollisionComponent.extents = this._mySetup.myPinButtonCollisionExtents;
     }
 
     _setupButtonTextComponent(textComponent) {

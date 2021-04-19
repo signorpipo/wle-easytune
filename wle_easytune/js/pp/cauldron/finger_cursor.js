@@ -58,7 +58,7 @@ WL.registerComponent('finger-cursor', {
     },
     setActive: function (isActive) {
         if (this.active != isActive && !isActive) {
-            this._myCollision.setTranslationWorld([0, -3000, 0]);
+            this._myCollision.setTranslationLocal([0, -7777, 0]);
         }
 
         this.active = isActive;

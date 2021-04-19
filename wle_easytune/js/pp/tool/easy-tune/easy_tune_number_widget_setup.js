@@ -1,17 +1,14 @@
 PP.EasyTuneNumberWidgetSetup = class EasyTuneNumberWidgetSetup {
 
     constructor() {
-        this._initializeCommonSetup();
         this._initializeBuildSetup();
         this._initializeRuntimeSetup();
     }
 
-    _initializeCommonSetup() {
-        this.myBackgroundColor = [46 / 255, 46 / 255, 46 / 255, 1];
-    }
-
     _initializeBuildSetup() {
         //General
+        this.myBackgroundColor = [46 / 255, 46 / 255, 46 / 255, 1];
+
         this.myCursorTargetCollisionCollider = 2; // box
         this.myCursorTargetCollisionGroup = 7;
         this.myCursorTargetCollisionThickness = 0.001;
@@ -25,6 +22,11 @@ PP.EasyTuneNumberWidgetSetup = class EasyTuneNumberWidgetSetup {
         this.myTextOutlineRange = [0.45, 0.45];
         this.myTextColor = this.myDefaultTextColor;
         this.myTextOutlineColor = this.myDefaultTextColor;
+
+        //Pivot
+        //this.myPivotObjectTransforms[PP.HandednessIndex.NONE].myPosition = [0, 0, 0];
+        //this.myPivotObjectTransforms[PP.HandednessIndex.LEFT].myPosition = [0.049, 0.228, -0.020];
+        //this.myPivotObjectTransforms[PP.HandednessIndex.RIGHT].myPosition = [0, 0.228, -0.020];
 
         //Display
         {
@@ -140,39 +142,10 @@ PP.EasyTuneNumberWidgetSetup = class EasyTuneNumberWidgetSetup {
     }
 
     _initializeRuntimeSetup() {
-        this._initializeObjectsTransforms();
-
         this.myButtonHoverColor = [150 / 255, 150 / 255, 150 / 255, 1];
 
         this.myModifyThumbstickMinThreshold = 0.2;
 
         this.myScrollVariableDelay = 0.75;
-    }
-
-    _initializeObjectsTransforms() {
-        this.myPivotObjectTransforms = this._createDefaultObjectTransforms();
-
-        this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.LEFT].myPosition = [0.049, 0.228, -0.020];
-        this.myPivotObjectTransforms[PP.InputSourceType.GAMEPAD][PP.HandednessIndex.RIGHT].myPosition = [0, 0.228, -0.020];
-
-        this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.LEFT].myPosition = [0.049, 0.228, -0.020];
-        this.myPivotObjectTransforms[PP.InputSourceType.HAND][PP.HandednessIndex.RIGHT].myPosition = [0, 0.228, -0.020];
-    }
-
-    _createDefaultObjectTransforms() {
-        let defaultObjectTransforms = [];
-
-        for (let inputSourceTypeKey in PP.InputSourceType) {
-            let inputSourceType = PP.InputSourceType[inputSourceTypeKey];
-            defaultObjectTransforms[inputSourceType] = [];
-            for (let handednessKey in PP.HandednessIndex) {
-                let handedness = PP.HandednessIndex[handednessKey];
-                defaultObjectTransforms[inputSourceType][handedness] = {};
-                defaultObjectTransforms[inputSourceType][handedness].myPosition = [0, 0, 0];
-                defaultObjectTransforms[inputSourceType][handedness].myRotation = [0, 0, 0, 1];
-            }
-        }
-
-        return defaultObjectTransforms;
     }
 };

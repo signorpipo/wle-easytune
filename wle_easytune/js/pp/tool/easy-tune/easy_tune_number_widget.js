@@ -40,12 +40,12 @@ PP.EasyTuneNumberWidget = class EasyTuneNumberWidget {
         }
     }
 
-    setVisible(isVisible) {
-        if (isVisible) {
+    setVisible(visible) {
+        if (visible) {
             this._refreshUI();
         }
 
-        this._myUI.setVisible(isVisible);
+        this._myUI.setVisible(visible);
         this.isVisible = true;
     }
 
@@ -64,8 +64,6 @@ PP.EasyTuneNumberWidget = class EasyTuneNumberWidget {
     }
 
     update(dt) {
-        this._myUI.update(dt);
-
         if (this._isActive()) {
             this._updateValue(dt);
             this._updateScrollVariable(dt);

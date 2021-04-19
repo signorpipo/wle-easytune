@@ -1,47 +1,29 @@
 
 PP.EasyTuneNumberWidgetUI = class EasyTuneNumberWidgetUI {
 
-    constructor() {
-        this._myInputSourceType = null;
-    }
-
     build(parentObject, setup, additionalSetup) {
+        this._myParentObject = parentObject;
         this._mySetup = setup;
         this._myAdditionalSetup = additionalSetup;
         this._myPlaneMesh = PP.MeshUtils.createPlaneMesh();
 
-        this._createSkeleton(parentObject);
+        this._createSkeleton();
         this._setTransforms();
         this._addComponents();
     }
 
-    setVisible(isVisible) {
-        if (isVisible) {
-            this.myMainPanel.resetTransform();
+    setVisible(visible) {
+        if (visible) {
+            this.myPivotObject.resetTransform();
         } else {
-            this.myMainPanel.scale([0, 0, 0]);
-            this.myMainPanel.setTranslationWorld([0, -3000, 0]);
-        }
-    }
-
-
-    update(dt) {
-        let inputSourceType = PP.InputUtils.getInputSourceType(this._myAdditionalSetup.myHandedness);
-
-        if (inputSourceType != this._myInputSourceType) {
-            this._myInputSourceType = inputSourceType;
-
-            this.myPivotObject.setTranslationLocal(this._mySetup.myPivotObjectTransforms[this._myInputSourceType][this._myAdditionalSetup.myHandednessIndex].myPosition);
-            this.myPivotObject.resetRotation();
-            this.myPivotObject.rotateObject(this._mySetup.myPivotObjectTransforms[this._myInputSourceType][this._myAdditionalSetup.myHandednessIndex].myRotation);
+            this.myPivotObject.scale([0, 0, 0]);
+            this.myPivotObject.setTranslationLocal([0, -7777, 0]);
         }
     }
 
     //Skeleton
-    _createSkeleton(parentObject) {
-        this.myPivotObject = WL.scene.addObject(parentObject);
-
-        this.myMainPanel = WL.scene.addObject(this.myPivotObject);
+    _createSkeleton() {
+        this.myPivotObject = WL.scene.addObject(this._myParentObject);
 
         this._createDisplaySkeleton();
         this._createStepSkeleton();
@@ -49,7 +31,7 @@ PP.EasyTuneNumberWidgetUI = class EasyTuneNumberWidgetUI {
     }
 
     _createDisplaySkeleton() {
-        this.myDisplayPanel = WL.scene.addObject(this.myMainPanel);
+        this.myDisplayPanel = WL.scene.addObject(this.myPivotObject);
         this.myDisplayBackground = WL.scene.addObject(this.myDisplayPanel);
 
         this.myVariableLabelPanel = WL.scene.addObject(this.myDisplayPanel);
@@ -83,7 +65,7 @@ PP.EasyTuneNumberWidgetUI = class EasyTuneNumberWidgetUI {
     }
 
     _createStepSkeleton() {
-        this.myStepPanel = WL.scene.addObject(this.myMainPanel);
+        this.myStepPanel = WL.scene.addObject(this.myPivotObject);
         this.myStepBackground = WL.scene.addObject(this.myStepPanel);
 
         this.myStepLabelPanel = WL.scene.addObject(this.myStepPanel);
@@ -106,7 +88,7 @@ PP.EasyTuneNumberWidgetUI = class EasyTuneNumberWidgetUI {
     }
 
     _createPointerSkeleton() {
-        this.myPointerCursorTarget = WL.scene.addObject(this.myMainPanel);
+        this.myPointerCursorTarget = WL.scene.addObject(this.myPivotObject);
     }
 
     //Transforms
