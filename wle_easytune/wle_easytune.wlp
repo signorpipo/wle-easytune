@@ -339,7 +339,7 @@
                     "type": "console-vr",
                     "console-vr": {
                         "_myHandedness": "left",
-                        "_myShowOnStart": false,
+                        "_myShowOnStart": true,
                         "_myPlaneMesh": "7",
                         "_myPlaneMaterial": "64",
                         "_myTextMaterial": "DefaultFontMaterial"
@@ -469,7 +469,7 @@
                         "_myPlaneMesh": "7",
                         "_myTextMaterial": "DefaultFontMaterial",
                         "_myPlaneMaterial": "64",
-                        "_myShowOnStart": true
+                        "_myShowOnStart": false
                     },
                     "active": true
                 },
@@ -625,7 +625,7 @@
                 0.0,
                 -6.1467364531608849e-9,
                 0.05500007420778275,
-                -4.656609264852563e-10,
+                -4.6566092648525628e-10,
                 0.0,
                 -1.3969837731053758e-8,
                 1.26998112026655e-9,
@@ -2965,7 +2965,8 @@
                 0.0,
                 0.0,
                 1.0
-            ]
+            ],
+            "deleted": true
         }
     },
     "meshes": {
