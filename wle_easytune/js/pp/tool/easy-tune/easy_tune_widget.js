@@ -3,7 +3,7 @@ PP.EasyTuneWidget = class EasyTuneWidget {
 
     constructor() {
         this._myWidgetFrame = new PP.WidgetFrame("E", 1);
-        this._myWidgetFrame.registerOnWidgetVisibleChangedEvent(this, this._widgetVisibleChanged.bind(this));
+        this._myWidgetFrame.registerWidgetVisibleChangedEventListener(this, this._widgetVisibleChanged.bind(this));
 
         this._mySetup = new PP.EasyTuneWidgetSetup();
         this._myAdditionalSetup = null;
@@ -71,7 +71,7 @@ PP.EasyTuneWidget = class EasyTuneWidget {
         for (let item of this._myWidgets) {
             item.start(this._myWidgetFrame.getWidgetObject(), this._myAdditionalSetup);
             item.setVisible(false);
-            item.registerScrollVariableEvent(this, this._scrollVariable.bind(this));
+            item.registerScrollVariableRequestEventListener(this, this._scrollVariable.bind(this));
         }
 
         this._selectCurrentWidget();

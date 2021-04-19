@@ -8,7 +8,7 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
 
     constructor() {
         this._myWidgetFrame = new PP.WidgetFrame("C", 0);
-        this._myWidgetFrame.registerOnWidgetVisibleChangedEvent(this, this._widgetVisibleChanged.bind(this));
+        this._myWidgetFrame.registerWidgetVisibleChangedEventListener(this, this._widgetVisibleChanged.bind(this));
 
         this._mySetup = new PP.ConsoleVRWidgetSetup();
         this._myAdditionalSetup = null;

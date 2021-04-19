@@ -10,8 +10,8 @@ PP.WidgetFrame = class WidgetFrame {
 
         this._myUI = new PP.WidgetFrameUI();
 
-        this._myOnWidgetVisibleChangedCallbacks = new Map();
-        this._myOnPinnedChangedCallbacks = new Map();
+        this._myWidgetVisibleChangedCallbacks = new Map();
+        this._myPinnedChangedCallbacks = new Map();
     }
 
     getWidgetObject() {
@@ -26,20 +26,20 @@ PP.WidgetFrame = class WidgetFrame {
         this._togglePin(false);
     }
 
-    registerOnWidgetVisibleChangedEvent(id, callback) {
-        this._myOnWidgetVisibleChangedCallbacks.set(id, callback);
+    registerWidgetVisibleChangedEventListener(id, callback) {
+        this._myWidgetVisibleChangedCallbacks.set(id, callback);
     }
 
-    unregisterOnWidgetVisibleChangedEvent(id) {
-        this._myOnWidgetVisibleChangedCallbacks.delete(id);
+    unregisterWidgetVisibleChangedEventListener(id) {
+        this._myWidgetVisibleChangedCallbacks.delete(id);
     }
 
-    registerOnPinnedChangedEvent(id, callback) {
-        this._myOnPinnedChangedCallbacks.set(id, callback);
+    registerPinnedChangedEventListener(id, callback) {
+        this._myPinnedChangedCallbacks.set(id, callback);
     }
 
-    unregisterOnPinnedChangedEvent(id) {
-        this._myOnPinnedChangedCallbacks.delete(id);
+    unregisterPinnedChangedEventListener(id) {
+        this._myPinnedChangedCallbacks.delete(id);
     }
 
     start(parentObject, additionalSetup) {
@@ -91,7 +91,7 @@ PP.WidgetFrame = class WidgetFrame {
             }
         }
 
-        for (let value of this._myOnWidgetVisibleChangedCallbacks.values()) {
+        for (let value of this._myWidgetVisibleChangedCallbacks.values()) {
             value(this.myIsWidgetVisible);
         }
     }
@@ -116,7 +116,7 @@ PP.WidgetFrame = class WidgetFrame {
                 }
             }
 
-            for (let value of this._myOnPinnedChangedCallbacks.values()) {
+            for (let value of this._myPinnedChangedCallbacks.values()) {
                 value(this.myIsPinned);
             }
         }

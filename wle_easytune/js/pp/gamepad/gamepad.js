@@ -163,7 +163,7 @@ PP.Gamepad = class Gamepad {
      * @param id 
      * @param callback callback params are (PP.ButtonInfo, PP.Gamepad)
      */
-    registerButtonEvent(buttonType, buttonEvent, id, callback) {
+    registerButtonEventListener(buttonType, buttonEvent, id, callback) {
         this._myButtonCallbacks[buttonType][buttonEvent].set(id, callback);
     }
 
@@ -172,7 +172,7 @@ PP.Gamepad = class Gamepad {
      * @param {PP.ButtonEvent} buttonEvent 
      * @param id 
      */
-    unregisterButtonEvent(buttonType, buttonEvent, id) {
+    unregisterButtonEventListener(buttonType, buttonEvent, id) {
         this._myButtonCallbacks[buttonType][buttonEvent].delete(id);
     }
 
@@ -188,7 +188,7 @@ PP.Gamepad = class Gamepad {
      * @param id 
      * @param callback callback parameters are (AxesInfo, Gamepad)
      */
-    registerAxesEvent(axesEvent, id, callback) {
+    registerAxesEventListener(axesEvent, id, callback) {
         this._myAxesCallbacks[axesEvent].set(id, callback);
     }
 
@@ -196,7 +196,7 @@ PP.Gamepad = class Gamepad {
      * @param {PP.AxesEvent} axesEvent 
      * @param id 
      */
-    unregisterAxesEvent(axesEvent, id) {
+    unregisterAxesEventListener(axesEvent, id) {
         this._myAxesCallbacks[axesEvent].delete(id);
     }
 

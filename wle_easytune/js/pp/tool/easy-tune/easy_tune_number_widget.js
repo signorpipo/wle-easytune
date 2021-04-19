@@ -12,7 +12,7 @@ PP.EasyTuneNumberWidget = class EasyTuneNumberWidget {
 
         this._myIsVisible = true;
 
-        this._myScrollVariableCallbacks = new Map();
+        this._myScrollVariableRequestCallbacks = new Map();
 
         this._myAppendToVariableName = "";
 
@@ -49,12 +49,12 @@ PP.EasyTuneNumberWidget = class EasyTuneNumberWidget {
         this.isVisible = true;
     }
 
-    registerScrollVariableEvent(id, callback) {
-        this._myScrollVariableCallbacks.set(id, callback);
+    registerScrollVariableRequestEventListener(id, callback) {
+        this._myScrollVariableRequestCallbacks.set(id, callback);
     }
 
-    unregisterScrollVariableEvent(id) {
-        this._myScrollVariableCallbacks.delete(id);
+    unregisterScrollVariableRequestEventListener(id) {
+        this._myScrollVariableRequestCallbacks.delete(id);
     }
 
     start(parentObject, additionalSetup) {
@@ -102,7 +102,7 @@ PP.EasyTuneNumberWidget = class EasyTuneNumberWidget {
             this._myScrollVariableTimer += dt;
             while (this._myScrollVariableTimer > this._mySetup.myScrollVariableDelay) {
                 this._myScrollVariableTimer -= this._mySetup.myScrollVariableDelay;
-                this._scrollVariable(this._myScrollVariableAmount);
+                this._scrollVariableRequest(this._myScrollVariableAmount);
             }
         }
     }
@@ -164,9 +164,9 @@ PP.EasyTuneNumberWidget = class EasyTuneNumberWidget {
         }
     }
 
-    _scrollVariable(amount) {
+    _scrollVariableRequest(amount) {
         if (this._isActive()) {
-            for (let value of this._myScrollVariableCallbacks.values()) {
+            for (let value of this._myScrollVariableRequestCallbacks.values()) {
                 value(amount);
             }
         }
