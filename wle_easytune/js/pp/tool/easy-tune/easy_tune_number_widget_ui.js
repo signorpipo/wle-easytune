@@ -311,5 +311,6 @@ PP.EasyTuneNumberWidgetUI = class EasyTuneNumberWidgetUI {
         textComponent.material.outlineRange = this._mySetup.myTextOutlineRange;
         textComponent.material.color = this._mySetup.myTextColor;
         textComponent.material.outlineColor = this._mySetup.myTextOutlineColor;
+        textComponent.text = "";
     }
 };
