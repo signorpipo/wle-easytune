@@ -32,7 +32,12 @@ WL.registerComponent('tool-cursor', {
         this._myCursorComponent.cursorObject = this._myCursorMeshObject;
         this._myCursorComponent.rayCastMode = 0; //collision
 
-        this._myFingerCursorComponent = this.object.addComponent("finger-cursor", { "_myCollisionGroup": this._myCursorTargetCollisionGroup, "_myHandedness": this._myHandedness });
+        this._myFingerCursorComponent = this.object.addComponent("finger-cursor", {
+            "_myCollisionGroup": this._myCursorTargetCollisionGroup,
+            "_myHandedness": this._myHandedness,
+            "_myCursorMesh": this._myCursorMesh,
+            "_myCursorMaterial": this._myCursorMeshComponent.material
+        });
         this._myFingerCursorComponent.setActive(false);
     },
     update: function (dt) {

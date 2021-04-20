@@ -1,6 +1,9 @@
 WL.registerComponent('finger-cursor', {
     _myHandedness: { type: WL.Type.Enum, values: ['left', 'right'], default: 'left' },
     _myCollisionGroup: { type: WL.Type.Int, default: 1 },
+    _myCursorMesh: { type: WL.Type.Mesh, default: null },
+    _myCursorMaterial: { type: WL.Type.Material, default: null },
+    _myCursorSize: { type: WL.Type.Float, default: 0.0125 }
 }, {
     init: function () {
         this._myLastTarget = null;
@@ -9,11 +12,17 @@ WL.registerComponent('finger-cursor', {
         this._myHandednessString = ['left', 'right'][this._myHandedness];
     },
     start: function () {
-        this._myCollision = WL.scene.addObject(this.object.parent);
-        this._myCollisionComponent = this._myCollision.addComponent('collision');
+        this._myCursorObject = WL.scene.addObject(this.object.parent);
+        this._myCursorObject.scale([this._myCursorSize, this._myCursorSize, this._myCursorSize]);
+
+        this._myCursorMeshComponent = this._myCursorObject.addComponent("mesh");
+        this._myCursorMeshComponent.mesh = this._myCursorMesh;
+        this._myCursorMeshComponent.material = this._myCursorMaterial.clone();
+
+        this._myCollisionComponent = this._myCursorObject.addComponent('collision');
         this._myCollisionComponent.collider = 0; //sphere
         this._myCollisionComponent.group = 1 << this._myCollisionGroup;
-        this._myCollisionComponent.extents = [0.0125, 0.0125, 0.0125];
+        this._myCollisionComponent.extents = [this._myCursorSize, this._myCursorSize, this._myCursorSize];
 
         if (WL.xrSession) {
             this._setupVREvents(WL.xrSession);
@@ -56,12 +65,17 @@ WL.registerComponent('finger-cursor', {
             this._myLastTarget = null;
         }
     },
-    setActive: function (isActive) {
-        if (this.active != isActive && !isActive) {
-            this._myCollision.setTranslationLocal([0, -7777, 0]);
+    setActive: function (active) {
+        if (this.active != active) {
+            if (!active) {
+                this._myCursorObject.scale([0, 0, 0]);
+                this._myCursorObject.setTranslationLocal([0, -7777, 0]);
+            } else {
+                this._myCursorObject.resetTransform();
+            }
         }
 
-        this.active = isActive;
+        this.active = active;
     },
     _updateHand() {
         this._myHandInputSource = PP.InputUtils.getInputSource(this._myHandednessString, PP.InputSourceType.HAND);
@@ -70,20 +84,17 @@ WL.registerComponent('finger-cursor', {
             let tip = Module['webxr_frame'].getJointPose(this._myHandInputSource.hand.get("index-finger-tip"), this._myRefSpace);
 
             if (tip) {
-                this._myCollision.resetTransform();
-                this._myCollision.transformLocal.set([
+                this._myCursorObject.resetTransform();
+                this._myCursorObject.transformLocal.set([
                     tip.transform.orientation.x,
                     tip.transform.orientation.y,
                     tip.transform.orientation.z,
                     tip.transform.orientation.w]);
-                this._myCollision.translate([
+                this._myCursorObject.translate([
                     tip.transform.position.x,
                     tip.transform.position.y,
                     tip.transform.position.z]);
-
-                /* Last joint radius of each finger is null */
-                let r = tip.radius || 0.007;
-                this._myCollision.scale([r, r, r]);
+                this._myCursorObject.scale([this._myCursorSize, this._myCursorSize, this._myCursorSize]);
             }
         }
     },
