@@ -1,5 +1,6 @@
 WL.registerComponent('tool-cursor', {
     _myHandedness: { type: WL.Type.Enum, values: ['left', 'right'], default: 'left' },
+    _myPulseOnHover: { type: WL.Type.Bool, default: false },
     _myCursorMesh: { type: WL.Type.Mesh, default: null },
     _myCursorMaterial: { type: WL.Type.Material, default: null }
 }, {
@@ -31,6 +32,9 @@ WL.registerComponent('tool-cursor', {
         this._myCursorComponent = this._myCursorObject.addComponent("cursor", { "collisionGroup": this._myCursorTargetCollisionGroup, "handedness": this._myHandedness + 1 });
         this._myCursorComponent.cursorObject = this._myCursorMeshObject;
         this._myCursorComponent.rayCastMode = 0; //collision
+        if (this._myPulseOnHover) {
+            this._myCursorComponent.globalTarget.addHoverFunction(this._pulseOnHover.bind(this));
+        }
 
         this._myFingerCursorComponent = this.object.addComponent("finger-cursor", {
             "_myCollisionGroup": this._myCursorTargetCollisionGroup,
@@ -59,5 +63,20 @@ WL.registerComponent('tool-cursor', {
         }
 
         return isUsingHand;
+    },
+    _pulseOnHover: function (object) {
+        let targetComponent = object.getComponent("cursor-target");
+
+        if (targetComponent) {
+            if (this._myHandedness == 0) {
+                if (PP.LeftGamepad) {
+                    PP.LeftGamepad.pulse(0.4, 0);
+                }
+            } else {
+                if (PP.RightGamepad) {
+                    PP.RightGamepad.pulse(0.4, 0);
+                }
+            }
+        }
     }
 });

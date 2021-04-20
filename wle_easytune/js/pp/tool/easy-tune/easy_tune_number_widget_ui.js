@@ -297,8 +297,6 @@ PP.EasyTuneNumberWidgetUI = class EasyTuneNumberWidgetUI {
     }
 
     _addPointerComponents() {
-        this.myPointerCursorTargetComponent = this.myPointerCursorTarget.addComponent('cursor-target');
-
         this.myPointerCollisionComponent = this.myPointerCursorTarget.addComponent('collision');
         this.myPointerCollisionComponent.collider = this._mySetup.myCursorTargetCollisionCollider;
         this.myPointerCollisionComponent.group = 1 << this._mySetup.myCursorTargetCollisionGroup;

@@ -452,7 +452,8 @@
                     "tool-cursor": {
                         "_myCursorMesh": "9",
                         "_myCursorMaterial": "64",
-                        "_myHandedness": "right"
+                        "_myHandedness": "right",
+                        "_myPulseOnHover": false
                     },
                     "active": true
                 },
