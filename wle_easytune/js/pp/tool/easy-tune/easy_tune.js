@@ -21,7 +21,8 @@ WL.registerComponent('easy-tune', {
         additionalSetup.myPlaneMaterial = this._myPlaneMaterial;
         additionalSetup.myTextMaterial = this._myTextMaterial;
 
-        this._myWidget.start(this.object, additionalSetup, PP.EasyTuneVariables, "X");
+        //Change FIRST with a variable name you would like to be selected at start
+        this._myWidget.start(this.object, additionalSetup, PP.EasyTuneVariables, "FIRST");
     },
     update: function (dt) {
         this._myWidget.update(dt);

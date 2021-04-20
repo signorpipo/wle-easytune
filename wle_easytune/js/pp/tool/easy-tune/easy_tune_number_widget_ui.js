@@ -15,6 +15,7 @@ PP.EasyTuneNumberWidgetUI = class EasyTuneNumberWidgetUI {
     setVisible(visible) {
         if (visible) {
             this.myPivotObject.resetTransform();
+            this.myPivotObject.setTranslationLocal(this._mySetup.myPivotObjectPositions[this._myAdditionalSetup.myHandednessIndex]);
         } else {
             this.myPivotObject.scale([0, 0, 0]);
             this.myPivotObject.setTranslationLocal([0, -7777, 0]);
@@ -93,7 +94,7 @@ PP.EasyTuneNumberWidgetUI = class EasyTuneNumberWidgetUI {
 
     //Transforms
     _setTransforms() {
-        this.myPivotObject.setDirty();
+        this.myPivotObject.setTranslationLocal(this._mySetup.myPivotObjectPositions[this._myAdditionalSetup.myHandednessIndex]);
 
         this._setDisplayTransforms();
         this._setStepTransforms();

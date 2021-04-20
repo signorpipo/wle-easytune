@@ -104,12 +104,6 @@
                 },
                 {
                     "type": "mouse-look"
-                },
-                {
-                    "type": "cursor",
-                    "cursor": {
-                        "collisionGroup": 7
-                    }
                 }
             ]
         },
@@ -331,7 +325,8 @@
                     "type": "tool-cursor",
                     "tool-cursor": {
                         "_myCursorMesh": "9",
-                        "_myCursorMaterial": "64"
+                        "_myCursorMaterial": "64",
+                        "_myHandedness": "left"
                     },
                     "active": true
                 },
@@ -339,7 +334,7 @@
                     "type": "console-vr",
                     "console-vr": {
                         "_myHandedness": "left",
-                        "_myShowOnStart": true,
+                        "_myShowOnStart": false,
                         "_myPlaneMesh": "7",
                         "_myPlaneMaterial": "64",
                         "_myTextMaterial": "DefaultFontMaterial"
@@ -352,7 +347,7 @@
                         "_myPlaneMesh": "7",
                         "_myPlaneMaterial": "64",
                         "_myTextMaterial": "DefaultFontMaterial",
-                        "_myShowOnStart": false,
+                        "_myShowOnStart": true,
                         "_myHandedness": "left",
                         "_myShowVisibilityButton": true
                     },
@@ -370,9 +365,9 @@
                 0.0,
                 0.0,
                 0.0,
-                0.9999982118606569,
+                0.9999982118606567,
                 0.0,
-                -0.4629448354244232,
+                -0.10000000149011612,
                 1.043081283569336e-7,
                 1.862645149230957e-8,
                 1.0
@@ -469,7 +464,8 @@
                         "_myPlaneMesh": "7",
                         "_myTextMaterial": "DefaultFontMaterial",
                         "_myPlaneMaterial": "64",
-                        "_myShowOnStart": false
+                        "_myShowOnStart": true,
+                        "_myShowVisibilityButton": true
                     },
                     "active": true
                 },
@@ -477,7 +473,7 @@
                     "type": "easy-tune",
                     "easy-tune": {
                         "_myHandedness": "right",
-                        "_myShowOnStart": true,
+                        "_myShowOnStart": false,
                         "_myShowVisibilityButton": true,
                         "_myPlaneMaterial": "64",
                         "_myTextMaterial": "DefaultFontMaterial"
@@ -625,7 +621,7 @@
                 0.0,
                 -6.1467364531608849e-9,
                 0.05500007420778275,
-                -4.656609264852563e-10,
+                -4.6566092648525628e-10,
                 0.0,
                 -1.3969837731053758e-8,
                 1.26998112026655e-9,
@@ -2391,7 +2387,7 @@
                         "_myTextMaterial": "DefaultFontMaterial",
                         "_myHandedness": "none"
                     },
-                    "active": true
+                    "active": false
                 }
             ],
             "parent": null
@@ -2912,7 +2908,8 @@
                         "material": "32"
                     },
                     "type": "mesh",
-                    "imported": true
+                    "imported": true,
+                    "active": true
                 },
                 {
                     "type": "rotate-sphere"
@@ -3378,7 +3375,7 @@
             ]
         },
         "runtime": {
-            "visualizeColliders": true
+            "visualizeColliders": false
         }
     },
     "animations": {},

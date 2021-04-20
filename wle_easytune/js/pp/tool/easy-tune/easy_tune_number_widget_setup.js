@@ -24,9 +24,10 @@ PP.EasyTuneNumberWidgetSetup = class EasyTuneNumberWidgetSetup {
         this.myTextOutlineColor = this.myDefaultTextColor;
 
         //Pivot
-        //this.myPivotObjectTransforms[PP.HandednessIndex.NONE].myPosition = [0, 0, 0];
-        //this.myPivotObjectTransforms[PP.HandednessIndex.LEFT].myPosition = [0.049, 0.228, -0.020];
-        //this.myPivotObjectTransforms[PP.HandednessIndex.RIGHT].myPosition = [0, 0.228, -0.020];
+        this.myPivotObjectPositions = [];
+        this.myPivotObjectPositions[PP.HandednessIndex.NONE] = [0, 0, 0];
+        this.myPivotObjectPositions[PP.HandednessIndex.LEFT] = [-0.04, 0, 0];
+        this.myPivotObjectPositions[PP.HandednessIndex.RIGHT] = [-0.08, 0, 0];
 
         //Display
         {
