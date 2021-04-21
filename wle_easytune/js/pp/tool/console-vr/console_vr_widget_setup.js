@@ -76,7 +76,7 @@ PP.ConsoleVRWidgetSetup = class ConsoleVRWidgetSetup {
 
         this.myButtonsCollisionCollider = this.myCursorTargetCollisionCollider;
         this.myButtonsCollisionGroup = this.myCursorTargetCollisionGroup;
-        this.myButtonsCollisionExtents = this.myButtonBackgroundScale;
+        this.myButtonsCollisionExtents = this.myButtonBackgroundScale.slice(0);
         this.myButtonsCollisionExtents[2] = this.myCursorTargetCollisionThickness;
 
         this.myClearButtonTextLabel = "clear";

@@ -342,7 +342,7 @@
                         "_myTextMaterial": "DefaultFontMaterial",
                         "_myOverrideBrowserConsole": true
                     },
-                    "active": true
+                    "active": false
                 },
                 {
                     "type": "easy-tune",
@@ -477,7 +477,7 @@
                         "_myPlaneMesh": "7",
                         "_myTextMaterial": "DefaultFontMaterial",
                         "_myPlaneMaterial": "64",
-                        "_myShowOnStart": true,
+                        "_myShowOnStart": false,
                         "_myShowVisibilityButton": true,
                         "_myOverrideStandardConsole": true,
                         "_myOverrideBrowserConsole": true
@@ -493,7 +493,7 @@
                         "_myPlaneMaterial": "64",
                         "_myTextMaterial": "DefaultFontMaterial"
                     },
-                    "active": true
+                    "active": false
                 },
                 {
                     "type": "hand-tracking",

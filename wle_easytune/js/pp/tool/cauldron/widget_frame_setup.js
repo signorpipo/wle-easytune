@@ -44,7 +44,7 @@ PP.WidgetFrameSetup = class WidgetFrameSetup {
 
         this.myVisibilityButtonCursorTargetPosition = [0, 0, 0];
         this.myVisibilityButtonCursorTargetPosition[2] = this.myVisibilityButtonTextPosition[2];
-        this.myVisibilityButtonCollisionExtents = this.myVisibilityButtonBackgroundScale;
+        this.myVisibilityButtonCollisionExtents = this.myVisibilityButtonBackgroundScale.slice(0);
         this.myVisibilityButtonCollisionExtents[2] = this.myCursorTargetCollisionThickness;
 
         this.myFlagButtonBackgroundScale = [0.0125, 0.0125, 1];
@@ -73,7 +73,7 @@ PP.WidgetFrameSetup = class WidgetFrameSetup {
 
         this.myPinButtonCursorTargetPosition = [0, 0, 0];
         this.myPinButtonCursorTargetPosition[2] = this.myFlagButtonTextPosition[2];
-        this.myPinButtonCollisionExtents = this.myFlagButtonBackgroundScale;
+        this.myPinButtonCollisionExtents = this.myFlagButtonBackgroundScale.slice(0);
         this.myPinButtonCollisionExtents[2] = this.myCursorTargetCollisionThickness;
     }
 

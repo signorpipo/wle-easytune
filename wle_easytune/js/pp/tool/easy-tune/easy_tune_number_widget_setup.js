@@ -72,7 +72,7 @@ PP.EasyTuneNumberWidgetSetup = class EasyTuneNumberWidgetSetup {
 
             this.myDisplayButtonCursorTargetPosition = [0, 0, 0];
             this.myDisplayButtonCursorTargetPosition[2] = this.myColliderZPosition - panelZ;
-            this.myDisplayButtonCollisionExtents = this.myDisplayButtonBackgroundScale;
+            this.myDisplayButtonCollisionExtents = this.myDisplayButtonBackgroundScale.slice(0);
             this.myDisplayButtonCollisionExtents[2] = this.myCursorTargetCollisionThickness;
         }
 
@@ -102,9 +102,7 @@ PP.EasyTuneNumberWidgetSetup = class EasyTuneNumberWidgetSetup {
 
         this.myStepButtonCursorTargetPosition = [0, 0, 0];
         this.myStepButtonCursorTargetPosition[2] = this.myColliderZPosition - this.myStepPanelPosition[2] - this.myStepButtonsPanelPosition[2];
-        this.myStepButtonCollisionExtents = this.myStepButtonBackgroundScale;
-        this.myStepButtonCollisionExtents[2] = this.myCursorTargetCollisionThickness;
-
+        this.myStepButtonCollisionExtents = this.myStepButtonBackgroundScale.slice(0);
         this.myStepButtonCollisionExtents[2] = this.myCursorTargetCollisionThickness;
 
         this.myStepButtonsSetupList = [];
