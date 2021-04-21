@@ -44,9 +44,13 @@ PP.EasyTuneNumberWidget = class EasyTuneNumberWidget {
         if (visible) {
             this._refreshUI();
         }
-
         this._myUI.setVisible(visible);
-        this.isVisible = true;
+
+        if (!this._myIsVisible && visible) {
+            this._myScrollVariableTimer = 0;
+        }
+
+        this._myIsVisible = visible;
     }
 
     registerScrollVariableRequestEventListener(id, callback) {
@@ -98,10 +102,11 @@ PP.EasyTuneNumberWidget = class EasyTuneNumberWidget {
     }
 
     _updateScrollVariable(dt) {
+        this._myScrollVariableTimer = Math.min(this._myScrollVariableTimer + dt, this._mySetup.myScrollVariableDelay);
+
         if (this._myScrollVariableAmount != 0) {
-            this._myScrollVariableTimer += dt;
-            while (this._myScrollVariableTimer > this._mySetup.myScrollVariableDelay) {
-                this._myScrollVariableTimer -= this._mySetup.myScrollVariableDelay;
+            if (this._myScrollVariableTimer >= this._mySetup.myScrollVariableDelay) {
+                this._myScrollVariableTimer = 0;
                 this._scrollVariableRequest(this._myScrollVariableAmount);
             }
         }
@@ -140,11 +145,11 @@ PP.EasyTuneNumberWidget = class EasyTuneNumberWidget {
     }
 
     _setScrollVariableAmount(material, value) {
-        if (this._isActive()) {
+        if (this._isActive() || value == 0) {
             if (value != 0) {
-                this._myScrollVariableTimer = this._mySetup.myScrollVariableDelay;
                 this._genericHover(material);
             } else {
+                this._myScrollVariableTimer = this._mySetup.myScrollVariableDelay;
                 this._genericUnHover(material);
             }
 
@@ -153,7 +158,7 @@ PP.EasyTuneNumberWidget = class EasyTuneNumberWidget {
     }
 
     _setModifyVariableButtonIntensity(material, value) {
-        if (this._isActive()) {
+        if (this._isActive() || value == 0) {
             if (value != 0) {
                 this._genericHover(material);
             } else {

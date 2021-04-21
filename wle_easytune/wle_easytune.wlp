@@ -340,7 +340,7 @@
                         "_myTextMaterial": "DefaultFontMaterial",
                         "_myOverrideBrowserConsole": true
                     },
-                    "active": true
+                    "active": false
                 },
                 {
                     "type": "easy-tune",
@@ -466,7 +466,7 @@
                         "_myPlaneMesh": "7",
                         "_myTextMaterial": "DefaultFontMaterial",
                         "_myPlaneMaterial": "64",
-                        "_myShowOnStart": false,
+                        "_myShowOnStart": true,
                         "_myShowVisibilityButton": true,
                         "_myOverrideStandardConsole": true,
                         "_myOverrideBrowserConsole": true

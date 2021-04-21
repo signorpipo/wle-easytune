@@ -17,7 +17,8 @@ PP.EasyTuneVariables = new PP.EasyTuneVariableMap();
 
 //Variable Types
 PP.EasyTuneVariableType = {
-    NUMBER: 0
+    NONE: 0,
+    NUMBER: 1
 };
 
 PP.EasyTuneVariable = class EasyTuneVariable {

@@ -66,6 +66,7 @@ PP.EasyTuneWidget = class EasyTuneWidget {
     }
 
     _initializeWidgets() {
+        this._myWidgets[PP.EasyTuneVariableType.NONE] = new PP.EasyTuneNoneWidget();
         this._myWidgets[PP.EasyTuneVariableType.NUMBER] = new PP.EasyTuneNumberWidget(this._myGamepad, this._mySetup.myScrollVariableButtonType);
 
         for (let item of this._myWidgets) {
@@ -91,7 +92,9 @@ PP.EasyTuneWidget = class EasyTuneWidget {
             this._myCurrentWidget.setEasyTuneVariable(this._myCurrentVariable, this._createIndexString());
             this._myCurrentWidget.setVisible(this._myWidgetFrame.myIsWidgetVisible);
         } else {
-            this._myCurrentWidget = null;
+            this._myCurrentWidget = this._myWidgets[PP.EasyTuneVariableType.NONE];
+            this._myCurrentWidget.setEasyTuneVariable(this._myCurrentVariable, this._createIndexString());
+            this._myCurrentWidget.setVisible(this._myWidgetFrame.myIsWidgetVisible);
         }
     }
 

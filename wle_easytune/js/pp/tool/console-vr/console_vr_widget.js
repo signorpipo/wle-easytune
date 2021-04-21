@@ -436,7 +436,7 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
     }
 
     _setScrollUp(material, value) {
-        if (this._myWidgetFrame.myIsWidgetVisible) {
+        if (this._myWidgetFrame.myIsWidgetVisible || !value) {
             if (value) {
                 this._myScrollTimer = 0;
                 this._genericHover(material);
@@ -449,7 +449,7 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
     }
 
     _setScrollDown(material, value) {
-        if (this._myWidgetFrame.myIsWidgetVisible) {
+        if (this._myWidgetFrame.myIsWidgetVisible || !value) {
             if (value) {
                 this._myScrollTimer = 0;
                 this._genericHover(material);
