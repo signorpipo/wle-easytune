@@ -1,6 +1,7 @@
 WL.registerComponent('tool-cursor', {
     _myHandedness: { type: WL.Type.Enum, values: ['left', 'right'], default: 'left' },
-    _myPulseOnHover: { type: WL.Type.Bool, default: false },
+    _myPulseOnHover: { type: WL.Type.Bool, default: true },
+    _myShowFingerCursor: { type: WL.Type.Bool, default: false },
     _myCursorMesh: { type: WL.Type.Mesh, default: null },
     _myCursorMaterial: { type: WL.Type.Material, default: null }
 }, {
@@ -39,7 +40,7 @@ WL.registerComponent('tool-cursor', {
         this._myFingerCursorComponent = this.object.addComponent("finger-cursor", {
             "_myCollisionGroup": this._myCursorTargetCollisionGroup,
             "_myHandedness": this._myHandedness,
-            "_myCursorMesh": this._myCursorMesh,
+            "_myCursorMesh": (this._myShowFingerCursor ? this._myCursorMesh : null),
             "_myCursorMaterial": this._myCursorMeshComponent.material
         });
         this._myFingerCursorComponent.setActive(false);

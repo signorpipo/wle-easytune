@@ -15,9 +15,11 @@ WL.registerComponent('finger-cursor', {
         this._myCursorObject = WL.scene.addObject(this.object.parent);
         this._myCursorObject.scale([this._myCursorSize, this._myCursorSize, this._myCursorSize]);
 
-        this._myCursorMeshComponent = this._myCursorObject.addComponent("mesh");
-        this._myCursorMeshComponent.mesh = this._myCursorMesh;
-        this._myCursorMeshComponent.material = this._myCursorMaterial.clone();
+        if (this._myCursorMesh) {
+            this._myCursorMeshComponent = this._myCursorObject.addComponent("mesh");
+            this._myCursorMeshComponent.mesh = this._myCursorMesh;
+            this._myCursorMeshComponent.material = this._myCursorMaterial.clone();
+        }
 
         this._myCollisionComponent = this._myCursorObject.addComponent('collision');
         this._myCollisionComponent.collider = 0; //sphere
