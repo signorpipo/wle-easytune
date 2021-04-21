@@ -25,6 +25,8 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
             this._myTypeFilters[PP.ConsoleVRWidget.MessageType[key]] = false;
         }
 
+        this._myNotifyIconActive = false;
+
         this._myScrollUp = false;
         this._myScrollDown = false;
         this._myScrollOffset = 0;
@@ -306,6 +308,7 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
         }
 
         this._adjustScrollOffsetAfterMessageAdded(message, hasSameInfoAsPrev);
+        this._updateNotifyIcon(message);
     }
 
     //if you have scrolled, new messages does not move the scroll position
@@ -320,6 +323,12 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
             for (let key in PP.ConsoleVRWidget.MessageType) {
                 this._updateText(PP.ConsoleVRWidget.MessageType[key]);
             }
+        }
+    }
+
+    _updateNotifyIcon(message) {
+        if (!(this._myTypeFilters[message.myType]) && this._myScrollOffset > 0) {
+            this._setNotifyIconActive(true, true);
         }
     }
 
@@ -342,6 +351,10 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
 
         if (this._myScrollUp || this._myScrollDown) {
             this._updateAllTexts();
+        }
+
+        if (this._myScrollOffset == 0) {
+            this._setNotifyIconActive(false, true);
         }
     }
 
@@ -404,9 +417,18 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
             let cursorTarget = ui.myDownButtonCursorTargetComponent;
             let backgroundMaterial = ui.myDownButtonBackgroundComponent.material;
 
-            cursorTarget.addClickFunction(this._instantScrollDown.bind(this));
+            cursorTarget.addClickFunction(this._instantScrollDown.bind(this, true));
             cursorTarget.addHoverFunction(this._setScrollDown.bind(this, backgroundMaterial, true));
             cursorTarget.addUnHoverFunction(this._setScrollDown.bind(this, backgroundMaterial, false));
+        }
+
+        {
+            let cursorTarget = ui.myNotifyIconCursorTargetComponent;
+            let backgroundMaterial = ui.myNotifyIconBackgroundComponent.material;
+
+            cursorTarget.addClickFunction(this._instantScrollDown.bind(this, false));
+            cursorTarget.addHoverFunction(this._genericHover.bind(this, backgroundMaterial));
+            cursorTarget.addUnHoverFunction(this._setNotifyIconMaterial.bind(this));
         }
     }
 
@@ -471,10 +493,29 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
         }
     }
 
-    _instantScrollDown() {
+    _instantScrollDown(updateNotifyIconMaterial) {
         if (this._myWidgetFrame.myIsWidgetVisible && !this._myPreventScrollClick) {
             this._myScrollOffset = 0;
+            this._setNotifyIconActive(false, updateNotifyIconMaterial);
             this._updateAllTexts();
+        }
+    }
+
+    _setNotifyIconActive(active, updateNotifyIconMaterial) {
+        if (this._myNotifyIconActive != active) {
+            this._myNotifyIconActive = active;
+            if (updateNotifyIconMaterial) {
+                this._setNotifyIconMaterial();
+            }
+        }
+    }
+
+    _setNotifyIconMaterial() {
+        let material = this._myUI.myNotifyIconBackgroundComponent.material;
+        if (this._myNotifyIconActive) {
+            material.color = this._mySetup.myNotifyIconNewMessageColor;
+        } else {
+            material.color = this._mySetup.myNotifyIconNothingColor;
         }
     }
 

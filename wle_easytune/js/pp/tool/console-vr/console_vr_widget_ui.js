@@ -39,6 +39,10 @@ PP.ConsoleVRWidgetUI = class ConsoleVRWidgetUI {
         for (let key in PP.ConsoleVRWidget.MessageType) {
             this.myMessagesTexts[PP.ConsoleVRWidget.MessageType[key]] = WL.scene.addObject(this.myMessagesTextsPanel);
         }
+
+        this.myNotifyIconPanel = WL.scene.addObject(this.myMessagesPanel);
+        this.myNotifyIconBackground = WL.scene.addObject(this.myNotifyIconPanel);
+        this.myNotifyIconCursorTarget = WL.scene.addObject(this.myNotifyIconPanel);
     }
 
     _createButtonsSkeleton() {
@@ -91,6 +95,10 @@ PP.ConsoleVRWidgetUI = class ConsoleVRWidgetUI {
 
         this.myMessagesTextsPanel.setTranslationLocal(this._mySetup.myMessagesTextsPanelPosition);
         this.myMessagesTextsPanel.scale(this._mySetup.myMessagesTextsPanelScale);
+
+        this.myNotifyIconPanel.setTranslationLocal(this._mySetup.myNotifyIconPanelPositions[this._myAdditionalSetup.myHandednessIndex]);
+        this.myNotifyIconBackground.scale(this._mySetup.myNotifyIconBackgroundScale);
+        this.myNotifyIconCursorTarget.setTranslationLocal(this._mySetup.myNotifyIconCursorTargetPosition);
     }
 
     _setButtonsTransforms() {
@@ -176,6 +184,18 @@ PP.ConsoleVRWidgetUI = class ConsoleVRWidgetUI {
 
             this.myMessagesTextComponents[PP.ConsoleVRWidget.MessageType[key]] = textComp;
         }
+
+        this.myNotifyIconBackgroundComponent = this.myNotifyIconBackground.addComponent('mesh');
+        this.myNotifyIconBackgroundComponent.mesh = this._myPlaneMesh;
+        this.myNotifyIconBackgroundComponent.material = this._myAdditionalSetup.myPlaneMaterial.clone();
+        this.myNotifyIconBackgroundComponent.material.color = this._mySetup.myNotifyIconNothingColor;
+
+        this.myNotifyIconCursorTargetComponent = this.myNotifyIconCursorTarget.addComponent('cursor-target');
+
+        this.myNotifyIconCollisionComponent = this.myNotifyIconCursorTarget.addComponent('collision');
+        this.myNotifyIconCollisionComponent.collider = this._mySetup.myCursorTargetCollisionCollider;
+        this.myNotifyIconCollisionComponent.group = 1 << this._mySetup.myCursorTargetCollisionGroup;
+        this.myNotifyIconCollisionComponent.extents = this._mySetup.myNotifyIconCollisionExtents;
     }
 
     _addButtonsComponents() {

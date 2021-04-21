@@ -326,7 +326,9 @@
                     "tool-cursor": {
                         "_myCursorMesh": "9",
                         "_myCursorMaterial": "64",
-                        "_myHandedness": "left"
+                        "_myHandedness": "left",
+                        "_myShowFingerCursor": true,
+                        "_myPulseOnHover": true
                     },
                     "active": true
                 },
@@ -340,7 +342,7 @@
                         "_myTextMaterial": "DefaultFontMaterial",
                         "_myOverrideBrowserConsole": true
                     },
-                    "active": false
+                    "active": true
                 },
                 {
                     "type": "easy-tune",
@@ -353,6 +355,14 @@
                         "_myShowVisibilityButton": true
                     },
                     "active": true
+                },
+                {
+                    "type": "hand-tracking",
+                    "hand-tracking": {
+                        "jointMesh": "9",
+                        "jointMaterial": "22"
+                    },
+                    "active": false
                 }
             ],
             "transformation": [
@@ -454,7 +464,8 @@
                         "_myCursorMesh": "9",
                         "_myCursorMaterial": "64",
                         "_myHandedness": "right",
-                        "_myPulseOnHover": true
+                        "_myPulseOnHover": true,
+                        "_myShowFingerCursor": true
                     },
                     "active": true
                 },
@@ -483,6 +494,15 @@
                         "_myTextMaterial": "DefaultFontMaterial"
                     },
                     "active": true
+                },
+                {
+                    "type": "hand-tracking",
+                    "hand-tracking": {
+                        "jointMesh": "9",
+                        "jointMaterial": "22",
+                        "handedness": "right"
+                    },
+                    "active": false
                 }
             ]
         },
