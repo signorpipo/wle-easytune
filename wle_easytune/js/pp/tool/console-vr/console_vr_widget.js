@@ -18,6 +18,7 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
         this._myMessages = [];
 
         this._myOldConsole = [];
+        this._myOldConsoleVR = [];
 
         this._myTypeFilters = [];
         for (let key in PP.ConsoleVRWidget.MessageType) {
@@ -45,28 +46,40 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
 
         this._addListeners();
 
-        this._overrideConsoleFunctions();
+        this._overrideConsolesFunctions();
     }
 
     //This must be done only when all the setup is complete, to avoid issues with other part of the code calling the console and then triggering the console vr while not ready yet
-    _overrideConsoleFunctions() {
+    _overrideConsolesFunctions() {
         this._myOldConsole[PP.ConsoleVRWidget.ConsoleType.LOG] = console.log;
-        console.log = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.LOG);
-
         this._myOldConsole[PP.ConsoleVRWidget.ConsoleType.ERROR] = console.error;
-        console.error = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.ERROR);
-
         this._myOldConsole[PP.ConsoleVRWidget.ConsoleType.WARN] = console.warn;
-        console.warn = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.WARN);
-
         this._myOldConsole[PP.ConsoleVRWidget.ConsoleType.INFO] = console.info;
-        console.info = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.INFO);
-
         this._myOldConsole[PP.ConsoleVRWidget.ConsoleType.DEBUG] = console.debug;
-        console.debug = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.DEBUG);
-
         this._myOldConsole[PP.ConsoleVRWidget.ConsoleType.ASSERT] = console.assert;
-        console.assert = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.ASSERT);
+
+        if (this._myAdditionalSetup.myOverrideBrowserConsole) {
+            console.log = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.LOG, false);
+            console.error = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.ERROR, false);
+            console.warn = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.WARN, false);
+            console.info = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.INFO, false);
+            console.debug = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.DEBUG, false);
+            console.assert = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.ASSERT, false);
+        }
+
+        this._myOldConsoleVR[PP.ConsoleVRWidget.ConsoleType.LOG] = PP.ConsoleVR.log;
+        this._myOldConsoleVR[PP.ConsoleVRWidget.ConsoleType.ERROR] = PP.ConsoleVR.error;
+        this._myOldConsoleVR[PP.ConsoleVRWidget.ConsoleType.WARN] = PP.ConsoleVR.warn;
+        this._myOldConsoleVR[PP.ConsoleVRWidget.ConsoleType.INFO] = PP.ConsoleVR.info;
+        this._myOldConsoleVR[PP.ConsoleVRWidget.ConsoleType.DEBUG] = PP.ConsoleVR.debug;
+        this._myOldConsoleVR[PP.ConsoleVRWidget.ConsoleType.ASSERT] = PP.ConsoleVR.assert;
+
+        PP.ConsoleVR.log = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.LOG, true);
+        PP.ConsoleVR.error = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.ERROR, true);
+        PP.ConsoleVR.warn = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.WARN, true);
+        PP.ConsoleVR.info = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.INFO, true);
+        PP.ConsoleVR.debug = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.DEBUG, true);
+        PP.ConsoleVR.assert = this._consolePrint.bind(this, PP.ConsoleVRWidget.ConsoleType.ASSERT, true);
     }
 
     update(dt) {
@@ -169,7 +182,7 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
         this._myUI.myMessagesTextComponents[messageType].text = consoleText;
     }
 
-    _consolePrint(consoleType, ...args) {
+    _consolePrint(consoleType, isConsoleVR, ...args) {
         if (consoleType != PP.ConsoleVRWidget.ConsoleType.ASSERT || (args.length > 0 && !args[0])) {
             let message = this._argsToMessage(consoleType, ...args);
             this._addMessage(message);
@@ -183,7 +196,11 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
             this._pulseGamepad();
         }
 
-        this._myOldConsole[consoleType].apply(console, args);
+        if (isConsoleVR) {
+            this._myOldConsoleVR[consoleType].apply(PP.ConsoleVR, args);
+        } else {
+            this._myOldConsole[consoleType].apply(console, args);
+        }
     }
 
     _consoleTypeToMessageType(consoleType) {
@@ -592,4 +609,32 @@ PP.ConsoleVRWidget.PulseOnNewMessage = {
     NONE: 0,
     ALWAYS: 1,
     WHEN_HIDDEN: 2,
+};
+
+PP.ConsoleVR = {
+    realLog: console.log,
+    realError: console.error,
+    realWarn: console.warn,
+    realInfo: console.info,
+    realDebug: console.debug,
+    realAssert: console.assert,
+
+    log: function (...args) {
+        this.realLog.apply(console, args);
+    },
+    error: function (...args) {
+        this.realError.apply(console, args);
+    },
+    warn: function (...args) {
+        this.realWarn.apply(console, args);
+    },
+    info: function (...args) {
+        this.realInfo.apply(console, args);
+    },
+    debug: function (...args) {
+        this.realDebug.apply(console, args);
+    },
+    assert: function (...args) {
+        this.realAssert.apply(console, args);
+    }
 };
