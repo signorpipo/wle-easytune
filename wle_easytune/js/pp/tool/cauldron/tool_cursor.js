@@ -46,8 +46,13 @@ WL.registerComponent('tool-cursor', {
     },
     update: function (dt) {
         let isUsingHand = this._isUsingHand();
-        this._myCursorComponent.active = !isUsingHand;
+
         this._myFingerCursorComponent.setActive(isUsingHand);
+
+        this._myCursorComponent.active = !isUsingHand;
+        if (!this._myCursorComponent.active) {
+            this._myCursorComponent._setCursorVisibility(false);
+        }
     },
     _isUsingHand: function () {
         let isUsingHand = false;
