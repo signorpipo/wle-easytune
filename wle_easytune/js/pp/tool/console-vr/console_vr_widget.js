@@ -86,6 +86,7 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
         this._myWidgetFrame.update(dt);
 
         if (this._myWidgetFrame.myIsWidgetVisible) {
+            this._myPreventScrollClick = false; //used to avoid finger cursor to always trigger instant scroll up/down when hovering scroll buttons
             this._updateScroll(dt);
         }
 
@@ -438,6 +439,7 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
     _setScrollUp(material, value) {
         if (this._myWidgetFrame.myIsWidgetVisible || !value) {
             if (value) {
+                this._myPreventScrollClick = true;
                 this._myScrollTimer = 0;
                 this._genericHover(material);
             } else {
@@ -451,6 +453,7 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
     _setScrollDown(material, value) {
         if (this._myWidgetFrame.myIsWidgetVisible || !value) {
             if (value) {
+                this._myPreventScrollClick = true;
                 this._myScrollTimer = 0;
                 this._genericHover(material);
             } else {
@@ -462,14 +465,14 @@ PP.ConsoleVRWidget = class ConsoleVRWidget {
     }
 
     _instantScrollUp() {
-        if (this._myWidgetFrame.myIsWidgetVisible) {
+        if (this._myWidgetFrame.myIsWidgetVisible && !this._myPreventScrollClick) {
             this._myScrollOffset = this._getMaxScrollOffset();
             this._updateAllTexts();
         }
     }
 
     _instantScrollDown() {
-        if (this._myWidgetFrame.myIsWidgetVisible) {
+        if (this._myWidgetFrame.myIsWidgetVisible && !this._myPreventScrollClick) {
             this._myScrollOffset = 0;
             this._updateAllTexts();
         }
