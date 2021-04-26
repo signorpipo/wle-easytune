@@ -4,13 +4,6 @@
             "name": "Player",
             "components": [
                 {
-                    "type": "wasd-controls",
-                    "wasd-controls": {
-                        "headObject": "17",
-                        "speed": 0.02500000037252903
-                    }
-                },
-                {
                     "type": "gamepads-manager"
                 }
             ],
@@ -120,6 +113,24 @@
                         "type": "eye left"
                     }
                 }
+            ],
+            "transformation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
             ]
         },
         "19": {
@@ -145,8 +156,8 @@
                     "light": {
                         "attenuation": 0.10000000149011612,
                         "color": [
-                            0.953852653503418,
-                            0.21568626165390016,
+                            0.9529411792755127,
+                            0.21568627655506135,
                             1.0
                         ]
                     }
@@ -173,6 +184,19 @@
         },
         "23": {
             "name": "Light 2",
+            "components": [
+                {
+                    "type": "light",
+                    "light": {
+                        "attenuation": 0.10000000149011612,
+                        "color": [
+                            1.0,
+                            0.7098039388656616,
+                            0.14509804546833039
+                        ]
+                    }
+                }
+            ],
             "transformation": [
                 1.0,
                 0.0,
@@ -190,49 +214,6 @@
                 3.0,
                 -1.0,
                 1.0
-            ],
-            "components": [
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                {
-                    "type": "light",
-                    "light": {
-                        "attenuation": 0.10000000149011612,
-                        "color": [
-                            1.0,
-                            0.7083233594894409,
-                            0.1450980305671692
-                        ]
-                    }
-                }
             ]
         },
         "24": {
@@ -297,7 +278,7 @@
             ],
             "deleted": true
         },
-        "48": {
+        "49": {
             "link": {
                 "name": "Left_Quest_Controller",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
@@ -305,135 +286,91 @@
             "parent": "14",
             "components": [
                 {
-                    "type": "gamepad-animator",
-                    "gamepad-animator": {
-                        "_mySelect": "52",
-                        "_mySqueeze": "53",
-                        "_myThumbstick": "54",
-                        "_myBottomButton": "50",
-                        "_myTopButton": "55"
-                    }
-                },
-                {
                     "type": "input",
                     "input": {
                         "type": "hand left"
-                    },
-                    "active": true
+                    }
+                },
+                {
+                    "type": "gamepad-animator",
+                    "gamepad-animator": {
+                        "_mySelect": "53",
+                        "_mySqueeze": "54",
+                        "_myThumbstick": "55",
+                        "_myBottomButton": "51",
+                        "_myTopButton": "56"
+                    }
+                },
+                {
+                    "type": "easy-tune",
+                    "easy-tune": {
+                        "_myShowOnStart": true,
+                        "_myShowVisibilityButton": true,
+                        "_myPlaneMaterial": "32",
+                        "_myTextMaterial": "DefaultFontMaterial",
+                        "_myHandedness": "left"
+                    }
                 },
                 {
                     "type": "tool-cursor",
                     "tool-cursor": {
                         "_myCursorMesh": "9",
-                        "_myCursorMaterial": "64",
-                        "_myHandedness": "left",
-                        "_myShowFingerCursor": true,
-                        "_myPulseOnHover": true
-                    },
-                    "active": true
-                },
-                {
-                    "type": "console-vr",
-                    "console-vr": {
-                        "_myHandedness": "left",
-                        "_myShowOnStart": false,
-                        "_myPlaneMesh": "7",
-                        "_myPlaneMaterial": "64",
-                        "_myTextMaterial": "DefaultFontMaterial",
-                        "_myOverrideBrowserConsole": true
-                    },
-                    "active": false
-                },
-                {
-                    "type": "easy-tune",
-                    "easy-tune": {
-                        "_myPlaneMesh": "7",
-                        "_myPlaneMaterial": "64",
-                        "_myTextMaterial": "DefaultFontMaterial",
-                        "_myShowOnStart": true,
-                        "_myHandedness": "left",
-                        "_myShowVisibilityButton": true
-                    },
-                    "active": true
-                },
-                {
-                    "type": "hand-tracking",
-                    "hand-tracking": {
-                        "jointMesh": "9",
-                        "jointMaterial": "22"
-                    },
-                    "active": false
+                        "_myCursorMaterial": "32",
+                        "_myShowFingerCursor": true
+                    }
                 }
-            ],
-            "transformation": [
-                1.0000011920928956,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.000002145767212,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.9999982118606569,
-                0.0,
-                -0.10000000149011612,
-                1.043081283569336e-7,
-                1.862645149230957e-8,
-                1.0
             ]
         },
-        "49": {
+        "50": {
             "link": {
                 "name": "Left_Body<Left_Quest_Controller",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             },
-            "parent": "48"
+            "parent": "49"
         },
-        "50": {
+        "51": {
             "link": {
                 "name": "Left_Bottom_Button<Left_Quest_Controller",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             },
-            "parent": "48"
+            "parent": "49"
         },
-        "51": {
+        "52": {
             "link": {
                 "name": "Left_Option_Button<Left_Quest_Controller",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             },
-            "parent": "48"
+            "parent": "49"
         },
-        "52": {
+        "53": {
             "link": {
                 "name": "Left_Select<Left_Quest_Controller",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             },
-            "parent": "48"
+            "parent": "49"
         },
-        "53": {
+        "54": {
             "link": {
                 "name": "Left_Squeeze<Left_Quest_Controller",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             },
-            "parent": "48"
+            "parent": "49"
         },
-        "54": {
+        "55": {
             "link": {
                 "name": "Left_Thumbstick<Left_Quest_Controller",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             },
-            "parent": "48"
+            "parent": "49"
         },
-        "55": {
+        "56": {
             "link": {
                 "name": "Left_Top_Button<Left_Quest_Controller",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             },
-            "parent": "48"
+            "parent": "49"
         },
-        "56": {
+        "57": {
             "link": {
                 "name": "Right_Quest_Controller",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
@@ -441,2222 +378,128 @@
             "parent": "14",
             "components": [
                 {
-                    "type": "gamepad-animator",
-                    "gamepad-animator": {
-                        "_myHandedness": "right",
-                        "_mySelect": "60",
-                        "_mySqueeze": "61",
-                        "_myThumbstick": "62",
-                        "_myBottomButton": "58",
-                        "_myTopButton": "63"
-                    }
-                },
-                {
                     "type": "input",
                     "input": {
                         "type": "hand right"
-                    },
-                    "active": true
+                    }
+                },
+                {
+                    "type": "gamepad-animator",
+                    "gamepad-animator": {
+                        "_myHandedness": "right",
+                        "_mySelect": "61",
+                        "_mySqueeze": "62",
+                        "_myThumbstick": "63",
+                        "_myBottomButton": "59",
+                        "_myTopButton": "64"
+                    }
                 },
                 {
                     "type": "tool-cursor",
                     "tool-cursor": {
-                        "_myCursorMesh": "9",
-                        "_myCursorMaterial": "64",
                         "_myHandedness": "right",
-                        "_myPulseOnHover": true,
+                        "_myCursorMesh": "9",
+                        "_myCursorMaterial": "32",
                         "_myShowFingerCursor": true
-                    },
-                    "active": true
+                    }
                 },
                 {
                     "type": "console-vr",
                     "console-vr": {
                         "_myHandedness": "right",
-                        "_mShowOnStart": false,
-                        "_myPlaneMesh": "7",
-                        "_myTextMaterial": "DefaultFontMaterial",
-                        "_myPlaneMaterial": "64",
-                        "_myShowOnStart": false,
-                        "_myShowVisibilityButton": true,
-                        "_myOverrideStandardConsole": true,
-                        "_myOverrideBrowserConsole": true
-                    },
-                    "active": true
-                },
-                {
-                    "type": "easy-tune",
-                    "easy-tune": {
-                        "_myHandedness": "right",
-                        "_myShowOnStart": false,
-                        "_myShowVisibilityButton": true,
-                        "_myPlaneMaterial": "64",
+                        "_myPlaneMaterial": "32",
                         "_myTextMaterial": "DefaultFontMaterial"
-                    },
-                    "active": false
-                },
-                {
-                    "type": "hand-tracking",
-                    "hand-tracking": {
-                        "jointMesh": "9",
-                        "jointMaterial": "22",
-                        "handedness": "right"
-                    },
-                    "active": false
+                    }
                 }
             ]
         },
-        "57": {
+        "58": {
             "link": {
                 "name": "Right_Body<Right_Quest_Controller",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             },
-            "parent": "56"
+            "parent": "57"
         },
-        "58": {
+        "59": {
             "link": {
                 "name": "Right_Bottom_Button<Right_Quest_Controller",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             },
-            "parent": "56"
+            "parent": "57"
         },
-        "59": {
+        "60": {
             "link": {
                 "name": "Right_Option_Button<Right_Quest_Controller",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             },
-            "parent": "56"
+            "parent": "57"
         },
-        "60": {
+        "61": {
             "link": {
                 "name": "Right_Select<Right_Quest_Controller",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             },
-            "parent": "56"
+            "parent": "57"
         },
-        "61": {
+        "62": {
             "link": {
                 "name": "Right_Squeeze<Right_Quest_Controller",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             },
-            "parent": "56"
+            "parent": "57"
         },
-        "62": {
+        "63": {
             "link": {
                 "name": "Right_Thumbstick<Right_Quest_Controller",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             },
-            "parent": "56"
+            "parent": "57"
         },
-        "63": {
+        "64": {
             "link": {
                 "name": "Right_Top_Button<Right_Quest_Controller",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             },
-            "parent": "56"
+            "parent": "57"
         },
         "65": {
-            "name": "Empty",
-            "parent": "48",
+            "name": "Mesh",
+            "parent": null,
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "7",
+                        "material": "32"
+                    }
+                },
+                {
+                    "type": "add-variables"
+                }
+            ],
+            "transformation": [
+                0.5,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.0,
+                0.0,
+                0.0,
+                -2.0,
+                1.0
+            ],
             "deleted": true
         },
         "66": {
-            "name": "Test Easy Tune",
-            "parent": "135",
-            "transformation": [
-                0.0005144748720340431,
-                -0.0002557333209551871,
-                -0.0008184840553440154,
-                0.0,
-                -0.0008397892233915627,
-                0.00004275784158380702,
-                -0.0005412262980826199,
-                0.0,
-                0.00017340619524475187,
-                0.0009658014168962836,
-                -0.0001927642588270828,
-                0.0,
-                0.0,
-                -3000.0,
-                0.0,
-                1.0
-            ]
-        },
-        "67": {
-            "name": "Main Panel",
-            "parent": "66",
-            "transformation": [
-                0.9999986290931702,
-                0.000001817941665649414,
-                -0.0000012367963790893557,
-                0.0,
-                -0.0000018477439880371096,
-                1.0000008344650269,
-                -0.0000030547380447387697,
-                0.0,
-                0.0000011771917343139649,
-                0.000003077089786529541,
-                0.9999997615814208,
-                0.0,
-                0.04999956861138344,
-                0.22080767154693604,
-                -0.02285774052143097,
-                1.0
-            ]
-        },
-        "68": {
-            "name": "Display Panel",
-            "parent": "67",
-            "transformation": [
-                1.0,
-                -5.960464477539065e-8,
-                -1.4901160305669237e-8,
-                0.0,
-                5.960464477539065e-8,
-                1.0,
-                -2.9802322387695329e-8,
-                0.0,
-                1.4901191391913934e-8,
-                2.980238278382785e-8,
-                1.0000020265579224,
-                0.0,
-                -0.000001989421434700489,
-                0.10000000149011612,
-                -1.043081283569336e-7,
-                1.0
-            ]
-        },
-        "69": {
-            "name": "Background",
-            "parent": "68",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "7",
-                        "material": "126"
-                    }
-                }
-            ],
-            "transformation": [
-                0.20000001788139344,
-                2.2351741790771489e-8,
-                1.862645149230957e-8,
-                0.0,
-                -6.1467364531608849e-9,
-                0.05500007420778275,
-                -4.656609264852563e-10,
-                0.0,
-                -1.3969837731053758e-8,
-                1.26998112026655e-9,
-                0.15000000596046449,
-                0.0,
-                6.897607818245888e-7,
-                0.0,
-                4.060566425323487e-7,
-                1.0
-            ]
-        },
-        "70": {
-            "name": "Display Panel",
-            "parent": "67",
-            "deleted": true
-        },
-        "71": {
-            "name": "Label Panel",
-            "parent": "130",
-            "components": [
-                {
-                    "type": "text",
-                    "text": {
-                        "text": "Speed (01 - 09)"
-                    }
-                }
-            ],
-            "transformation": [
-                0.1900000125169754,
-                7.450581485102248e-9,
-                -3.539026138810186e-8,
-                0.0,
-                -7.45060457774116e-9,
-                0.1900000125169754,
-                -1.266598985694145e-7,
-                0.0,
-                3.539025428267451e-8,
-                1.266598843585598e-7,
-                0.1899999976158142,
-                0.0,
-                -0.0000026033958420157434,
-                0.0,
-                0.010000422596931458,
-                1.0
-            ]
-        },
-        "72": {
-            "name": "Value",
-            "parent": "74",
-            "components": [
-                {
-                    "type": "text",
-                    "text": {
-                        "text": "1000.023"
-                    }
-                }
-            ],
-            "transformation": [
-                0.40000003576278689,
-                -1.4901162970204497e-8,
-                -2.980232594040899e-8,
-                0.0,
-                1.4901156752955558e-8,
-                0.40000003576278689,
-                -6.332993507385254e-8,
-                0.0,
-                2.2351741790771489e-8,
-                4.7497447752675728e-8,
-                0.30000001192092898,
-                0.0,
-                -0.000002600252628326416,
-                5.551115123125783e-17,
-                0.0,
-                1.0
-            ]
-        },
-        "73": {
-            "name": "Step",
-            "parent": "128",
-            "components": [
-                {
-                    "type": "text",
-                    "text": {
-                        "text": "Step: 0.01"
-                    }
-                }
-            ],
-            "transformation": [
-                0.190000057220459,
-                3.725290298461914e-8,
-                -2.700835466384888e-7,
-                0.0,
-                -3.7253894191735529e-8,
-                0.190000057220459,
-                -6.966292858123779e-7,
-                0.0,
-                2.700833476865228e-7,
-                6.966292289689591e-7,
-                0.1900000125169754,
-                0.0,
-                -0.000005677691660821438,
-                0.0,
-                0.010000476613640786,
-                1.0
-            ]
-        },
-        "74": {
-            "name": "Value Panel",
-            "parent": "68",
-            "transformation": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                -0.019999999552965165,
-                0.009999999776482582,
-                1.0
-            ]
-        },
-        "75": {
-            "name": "Step Buttons Panel",
-            "parent": "124",
-            "transformation": [
-                1.0000011920928956,
-                0.0000014603137969970704,
-                -0.0000017285346984863282,
-                0.0,
-                -0.0000014603240288124653,
-                1.0000011920928956,
-                -0.000005900859832763672,
-                0.0,
-                0.0000017285386775256484,
-                0.000005900905762246111,
-                1.000008463859558,
-                0.0,
-                -6.633966904701083e-7,
-                -0.02500000037252903,
-                0.01000022143125534,
-                1.0
-            ]
-        },
-        "76": {
-            "name": "Step 1000",
-            "parent": "75",
-            "transformation": [
-                1.0,
-                -5.960464477539065e-8,
-                2.9802322387695329e-8,
-                0.0,
-                2.9802322387695329e-8,
-                0.9999996423721314,
-                -2.011656761169434e-7,
-                0.0,
-                2.9802322387695329e-8,
-                1.9371509552001954e-7,
-                1.0,
-                0.0,
-                -0.1350002884864807,
-                -0.0003991127014160156,
-                -2.793967723846436e-7,
-                1.0
-            ]
-        },
-        "77": {
-            "name": "Background",
-            "parent": "76",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "7",
-                        "material": "64"
-                    }
-                }
-            ],
-            "transformation": [
-                0.03999999910593033,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.019999999552965165,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ]
-        },
-        "78": {
-            "name": "1000",
-            "parent": "76",
-            "components": [
-                {
-                    "type": "text",
-                    "text": {
-                        "text": "x0.01"
-                    }
-                }
-            ],
-            "transformation": [
-                0.18000008165836338,
-                6.705522537231445e-8,
-                -1.4901161193847657e-8,
-                0.0,
-                -8.195638656616212e-8,
-                0.18000000715255738,
-                -8.381903171539309e-8,
-                0.0,
-                3.725290298461914e-9,
-                8.381903171539309e-8,
-                0.18000003695487977,
-                0.0,
-                0.0,
-                0.0,
-                0.006500013172626495,
-                1.0
-            ]
-        },
-        "79": {
-            "name": "Step 1000",
-            "parent": "75",
-            "transformation": [
-                1.0,
-                -2.9802322387695329e-8,
-                7.771563289958464e-16,
-                0.0,
-                2.9802322387695329e-8,
-                1.0,
-                -3.725290298461914e-8,
-                0.0,
-                3.3306664268975096e-16,
-                3.725289587919178e-8,
-                0.9999998211860656,
-                0.0,
-                8.759088814258575e-7,
-                -0.02500000037252903,
-                -1.713633537292481e-7,
-                1.0
-            ],
-            "deleted": true
-        },
-        "80": {
-            "name": "Background",
-            "parent": "79",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "7",
-                        "material": "64"
-                    }
-                }
-            ],
-            "transformation": [
-                0.03999999910593033,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.019999999552965165,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "deleted": true
-        },
-        "81": {
-            "name": "1000",
-            "parent": "79",
-            "components": [
-                {
-                    "type": "text",
-                    "text": {
-                        "text": "1000"
-                    }
-                }
-            ],
-            "transformation": [
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.009999999776482582,
-                1.0
-            ],
-            "deleted": true
-        },
-        "82": {
-            "name": "Step 1000",
-            "parent": "75",
-            "transformation": [
-                1.0,
-                -5.960464477539065e-8,
-                2.9802322387695329e-8,
-                0.0,
-                2.9802322387695329e-8,
-                0.9999996423721314,
-                -2.011656761169434e-7,
-                0.0,
-                2.9802322387695329e-8,
-                1.9371509552001954e-7,
-                1.0,
-                0.0,
-                -0.04500024765729904,
-                -0.0003966093063354492,
-                -4.619359970092774e-7,
-                1.0
-            ]
-        },
-        "83": {
-            "name": "Background",
-            "parent": "82",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "7",
-                        "material": "64"
-                    }
-                }
-            ],
-            "transformation": [
-                0.04000002145767212,
-                1.862645149230957e-8,
-                -3.725290298461914e-9,
-                0.0,
-                -1.0244548320770264e-8,
-                0.02000001445412636,
-                -2.7939677238464357e-9,
-                0.0,
-                1.4901161193847657e-8,
-                1.788139343261719e-7,
-                1.0000004768371585,
-                0.0,
-                7.450580596923828e-9,
-                2.384185791015625e-7,
-                -2.2351741790771489e-8,
-                1.0000001192092896
-            ]
-        },
-        "84": {
-            "name": "1000",
-            "parent": "82",
-            "components": [
-                {
-                    "type": "text",
-                    "text": {
-                        "text": "x0.1"
-                    }
-                }
-            ],
-            "transformation": [
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.006500000134110451,
-                1.0
-            ]
-        },
-        "85": {
-            "name": "Step 1000",
-            "parent": "75",
-            "transformation": [
-                1.0,
-                -2.9802322387695329e-8,
-                7.771563289958464e-16,
-                0.0,
-                2.9802322387695329e-8,
-                1.0,
-                -3.725290298461914e-8,
-                0.0,
-                3.3306664268975096e-16,
-                3.725289587919178e-8,
-                0.9999998211860656,
-                0.0,
-                8.759088814258575e-7,
-                -0.02500000037252903,
-                -1.713633537292481e-7,
-                1.0
-            ],
-            "deleted": true
-        },
-        "86": {
-            "name": "Background",
-            "parent": "85",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "7",
-                        "material": "64"
-                    }
-                }
-            ],
-            "transformation": [
-                0.03999999910593033,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.019999999552965165,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "deleted": true
-        },
-        "87": {
-            "name": "1000",
-            "parent": "85",
-            "components": [
-                {
-                    "type": "text",
-                    "text": {
-                        "text": "1000"
-                    }
-                }
-            ],
-            "transformation": [
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.009999999776482582,
-                1.0
-            ],
-            "deleted": true
-        },
-        "88": {
-            "name": "Step 1000",
-            "parent": "75",
-            "transformation": [
-                1.0,
-                -5.960464477539065e-8,
-                2.9802322387695329e-8,
-                0.0,
-                2.9802322387695329e-8,
-                0.9999996423721314,
-                -2.011656761169434e-7,
-                0.0,
-                2.9802322387695329e-8,
-                1.9371509552001954e-7,
-                1.0,
-                0.0,
-                0.044999755918979648,
-                -0.0003994107246398926,
-                -5.159527063369751e-7,
-                1.0
-            ]
-        },
-        "89": {
-            "name": "Background",
-            "parent": "88",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "7",
-                        "material": "64"
-                    }
-                }
-            ],
-            "transformation": [
-                0.04000002890825272,
-                1.6763806343078614e-8,
-                -3.725290298461914e-9,
-                0.0,
-                -1.3969838619232178e-8,
-                0.020000018179416658,
-                -3.725290298461914e-9,
-                0.0,
-                2.9802322387695329e-8,
-                1.9371509552001954e-7,
-                1.0000004768371585,
-                0.0,
-                0.0,
-                0.0,
-                -7.450580596923828e-9,
-                1.0000001192092896
-            ]
-        },
-        "90": {
-            "name": "1000",
-            "parent": "88",
-            "components": [
-                {
-                    "type": "text",
-                    "text": {
-                        "text": "x10"
-                    }
-                }
-            ],
-            "transformation": [
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.006500000134110451,
-                1.0
-            ]
-        },
-        "91": {
-            "name": "Step 1000",
-            "parent": "75",
-            "transformation": [
-                1.0,
-                -2.9802322387695329e-8,
-                7.771563289958464e-16,
-                0.0,
-                2.9802322387695329e-8,
-                1.0,
-                -3.725290298461914e-8,
-                0.0,
-                3.3306664268975096e-16,
-                3.725289587919178e-8,
-                0.9999998211860656,
-                0.0,
-                8.759088814258575e-7,
-                -0.02500000037252903,
-                -1.713633537292481e-7,
-                1.0
-            ],
-            "deleted": true
-        },
-        "92": {
-            "name": "Background",
-            "parent": "91",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "7",
-                        "material": "64"
-                    }
-                }
-            ],
-            "transformation": [
-                0.03999999910593033,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.019999999552965165,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "deleted": true
-        },
-        "93": {
-            "name": "1000",
-            "parent": "91",
-            "components": [
-                {
-                    "type": "text",
-                    "text": {
-                        "text": "1000"
-                    }
-                }
-            ],
-            "transformation": [
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.009999999776482582,
-                1.0
-            ],
-            "deleted": true
-        },
-        "94": {
-            "name": "Step 1000",
-            "parent": "75",
-            "transformation": [
-                1.0,
-                -5.960464477539065e-8,
-                2.9802322387695329e-8,
-                0.0,
-                2.9802322387695329e-8,
-                0.9999996423721314,
-                -2.011656761169434e-7,
-                0.0,
-                2.9802322387695329e-8,
-                1.9371509552001954e-7,
-                1.0,
-                0.0,
-                0.13499975204467774,
-                -0.0003994107246398926,
-                -6.910413503646851e-7,
-                1.0
-            ]
-        },
-        "95": {
-            "name": "Background",
-            "parent": "94",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "7",
-                        "material": "64"
-                    }
-                }
-            ],
-            "transformation": [
-                0.03999999910593033,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.019999999552965165,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ]
-        },
-        "96": {
-            "name": "1000",
-            "parent": "94",
-            "components": [
-                {
-                    "type": "text",
-                    "text": {
-                        "text": "x100"
-                    }
-                }
-            ],
-            "transformation": [
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.006500000134110451,
-                1.0
-            ]
-        },
-        "97": {
-            "name": "Step 1000",
-            "parent": "75",
-            "transformation": [
-                1.0,
-                -2.9802322387695329e-8,
-                7.771563289958464e-16,
-                0.0,
-                2.9802322387695329e-8,
-                1.0,
-                -3.725290298461914e-8,
-                0.0,
-                3.3306664268975096e-16,
-                3.725289587919178e-8,
-                0.9999998211860656,
-                0.0,
-                8.759088814258575e-7,
-                -0.02500000037252903,
-                -1.713633537292481e-7,
-                1.0
-            ],
-            "deleted": true
-        },
-        "98": {
-            "name": "Background",
-            "parent": "97",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "7",
-                        "material": "64"
-                    }
-                }
-            ],
-            "transformation": [
-                0.03999999910593033,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.019999999552965165,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "deleted": true
-        },
-        "99": {
-            "name": "1000",
-            "parent": "97",
-            "components": [
-                {
-                    "type": "text",
-                    "text": {
-                        "text": "1000"
-                    }
-                }
-            ],
-            "transformation": [
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.009999999776482582,
-                1.0
-            ],
-            "deleted": true
-        },
-        "100": {
-            "name": "Step 1000",
-            "parent": "75",
-            "transformation": [
-                0.9999999403953552,
-                -1.054709861690649e-15,
-                4.4703487134256657e-8,
-                0.0,
-                6.050713366624735e-15,
-                0.9999994039535524,
-                -1.1175870895385745e-7,
-                0.0,
-                -4.4703483581542978e-8,
-                1.1175875869184893e-7,
-                0.9999998807907105,
-                0.0,
-                -0.14645835757255558,
-                -0.02500000037252903,
-                -2.086162567138672e-7,
-                1.0
-            ],
-            "deleted": true
-        },
-        "101": {
-            "name": "Background",
-            "parent": "100",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "7",
-                        "material": "64"
-                    }
-                }
-            ],
-            "transformation": [
-                0.03999999910593033,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.019999999552965165,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "deleted": true
-        },
-        "102": {
-            "name": "1000",
-            "parent": "100",
-            "components": [
-                {
-                    "type": "text",
-                    "text": {
-                        "text": "1000"
-                    }
-                }
-            ],
-            "transformation": [
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.009999999776482582,
-                1.0
-            ],
-            "deleted": true
-        },
-        "103": {
-            "name": "Step 1000",
-            "parent": "75",
-            "transformation": [
-                0.9999999403953552,
-                -1.054709861690649e-15,
-                4.4703487134256657e-8,
-                0.0,
-                6.050713366624735e-15,
-                0.9999994039535524,
-                -1.1175870895385745e-7,
-                0.0,
-                -4.4703483581542978e-8,
-                1.1175875869184893e-7,
-                0.9999998807907105,
-                0.0,
-                -0.05827779322862625,
-                -0.02500000037252903,
-                -3.762543201446533e-7,
-                1.0
-            ],
-            "deleted": true
-        },
-        "104": {
-            "name": "Background",
-            "parent": "103",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "7",
-                        "material": "64"
-                    }
-                }
-            ],
-            "transformation": [
-                0.03999999910593033,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.019999999552965165,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "deleted": true
-        },
-        "105": {
-            "name": "1000",
-            "parent": "103",
-            "components": [
-                {
-                    "type": "text",
-                    "text": {
-                        "text": "1000"
-                    }
-                }
-            ],
-            "transformation": [
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.009999999776482582,
-                1.0
-            ],
-            "deleted": true
-        },
-        "106": {
-            "name": "Step 1000",
-            "parent": "75",
-            "transformation": [
-                0.9999999403953552,
-                -1.054709861690649e-15,
-                4.4703487134256657e-8,
-                0.0,
-                6.050713366624735e-15,
-                0.9999994039535524,
-                -1.1175870895385745e-7,
-                0.0,
-                -4.4703483581542978e-8,
-                1.1175875869184893e-7,
-                0.9999998807907105,
-                0.0,
-                0.04186465963721275,
-                -0.02500000037252903,
-                -4.470348358154297e-7,
-                1.0
-            ],
-            "deleted": true
-        },
-        "107": {
-            "name": "Background",
-            "parent": "106",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "7",
-                        "material": "64"
-                    }
-                }
-            ],
-            "transformation": [
-                0.03999999910593033,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.019999999552965165,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "deleted": true
-        },
-        "108": {
-            "name": "1000",
-            "parent": "106",
-            "components": [
-                {
-                    "type": "text",
-                    "text": {
-                        "text": "1000"
-                    }
-                }
-            ],
-            "transformation": [
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.009999999776482582,
-                1.0
-            ],
-            "deleted": true
-        },
-        "109": {
-            "name": "Step 1000",
-            "parent": "75",
-            "transformation": [
-                0.9999999403953552,
-                -1.054709861690649e-15,
-                4.4703487134256657e-8,
-                0.0,
-                6.050713366624735e-15,
-                0.9999994039535524,
-                -1.1175870895385745e-7,
-                0.0,
-                -4.4703483581542978e-8,
-                1.1175875869184893e-7,
-                0.9999998807907105,
-                0.0,
-                0.1465301811695099,
-                -0.02500000037252903,
-                -6.07222318649292e-7,
-                1.0
-            ],
-            "deleted": true
-        },
-        "110": {
-            "name": "Background",
-            "parent": "109",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "7",
-                        "material": "64"
-                    }
-                }
-            ],
-            "transformation": [
-                0.03999999910593033,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.019999999552965165,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "deleted": true
-        },
-        "111": {
-            "name": "1000",
-            "parent": "109",
-            "components": [
-                {
-                    "type": "text",
-                    "text": {
-                        "text": "1000"
-                    }
-                }
-            ],
-            "transformation": [
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.009999999776482582,
-                1.0
-            ],
-            "deleted": true
-        },
-        "112": {
-            "name": "Step 1000",
-            "parent": "75",
-            "transformation": [
-                0.9999999403953552,
-                -1.054709861690649e-15,
-                4.470350489782504e-8,
-                0.0,
-                6.0507150606906299e-15,
-                0.9999994039535524,
-                -1.1175870895385745e-7,
-                0.0,
-                -4.470350134511136e-8,
-                1.1175875869184893e-7,
-                0.9999998807907105,
-                0.0,
-                -0.13500000536441804,
-                -0.02500000037252903,
-                -2.086162567138672e-7,
-                1.0
-            ],
-            "deleted": true
-        },
-        "113": {
-            "name": "Background",
-            "parent": "112",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "7",
-                        "material": "64"
-                    }
-                }
-            ],
-            "transformation": [
-                0.03999999910593033,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.019999999552965165,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "deleted": true
-        },
-        "114": {
-            "name": "1000",
-            "parent": "112",
-            "components": [
-                {
-                    "type": "text",
-                    "text": {
-                        "text": "0.1"
-                    }
-                }
-            ],
-            "transformation": [
-                0.18000003695487977,
-                4.4703487134256657e-8,
-                -2.421438694000244e-8,
-                0.0,
-                -4.47035120032524e-8,
-                0.18000009655952454,
-                -8.568168397005138e-8,
-                0.0,
-                2.4214378058218249e-8,
-                8.56817052863335e-8,
-                0.18000012636184693,
-                0.0,
-                -1.4901161193847657e-8,
-                -2.9802320611338474e-8,
-                0.006500000134110451,
-                1.0
-            ],
-            "deleted": true
-        },
-        "115": {
-            "name": "Step 1000",
-            "parent": "75",
-            "transformation": [
-                0.9999999403953552,
-                -1.0547100734488858e-15,
-                4.470350134511136e-8,
-                0.0,
-                6.0507150606906299e-15,
-                0.9999994039535524,
-                -1.1175870895385745e-7,
-                0.0,
-                -4.470349779239769e-8,
-                1.1175875869184893e-7,
-                0.9999998807907105,
-                0.0,
-                -0.04500000178813934,
-                -0.02500000037252903,
-                -3.762543201446533e-7,
-                1.0
-            ],
-            "deleted": true
-        },
-        "116": {
-            "name": "Background",
-            "parent": "115",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "7",
-                        "material": "64"
-                    }
-                }
-            ],
-            "transformation": [
-                0.03999999910593033,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.019999999552965165,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "deleted": true
-        },
-        "117": {
-            "name": "1000",
-            "parent": "115",
-            "components": [
-                {
-                    "type": "text",
-                    "text": {
-                        "text": "0.01"
-                    }
-                }
-            ],
-            "transformation": [
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.006500000134110451,
-                1.0
-            ],
-            "deleted": true
-        },
-        "118": {
-            "name": "Step 1000",
-            "parent": "75",
-            "transformation": [
-                0.9999999403953552,
-                -1.0547102852071229e-15,
-                4.470349423968401e-8,
-                0.0,
-                6.0507150606906299e-15,
-                0.9999994039535524,
-                -1.1175870895385745e-7,
-                0.0,
-                -4.4703490686970329e-8,
-                1.1175875869184893e-7,
-                0.9999998807907105,
-                0.0,
-                0.04500000178813934,
-                -0.02500000037252903,
-                -4.470348358154297e-7,
-                1.0
-            ],
-            "deleted": true
-        },
-        "119": {
-            "name": "Background",
-            "parent": "118",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "7",
-                        "material": "64"
-                    }
-                }
-            ],
-            "transformation": [
-                0.03999999910593033,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.019999999552965165,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "deleted": true
-        },
-        "120": {
-            "name": "1000",
-            "parent": "118",
-            "components": [
-                {
-                    "type": "text",
-                    "text": {
-                        "text": "0.001"
-                    }
-                }
-            ],
-            "transformation": [
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.18000000715255738,
-                0.0,
-                0.0,
-                0.0,
-                0.006500000134110451,
-                1.0
-            ],
-            "deleted": true
-        },
-        "121": {
-            "name": "Step 1000",
-            "parent": "75",
-            "transformation": [
-                0.9999999403953552,
-                -1.0547102852071229e-15,
-                4.470349423968401e-8,
-                0.0,
-                6.0507150606906299e-15,
-                0.9999994039535524,
-                -1.1175870895385745e-7,
-                0.0,
-                -4.4703490686970329e-8,
-                1.1175875869184893e-7,
-                0.9999998807907105,
-                0.0,
-                0.13500000536441804,
-                -0.02500000037252903,
-                -6.07222318649292e-7,
-                1.0
-            ],
-            "deleted": true
-        },
-        "122": {
-            "name": "Background",
-            "parent": "121",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "7",
-                        "material": "64"
-                    }
-                }
-            ],
-            "transformation": [
-                0.03999999910593033,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.019999999552965165,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "deleted": true
-        },
-        "123": {
-            "name": "1000",
-            "parent": "121",
-            "components": [
-                {
-                    "type": "text",
-                    "text": {
-                        "text": "RESET"
-                    }
-                }
-            ],
-            "transformation": [
-                0.18000003695487977,
-                5.21540641784668e-8,
-                1.862645149230957e-9,
-                0.0,
-                -7.450580596923828e-8,
-                0.1800001561641693,
-                -5.4016709327697777e-8,
-                0.0,
-                -9.313225746154784e-9,
-                6.332993507385254e-8,
-                0.1800001710653305,
-                0.0,
-                0.0,
-                2.384185791015625e-7,
-                0.006500009447336197,
-                1.0000001192092896
-            ],
-            "deleted": true
-        },
-        "124": {
-            "name": "Step Panel",
-            "parent": "67",
-            "transformation": [
-                1.0,
-                -5.960464477539065e-8,
-                -4.4703483581542978e-8,
-                0.0,
-                5.960464477539065e-8,
-                1.0,
-                7.450577488299359e-9,
-                0.0,
-                4.4703490686970329e-8,
-                -7.450580596923828e-9,
-                1.0000001192092896,
-                0.0,
-                3.422610461711884e-7,
-                -0.03500000014901161,
-                0.009999999776482582,
-                1.0
-            ]
-        },
-        "125": {
-            "name": "Background",
-            "parent": "124",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "7",
-                        "material": "126"
-                    }
-                }
-            ],
-            "transformation": [
-                0.1899999976158142,
-                7.78585587113412e-8,
-                -7.078048014363959e-8,
-                0.0,
-                -2.6635840200128773e-8,
-                0.06499999761581421,
-                -4.852484991602069e-8,
-                0.0,
-                3.72529200376448e-7,
-                7.465375801984919e-7,
-                1.0000017881393433,
-                0.0,
-                -5.889451131224632e-7,
-                0.0,
-                5.7741996073446e-8,
-                1.0
-            ]
-        },
-        "128": {
-            "name": "Step Label",
-            "parent": "124",
-            "transformation": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.03599999845027924,
-                0.0,
-                1.0
-            ]
-        },
-        "129": {
-            "name": "Collision",
-            "parent": "128",
-            "components": [
-                {
-                    "type": "collision",
-                    "collision": {
-                        "collider": "box",
-                        "box": {
-                            "extents": [
-                                0.03999999910593033,
-                                0.014999999664723874,
-                                0.0010000000474974514
-                            ]
-                        }
-                    }
-                }
-            ]
-        },
-        "130": {
-            "name": "Label",
-            "parent": "68",
-            "transformation": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.029999999329447748,
-                0.0,
-                1.0
-            ]
-        },
-        "131": {
-            "name": "Collision.000",
-            "parent": "130",
-            "components": [
-                {
-                    "type": "collision",
-                    "collision": {
-                        "collider": "box",
-                        "box": {
-                            "extents": [
-                                0.029999999329447748,
-                                0.014999999664723874,
-                                0.0010000000474974514
-                            ]
-                        }
-                    }
-                }
-            ],
-            "transformation": [
-                1.0,
-                6.556510925292969e-7,
-                4.321336746215822e-7,
-                0.0,
-                -6.556516041200666e-7,
-                1.0000009536743165,
-                -3.278254894212296e-7,
-                0.0,
-                -4.321341009472235e-7,
-                3.278250346738787e-7,
-                1.0000004768371585,
-                0.0,
-                0.03999999910593033,
-                0.0,
-                2.570450305938721e-7,
-                1.0
-            ]
-        },
-        "132": {
-            "name": "Collision.000",
-            "parent": "130",
-            "components": [
-                {
-                    "type": "collision",
-                    "collision": {
-                        "collider": "box",
-                        "box": {
-                            "extents": [
-                                0.029999999329447748,
-                                0.014999999664723874,
-                                0.0010000000474974514
-                            ]
-                        }
-                    }
-                }
-            ],
-            "transformation": [
-                1.0,
-                6.556510925292969e-7,
-                4.321336746215822e-7,
-                0.0,
-                -6.556516041200666e-7,
-                1.0000009536743165,
-                -3.278254894212296e-7,
-                0.0,
-                -4.321341009472235e-7,
-                3.278250346738787e-7,
-                1.0000004768371585,
-                0.0,
-                -0.03999999910593033,
-                8.88178419700126e-16,
-                2.570450305938721e-7,
-                1.0
-            ]
-        },
-        "133": {
-            "name": "Collision.001",
-            "parent": "74",
-            "components": [
-                {
-                    "type": "collision",
-                    "collision": {
-                        "collider": "box",
-                        "box": {
-                            "extents": [
-                                0.06499999761581421,
-                                0.014999999664723874,
-                                0.0010000000474974514
-                            ]
-                        }
-                    }
-                }
-            ]
-        },
-        "134": {
-            "name": "Fixed Easy Tune",
-            "transformation": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                -1.254404664039612,
-                1.0
-            ],
-            "components": [
-                {
-                    "type": "easy-tune",
-                    "easy-tune": {
-                        "_myPlaneMaterial": "64",
-                        "_myTextMaterial": "DefaultFontMaterial",
-                        "_mShowOnStart": true,
-                        "_myPlaneMesh": "7",
-                        "_myShowOnStart": false,
-                        "_myShowVisibilityButton": true
-                    },
-                    "active": false
-                },
-                {
-                    "type": "console-vr",
-                    "console-vr": {
-                        "_myShowOnStart": true,
-                        "_myPlaneMesh": "7",
-                        "_myPlaneMaterial": "64",
-                        "_myTextMaterial": "DefaultFontMaterial",
-                        "_myHandedness": "none"
-                    },
-                    "active": false
-                }
-            ],
-            "parent": null
-        },
-        "135": {
-            "name": "Test Easy Tune",
-            "parent": "48",
-            "transformation": [
-                0.9999988079071044,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.999997854232788,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0000017881393433,
-                0.0,
-                0.000004857778549194336,
-                -0.09999988973140717,
-                -1.8626483466732684e-8,
-                1.0
-            ]
-        },
-        "136": {
-            "name": "Step 10002",
-            "parent": "74",
-            "transformation": [
-                1.0000008344650269,
-                6.854534149169922e-7,
-                -2.831220626831055e-7,
-                0.0,
-                -6.556510925292969e-7,
-                0.9999995827674866,
-                -0.000001385807991027832,
-                0.0,
-                3.427267074584961e-7,
-                0.0000013634562492370606,
-                0.9999990463256836,
-                0.0,
-                0.1811475306749344,
-                -0.0000044405460357666019,
-                -1.4901161193847657e-7,
-                1.0
-            ]
-        },
-        "137": {
-            "name": "Background",
-            "parent": "136",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "7",
-                        "material": "64"
-                    }
-                }
-            ],
-            "transformation": [
-                0.019999999552965165,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.019999999552965165,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ]
-        },
-        "138": {
-            "name": "1000",
-            "parent": "136",
-            "components": [
-                {
-                    "type": "text",
-                    "text": {
-                        "text": "+"
-                    }
-                }
-            ],
-            "transformation": [
-                0.18000009655952454,
-                1.192092895507813e-7,
-                -9.313225746154784e-9,
-                0.0,
-                -1.043081283569336e-7,
-                0.1799999922513962,
-                -7.82310962677002e-8,
-                0.0,
-                -1.862645149230957e-9,
-                8.009374141693115e-8,
-                0.18000006675720216,
-                0.0,
-                1.4901161193847657e-8,
-                8.9406967163086e-8,
-                0.006499975919723511,
-                1.0000001192092896
-            ]
-        },
-        "139": {
-            "name": "Step 1000",
-            "parent": "74",
-            "transformation": [
-                1.0000028610229493,
-                0.0000018477439880371096,
-                -2.682209014892578e-7,
-                0.0,
-                -0.0000017285346984863282,
-                0.9999985694885254,
-                -0.00000321120023727417,
-                0.0,
-                3.427267074584961e-7,
-                0.000003166496753692627,
-                0.9999994039535524,
-                0.0,
-                -0.14630286395549778,
-                -0.0000015497207641601565,
-                -4.023313522338867e-7,
-                1.0
-            ]
-        },
-        "140": {
-            "name": "Background",
-            "parent": "139",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "7",
-                        "material": "64"
-                    }
-                }
-            ],
-            "transformation": [
-                0.03999999910593033,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.019999999552965165,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ]
-        },
-        "141": {
-            "name": "1000",
-            "parent": "139",
-            "components": [
-                {
-                    "type": "text",
-                    "text": {
-                        "text": "x0.01"
-                    }
-                }
-            ],
-            "transformation": [
-                0.18000008165836338,
-                6.705522537231445e-8,
-                -1.4901161193847657e-8,
-                0.0,
-                -8.195638656616212e-8,
-                0.18000000715255738,
-                -8.381903171539309e-8,
-                0.0,
-                3.725290298461914e-9,
-                8.381903171539309e-8,
-                0.18000003695487977,
-                0.0,
-                0.0,
-                0.0,
-                0.006500013172626495,
-                1.0
-            ]
-        },
-        "142": {
             "name": "Magic Sphere",
-            "transformation": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                -9.313225746154786e-10,
-                1.0,
-                -1.0,
-                1.0
-            ],
             "components": [
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
                 {
                     "type": "collision",
                     "collision": {
@@ -2674,273 +517,53 @@
                 },
                 {
                     "type": "test-input-generator",
-                    "test-input-generator": {
-                        "_myUseConsoleVR": false
-                    },
-                    "active": true
-                }
-            ]
-        },
-        "144": {
-            "link": {
-                "name": "flatSPhere",
-                "file": "assets\\models\\flatSphere.glb"
-            },
-            "parent": "142",
-            "deleted": true
-        },
-        "145": {
-            "name": "Collision",
-            "parent": "48",
-            "components": [
-                {
-                    "type": "collision",
-                    "collision": {
-                        "sphere": {
-                            "radius": 0.03999999910593033
-                        }
-                    }
-                },
-                {
-                    "type": "hand-type"
+                    "active": false
                 }
             ],
             "transformation": [
-                0.0010000000474974514,
+                1.0,
                 0.0,
                 0.0,
                 0.0,
                 0.0,
-                0.0010000000474974514,
+                1.0,
                 0.0,
                 0.0,
                 0.0,
                 0.0,
-                0.0010000000474974514,
-                0.0,
-                0.09999199211597444,
-                0.0000028047265914210586,
-                -0.00005095595042803325,
-                1.0
-            ],
-            "deleted": true
-        },
-        "146": {
-            "name": "Collision",
-            "parent": "48",
-            "components": [
-                {
-                    "type": "collision",
-                    "collision": {
-                        "sphere": {
-                            "radius": 0.03999999910593033
-                        }
-                    }
-                },
-                {
-                    "type": "hand-type"
-                }
-            ],
-            "transformation": [
-                0.0010000000474974514,
+                1.0,
                 0.0,
                 0.0,
-                0.0,
-                0.0,
-                0.0010000000474974514,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0010000000474974514,
-                0.0,
-                -0.000008001923561096192,
-                0.0000028047265914210586,
-                -0.00005095595042803325,
-                1.0
-            ],
-            "deleted": true
-        },
-        "147": {
-            "name": "Collision",
-            "parent": "48",
-            "components": [
-                {
-                    "type": "collision",
-                    "collision": {
-                        "sphere": {
-                            "radius": 0.03999999910593033
-                        },
-                        "groups": 4
-                    }
-                }
-            ],
-            "transformation": [
-                0.0010000000474974514,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0010000000474974514,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0010000000474974514,
-                0.0,
-                -0.000007100403308868408,
-                -0.020381346344947816,
-                -0.05000000074505806,
+                1.0,
+                -1.0,
                 1.0
             ]
         },
-        "148": {
-            "name": "Collision",
-            "parent": "56",
-            "components": [
-                {
-                    "type": "collision",
-                    "collision": {
-                        "sphere": {
-                            "radius": 0.03999999910593033
-                        },
-                        "groups": 4
-                    }
-                }
-            ],
-            "transformation": [
-                0.0010000000474974514,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0010000000474974514,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0010000000474974514,
-                0.0,
-                -0.000007100403308868408,
-                -0.020381346344947816,
-                -0.05000000074505806,
-                1.0
-            ]
-        },
-        "149": {
+        "67": {
             "name": "Particles",
-            "parent": "142",
+            "parent": "66",
             "components": [
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
                 {
                     "type": "mesh-particles",
-                    "active": true,
                     "mesh-particles": {
-                        "mesh": "143",
-                        "material": "33",
-                        "particleScale": 0.009999999776482582,
-                        "initialSpeed": 5.0
+                        "mesh": "9",
+                        "material": "34",
+                        "initialSpeed": 5.0,
+                        "particleScale": 0.009999999776482582
                     }
                 }
-            ],
-            "transformation": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.05000000074505806,
-                0.0,
-                1.0
             ]
         },
-        "150": {
-            "name": "Magic Sphere",
-            "parent": "142",
+        "68": {
+            "name": "Sphere",
+            "parent": "66",
             "components": [
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
                 {
-                    "mesh": {
-                        "mesh": "143",
-                        "material": "32"
-                    },
                     "type": "mesh",
-                    "imported": true,
-                    "active": true
+                    "mesh": {
+                        "mesh": "69",
+                        "material": "33"
+                    }
                 },
                 {
                     "type": "rotate-sphere"
@@ -2965,15 +588,26 @@
                 1.0
             ]
         },
-        "151": {
-            "name": "Empty.000",
+        "70": {
+            "link": {
+                "name": "flatSPhere",
+                "file": "assets\\models\\flatSphere.glb"
+            },
+            "parent": "66",
             "deleted": true
         },
-        "152": {
-            "name": "Empty.001",
+        "71": {
+            "name": "Collision",
+            "parent": "57",
             "components": [
                 {
-                    "type": "custom-0"
+                    "type": "collision",
+                    "collision": {
+                        "groups": 4,
+                        "sphere": {
+                            "radius": 0.03999999910593033
+                        }
+                    }
                 }
             ],
             "transformation": [
@@ -2989,12 +623,44 @@
                 0.0,
                 1.0,
                 0.0,
+                0.0,
+                -0.019999999552965165,
+                -0.05000000074505806,
+                1.0
+            ]
+        },
+        "72": {
+            "name": "Collision",
+            "parent": "49",
+            "components": [
+                {
+                    "type": "collision",
+                    "collision": {
+                        "sphere": {
+                            "radius": 0.03999999910593033
+                        },
+                        "groups": 4
+                    }
+                }
+            ],
+            "transformation": [
                 1.0,
                 0.0,
                 0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                -0.019999999552965165,
+                -0.05000000074505806,
                 1.0
-            ],
-            "deleted": true
+            ]
         }
     },
     "meshes": {
@@ -3034,91 +700,91 @@
                 "file": "default"
             }
         },
-        "34": {
+        "35": {
             "link": {
                 "name": "Mesh",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             }
         },
-        "35": {
+        "36": {
             "link": {
                 "name": "Mesh.002",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             }
         },
-        "36": {
+        "37": {
             "link": {
                 "name": "Mesh.003",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             }
         },
-        "37": {
+        "38": {
             "link": {
                 "name": "Mesh.005",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             }
         },
-        "38": {
+        "39": {
             "link": {
                 "name": "Mesh.006",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             }
         },
-        "39": {
+        "40": {
             "link": {
                 "name": "Mesh.004",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             }
         },
-        "40": {
+        "41": {
             "link": {
                 "name": "Mesh.001",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             }
         },
-        "41": {
+        "42": {
             "link": {
                 "name": "Mesh.007",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             }
         },
-        "42": {
+        "43": {
             "link": {
                 "name": "Mesh.009",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             }
         },
-        "43": {
+        "44": {
             "link": {
                 "name": "Mesh.010",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             }
         },
-        "44": {
+        "45": {
             "link": {
                 "name": "Mesh.012",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             }
         },
-        "45": {
+        "46": {
             "link": {
                 "name": "Mesh.013",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             }
         },
-        "46": {
+        "47": {
             "link": {
                 "name": "Mesh.011",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             }
         },
-        "47": {
+        "48": {
             "link": {
                 "name": "Mesh.008",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             }
         },
-        "143": {
+        "69": {
             "link": {
                 "name": "Icosphere",
                 "file": "assets\\models\\flatSphere.glb"
@@ -3147,18 +813,6 @@
             "link": {
                 "name": "DefaultFontMaterial",
                 "file": "default"
-            },
-            "DistanceFieldVector": {
-                "outlineRange": [
-                    0.44999998807907107,
-                    0.44999998807907107
-                ],
-                "outlineColor": [
-                    1.0,
-                    0.9999899864196776,
-                    0.9999899864196776,
-                    1.0
-                ]
             }
         },
         "20": {
@@ -3245,64 +899,44 @@
             }
         },
         "32": {
+            "name": "Flat",
+            "shader": "Flat"
+        },
+        "33": {
             "link": {
                 "name": "Lambert_Body",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             },
             "Phong": {
-                "diffuseColor": [
-                    0.09301037341356278,
-                    0.31479430198669436,
-                    0.8784313797950745,
+                "ambientColor": [
+                    0.03529411926865578,
+                    0.1411764770746231,
+                    0.38823530077934267,
                     1.0
                 ],
-                "ambientColor": [
-                    0.03349480405449867,
-                    0.14238716661930085,
-                    0.3882352709770203,
+                "diffuseColor": [
+                    0.0941176488995552,
+                    0.3137255012989044,
+                    0.8784313797950745,
                     1.0
                 ]
             }
         },
-        "33": {
+        "34": {
             "link": {
                 "name": "Lambert_Button",
                 "file": "assets\\models\\quest_controllers_credits_Jezza3D.glb"
             },
             "Phong": {
-                "diffuseColor": [
-                    0.7411764860153198,
-                    0.09301037341356278,
-                    0.2760219871997833,
+                "ambientColor": [
+                    0.35686275362968447,
+                    0.03529411926865578,
+                    0.125490203499794,
                     1.0
                 ],
-                "ambientColor": [
-                    0.35686272382736208,
-                    0.03638600185513497,
-                    0.12743055820465089,
-                    1.0
-                ]
-            }
-        },
-        "64": {
-            "name": "Flat",
-            "shader": "Flat",
-            "Flat": {
-                "color": [
-                    0.1803921610116959,
-                    0.1803921610116959,
-                    0.1803921610116959,
-                    1.0
-                ]
-            }
-        },
-        "126": {
-            "shader": "Flat",
-            "name": "Flat2",
-            "Flat": {
-                "color": [
-                    0.27450981736183169,
-                    0.27450981736183169,
+                "diffuseColor": [
+                    0.7411764860153198,
+                    0.0941176488995552,
                     0.27450981736183169,
                     1.0
                 ]
@@ -3373,7 +1007,7 @@
     },
     "settings": {
         "project": {
-            "name": "wle_easytune",
+            "name": "wle_easytune_2",
             "version": [
                 0,
                 8,
@@ -3387,26 +1021,24 @@
         "scripting": {
             "sourcePaths": [
                 "/js/components/",
+                "js/",
                 "js/pp",
-                "js/pp/tool/easy-tune",
-                "js/pp/tool/console-vr",
-                "js/pp/gamepad",
+                "js/cauldron",
                 "js/pp/cauldron",
+                "js/pp/gamepad",
                 "js/pp/tool/cauldron",
-                "js/cauldron"
+                "js/pp/tool/console-vr",
+                "js/pp/tool/easy-tune"
             ]
         },
         "rendering": {
-            "font": "assets/fonts/courier_new.ttf",
             "clearColor": [
-                0.3476508855819702,
-                0.8969070911407471,
-                0.9960784316062928,
+                0.3490196168422699,
+                0.8980392217636108,
+                0.9960784316062927,
                 1.0
-            ]
-        },
-        "runtime": {
-            "visualizeColliders": false
+            ],
+            "font": "assets/fonts/courier_new.ttf"
         }
     },
     "animations": {},
