@@ -9,6 +9,8 @@ How annoying can it be to tune the value of a variable, put the headset on, test
 Gladly, the Easy Tune is here to help! Now u can easily edit a value at runtime and avoid wasting 90% of the time removing the headset.
 Be immersed while you tune <3
 
+You can find a live version of the Easy Tune [here](https://elia-ducceschi.itch.io/easy-tune-wonderland-engine).
+
 ### Features
   - Tune a variable at runtime
   - Specify a new variable to add to the Easy Tune widget
