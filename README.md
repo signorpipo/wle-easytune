@@ -1,3 +1,8 @@
+<p align="center">
+<br>
+<img src="https://github.com/SignorPipo/wle_easytune/blob/main/extra/showdonttell.gif">
+</p>
+
 ## Description
 How annoying can it be to tune the value of a variable, put the headset on, test if the value is ok, removing the headset, tune it again and repeat? Well it's annoying even to write this to be honest.
 
@@ -71,6 +76,7 @@ The Easy Tune supports the following types:
     - The second parameter is the default step
 
 Adding new types is as simple as creating the widget to edit them, since after that you just need to attach it to the Easy Tune Widget.
+
 Just look at how the Easy Tune Number Widget is implemented if you want to try!
 
 ### Extra
