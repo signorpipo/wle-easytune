@@ -55,6 +55,19 @@ To import the Easy Tune you have to:
     - `_myCursorMesh`: set this to `PrimitiveSphere`
     - `_myCursorMaterial`: set this to the same Flat material created above
 
+### Extra
+  - **Gamepad**
+    - If you want the gamepad extra features you will need to import it too
+    - Extra features include
+      - Use thumbstick to easily edit the values
+      - Hide and show the Easy Tune with Bottom + Top buttons
+    - You can find a guide on how to import the gamepad [here](https://github.com/SignorPipo/wle_gamepad)
+  - **Font**
+    - The Easy Tune has been tested using the `courier_new` font
+    - You can find it inside the `assets` folder
+    - It can be set as the project font from the Project Settings
+    - Luckily the default font does its job too
+
 ## How to use
 You can see an example on how to use the easy tune for your own variables inside the `magic_sphere.js` script.
 
@@ -65,7 +78,7 @@ The steps are pretty simple:
   - At this point u just tune the variable at runtime
   - When u have found a value that fits, u just write it down and overwrite the Easy Tune Variable with the plain value you have found
 
-## Supported Types
+### Supported Types
 The Easy Tune supports the following types:
   - Number
     - You create it as follow: `PP.EasyTuneVariables.addVariable(new PP.EasyTuneNumber("Number 1", 7.3, 0.5, 4))`
@@ -81,18 +94,8 @@ Adding new types is as simple as creating the widget to edit them, since after t
 
 Just look at how the Easy Tune Number Widget is implemented if you want to try!
 
-### Extra
-  - **Gamepad**
-    - If you want the gamepad extra features you will need to import it too
-    - Extra features include
-      - Use thumbstick to easily edit the values
-      - Hide and show the Easy Tune with Bottom + Top buttons
-    - You can find a guide on how to import the gamepad [here](https://github.com/SignorPipo/wle_gamepad)
-  - **Font**
-    - The Easy Tune has been tested using the `courier_new` font
-    - You can find it inside the `assets` folder
-    - It can be set as the project font from the Project Settings
-    - Luckily the default font does its job too
+## License
+You are free to use this in your projects, just remember to credit me somewhere!
 
 ## Credits
 Oculus Quest Controller Models by Jezza3D on Sketchfab with small adjustments made by me.
