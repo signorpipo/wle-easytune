@@ -3,7 +3,7 @@
 <img src="https://github.com/SignorPipo/wle_easytune/blob/main/extra/showdonttell.gif">
 </p>
 
-## Description
+## Overview
 How annoying can it be to tune the value of a variable, put the headset on, test if the value is ok, removing the headset, tune it again and repeat? Well it's annoying even to write this to be honest.
 
 Gladly, the Easy Tune is here to help! Now u can easily edit a value at runtime and avoid wasting 90% of the time removing the headset.
