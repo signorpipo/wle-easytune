@@ -8,6 +8,12 @@ PP.MathUtils = {
     toDegrees: function (angle) {
         return angle * (180 / Math.PI);
     },
+    roundDecimal(number, decimalPlaces) {
+        let factor = Math.pow(10, decimalPlaces);
+        number = Math.round(number * factor) / factor;
+
+        return number;
+    },
     eulerToQuaternion: function (eulerRotation) {
         let quat = glMatrix.quat.create();
         glMatrix.quat.fromEuler(quat, PP.MathUtils.toDegrees(eulerRotation[0]), PP.MathUtils.toDegrees(eulerRotation[1]), PP.MathUtils.toDegrees(eulerRotation[2]));
