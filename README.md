@@ -31,6 +31,8 @@ You can find a live version of the Easy Tune [here](https://elia-ducceschi.itch.
   - You can specify a variable as the one that should be selected as first when the game is executed
     - You just have to specify the name inside the `easy_tune.js` script
     - You must be sure that the variable is created before the start method is called to use this trick
+  - Use the `PP.SetEasyTuneWidgetActiveVariable` function to specify the active variable
+    - This way you don't have to select it every time you start the app
 
 ## How to import
 To import the Easy Tune you have to:
@@ -89,6 +91,9 @@ The Easy Tune supports the following types:
     - You create it as follow: `PP.EasyTuneVariables.addVariable(new PP.EasyTuneInteger("Integer 1", 3, 1))`
     - The first parameter is the default value
     - The second parameter is the default step
+  - Bool
+    - You create it as follow: `PP.EasyTuneVariables.addVariable(new PP.EasyTuneBool("Bool 1", true))`
+    - The first parameter is the default value
 
 Adding new types is as simple as creating the widget to edit them, since after that you just need to attach it to the Easy Tune Widget.
 
