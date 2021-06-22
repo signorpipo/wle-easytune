@@ -6,6 +6,8 @@ WL.registerComponent('magic-sphere', {
         PP.EasyTuneVariables.addVariable(new PP.EasyTuneNumber("Magic Sphere Z", -2, 0.5, 4));
     },
     start: function () {
+        PP.SetEasyTuneWidgetActiveVariable("Magic Sphere Y");
+
         this.myCollider = this.object.getComponent("collision");
     },
     update: function (dt) {

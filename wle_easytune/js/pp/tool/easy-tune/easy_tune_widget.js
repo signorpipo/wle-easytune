@@ -1,7 +1,9 @@
-
 PP.EasyTuneWidget = class EasyTuneWidget {
 
     constructor() {
+        this._myIsStarted = false;
+        this._myStartVariable = null;
+
         this._myWidgetFrame = new PP.WidgetFrame("E", 1);
         this._myWidgetFrame.registerWidgetVisibleChangedEventListener(this, this._widgetVisibleChanged.bind(this));
 
@@ -30,7 +32,20 @@ PP.EasyTuneWidget = class EasyTuneWidget {
         }
     }
 
-    start(parentObject, additionalSetup, easyTuneVariables, startVariableName) {
+    setEasyTuneWidgetActiveVariable(variableName) {
+        if (!this._myIsStarted) {
+            this._myStartVariable = variableName;
+        } else if (this._myEasyTuneVariables.has(variableName)) {
+            this._myCurrentVariable = this._myEasyTuneVariables.get(variableName);
+            this._selectCurrentWidget();
+        } else {
+            console.log("Can't set easy tune active variable");
+        }
+    }
+
+    start(parentObject, additionalSetup, easyTuneVariables) {
+        this._myIsStarted = true;
+
         this._myAdditionalSetup = additionalSetup;
 
         this._myWidgetFrame.start(parentObject, additionalSetup);
@@ -39,10 +54,16 @@ PP.EasyTuneWidget = class EasyTuneWidget {
         this._myEasyTuneLastSize = this._myEasyTuneVariables.size;
         this._myVariableNames = Array.from(this._myEasyTuneVariables.keys());
 
-        if (this._myEasyTuneVariables.has(startVariableName)) {
-            this._myCurrentVariable = this._myEasyTuneVariables.get(startVariableName);
-        } else if (this._myEasyTuneVariables.size > 0) {
+        if (this._myEasyTuneVariables.size > 0) {
             this._myCurrentVariable = this._myEasyTuneVariables.get(this._myVariableNames[0]);
+        }
+
+        if (this._myStartVariable) {
+            if (this._myEasyTuneVariables.has(this._myStartVariable)) {
+                this._myCurrentVariable = this._myEasyTuneVariables.get(this._myStartVariable);
+            } else {
+                console.log("Can't set easy tune active variable");
+            }
         }
 
         this._initializeWidgets();
