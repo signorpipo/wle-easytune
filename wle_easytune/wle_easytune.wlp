@@ -817,7 +817,6 @@
         },
         "20": {
             "name": "White",
-            "shader": "Phong",
             "Phong": {
                 "specularColor": [
                     9.999899930335233e-7,
@@ -826,7 +825,8 @@
                     1.0
                 ],
                 "shininess": 1
-            }
+            },
+            "pipeline": "83"
         },
         "22": {
             "name": "Pink",
@@ -835,7 +835,7 @@
                     0.9098039269447328,
                     0.0,
                     0.5411764979362488,
-                    0.0
+                    1.0
                 ],
                 "specularColor": [
                     9.999899930335233e-7,
@@ -900,7 +900,7 @@
         },
         "32": {
             "name": "Flat",
-            "shader": "Flat"
+            "pipeline": "77"
         },
         "33": {
             "link": {
@@ -944,63 +944,51 @@
         }
     },
     "shaders": {
-        "1": {
+        "73": {
             "link": {
-                "name": "DistanceFieldVector Textured",
+                "name": "DistanceFieldVector",
                 "file": "default"
             }
         },
-        "2": {
-            "link": {
-                "name": "Flat",
-                "file": "default"
-            }
-        },
-        "3": {
-            "link": {
-                "name": "Flat Textured",
-                "file": "default"
-            }
-        },
-        "4": {
-            "link": {
-                "name": "MeshVisualizer",
-                "file": "default"
-            }
-        },
-        "5": {
-            "link": {
-                "name": "Phong",
-                "file": "default"
-            }
-        },
-        "6": {
-            "link": {
-                "name": "Phong Textured",
-                "file": "default"
-            }
-        },
-        "28": {
+        "75": {
             "link": {
                 "name": "Dynamic",
                 "file": "default"
             }
         },
-        "29": {
+        "76": {
             "link": {
-                "name": "Particle Textured",
+                "name": "Flat",
                 "file": "default"
             }
         },
-        "30": {
+        "79": {
+            "link": {
+                "name": "MeshVisualizer",
+                "file": "default"
+            }
+        },
+        "81": {
+            "link": {
+                "name": "Static",
+                "file": "default"
+            }
+        },
+        "82": {
+            "link": {
+                "name": "Phong",
+                "file": "default"
+            }
+        },
+        "85": {
             "link": {
                 "name": "Skinning",
                 "file": "default"
             }
         },
-        "31": {
+        "86": {
             "link": {
-                "name": "Static",
+                "name": "Particle",
                 "file": "default"
             }
         }
@@ -1011,7 +999,7 @@
             "version": [
                 0,
                 8,
-                4
+                5
             ]
         },
         "vr": {
@@ -1020,15 +1008,16 @@
         },
         "scripting": {
             "sourcePaths": [
-                "/js/components/",
+                "/js/editor-components-bundle.js",
                 "js/",
                 "js/pp",
                 "js/cauldron",
                 "js/pp/cauldron",
-                "js/pp/gamepad",
                 "js/pp/tool/cauldron",
                 "js/pp/tool/console-vr",
-                "js/pp/tool/easy-tune"
+                "js/pp/tool/easy-tune",
+                "js/pp/input/cauldron",
+                "js/pp/input/gamepad"
             ]
         },
         "rendering": {
@@ -1046,5 +1035,55 @@
     "files": [
         "assets/models/quest_controllers_credits_Jezza3D.glb",
         "assets/models/flatSphere.glb"
-    ]
+    ],
+    "pipelines": {
+        "74": {
+            "link": {
+                "name": "DistanceFieldVector",
+                "file": "default"
+            }
+        },
+        "77": {
+            "link": {
+                "name": "Flat Opaque",
+                "file": "default"
+            }
+        },
+        "78": {
+            "link": {
+                "name": "Flat Opaque Textured",
+                "file": "default"
+            }
+        },
+        "80": {
+            "link": {
+                "name": "MeshVisualizer",
+                "file": "default"
+            }
+        },
+        "83": {
+            "link": {
+                "name": "Phong Opaque",
+                "file": "default"
+            }
+        },
+        "84": {
+            "link": {
+                "name": "Phong Opaque Textured",
+                "file": "default"
+            }
+        },
+        "87": {
+            "link": {
+                "name": "Foliage",
+                "file": "default"
+            }
+        },
+        "88": {
+            "link": {
+                "name": "Particle",
+                "file": "default"
+            }
+        }
+    }
 }
